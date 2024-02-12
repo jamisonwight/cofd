@@ -1,0 +1,174 @@
+.btn-default, .wpcf7-submit {
+  position: relative;
+  display: inline-block;
+  @include font-gothic-bold-italic;
+  font-size: 18px;
+  text-transform: uppercase;
+  line-height: 1.3;
+
+  &:hover {
+    &:after {
+      transform: scaleX(0.7);
+    }
+  }
+
+  &.btn-black:after {
+    content: '';
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-image: url(../../../assets/images/squiggly.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform .25s ease-in-out;
+    opacity: 0.98;
+  }
+
+  &.btn-blue:after {
+    content: '';
+    position: absolute;
+   bottom: -25px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-image: url(../../../assets/images/squiggly-blue.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform .25s ease-in-out;
+    opacity: 0.98;
+  }
+
+  &.btn-blue-dark:after {
+    content: '';
+    position: absolute;
+   bottom: -25px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-image: url(../../../assets/images/squiggly-blue-dark.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform .25s ease-in-out;
+    opacity: 0.98;
+  }
+
+  &.btn-white {
+    color: $white;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      background-image: url(../../../assets/images/squiggly-white.svg);
+      background-repeat: no-repeat;
+      background-size: contain;
+      transition: .25s ease-in-out;
+      opacity: 0.98;
+    }
+  }
+
+  &.btn-white-blue {
+    color: $white;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      background-image: url(../../../assets/images/squiggly-blue.svg);
+      background-repeat: no-repeat;
+      background-size: contain;
+      transition: .25s ease-in-out;
+      opacity: 0.98;
+    }
+  }
+
+  
+
+  &.btn-hover-light {
+    &:hover {
+      
+    }
+  }
+
+  &.btn-hover-dark {
+    &:hover {
+      
+    }
+  }
+
+  &:before {
+
+  }
+}
+
+.btn-box {
+  position: relative;
+  display: inline-block;
+  @include font-gothic-bold-italic;
+  font-size: 18px;
+  padding: 15px 30px;
+  text-align: center;
+  text-transform: uppercase;
+
+  &-light {
+    border: 2px solid $black;
+    color: $black;
+    background-color: $white;
+  }
+
+  &-dark {
+    border: 2px solid $blue-light;
+    color: $blue-light;
+    background-color: $black;
+    transition: .25s ease-in-out;
+
+    &:hover {
+      color: $white;
+      border: 2px solid $blue-dark;
+    }
+  }
+
+  &-blue {
+    border: 2px solid $black;
+    color: $black;
+    background-color: $blue-light;
+    transition: .25s ease-in-out;
+
+    &:hover {
+      color: $blue;
+      border: 2px solid $blue;
+      background-color: transparent;
+    }
+  }
+}
+
+.link {
+  position: relative;
+  display: block;
+  @include font-gothic-bold-italic;
+  letter-spacing: 3.62px;
+  font-size: 18px;
+  line-height: 1.3;
+  text-transform: uppercase;
+
+  &:hover {
+    color: $blue;
+  }
+
+  &.blue-light-hover:hover {
+    color: $blue-light;
+  }
+}

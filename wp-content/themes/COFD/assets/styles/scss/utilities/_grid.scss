@@ -1,0 +1,35 @@
+.flex-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.flex-container {
+    max-width: calc(1440px - 75px);
+    width: 100%;
+}
+
+.flex-50 {
+    flex: 100%;
+
+    @include mq(large) {
+        flex: 45%;
+    }
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    @include mq(large) {
+        flex-direction: row;
+    }
+}
+
+.row-reverse { 
+    display: flex !important; 
+    flex-direction: row-reverse !important; 
+}

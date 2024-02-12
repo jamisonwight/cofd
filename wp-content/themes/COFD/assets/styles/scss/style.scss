@@ -1,0 +1,69 @@
+/******************************************************************
+	
+Stylesheet: Main Stylesheet
+
+Here's where the magic happens. Here is where you import
+all of your Sass files so they can compile into one
+CSS file. 
+
+******************************************************************/
+// Utilities
+@import "utilities/breakpoints";
+@import "utilities/fonts";
+@import "utilities/colors";
+@import "utilities/animations";
+@import "utilities/buttons";
+@import "utilities/images";
+@import "utilities/main";
+@import "utilities/grid";
+@import "utilities/text";
+@import "utilities/classes";
+@import "utilities/forms";
+
+// Import local Foundation overrides - Don't link to Bower version as it will be overwritten whenever updated
+@import "settings";
+
+// Import foundation.scss from vendor files
+@import "../../../node_modules/foundation-sites/scss/foundation";
+
+// Select the components you want to use
+@include foundation-global-styles;
+
+// Select the grid you would like to use
+@include foundation-grid;
+@include foundation-flex-grid;
+@include foundation-xy-grid-classes;
+
+
+// REMOVE SASS MODULES NOT BEING USED
+@include foundation-close-button;
+@include foundation-menu;
+@include foundation-drilldown-menu;
+@include foundation-dropdown;
+@include foundation-dropdown-menu;
+@include foundation-responsive-embed;
+@include foundation-off-canvas;
+@include foundation-title-bar;
+@include foundation-top-bar;
+@include foundation-visibility-classes;
+
+// Import your custom styles
+@import "global";
+
+// Components
+@import "components/footer";
+@import "components/header";
+@import "components/forms";
+@import "components/schedule_modal";
+
+// Modules
+
+// Pages
+@import "pages/home";
+@import "pages/contact";
+@import "pages/page";
+@import "pages/single";
+@import "pages/posts";
+
+// CSS libraries
+@import "libs/fancybox";

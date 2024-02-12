@@ -1,0 +1,50 @@
+// Utility Classes
+.text-center {
+	text-align: center;
+}
+
+.text-center-min-large {
+	@media screen and (min-width: 1024px) {
+		text-align: center !important;
+	}
+}
+
+.text-center-max-medium {
+	@media screen and (max-width: 1023px) {
+		text-align: center !important;
+	}
+}
+
+.text-center-max-small {
+	@media screen and (max-width: 639px) {
+		text-align: center !important;
+	}
+}
+
+.inner-grid {
+    @include inner-grid;
+}
+
+.inner-grid-small {
+    @include inner-grid-small-content;
+}
+
+.inner-grid-xsmall {
+    @include inner-grid-xsmall-content;
+}
+
+.inner-grid-medium {
+    @include inner-grid-medium-content;
+}
+
+.inner-grid-large {
+    @include inner-grid-large;
+}
+
+.flex-dir-col-center {
+    @include flex-dir-col-center;
+}
+
+.flex-dir-col {
+    @include flex-dir-col;
+}

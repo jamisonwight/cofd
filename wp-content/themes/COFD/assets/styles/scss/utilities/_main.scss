@@ -1,0 +1,307 @@
+// Photoshop letter spacing
+@function ls-photoshop($value) {
+  @return $value / 1000 * 1em;
+}
+
+//  Function to replace characters in a string
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1)+$replace+str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+//  Function to create an optimized svg url
+@function svg-url($svg) {
+  // Chunk up string in order to avoid "SystemStackError: stack level too deep"
+  $encoded: '';
+  $slice: 2000;
+  $index: 0;
+  $loops: ceil(str-length($svg)/$slice);
+
+  @for $i from 1 through $loops {
+    $chunk: str-slice($svg, $index, $index + $slice - 1);
+    $chunk: str-replace($chunk, '"', '\'');
+    $chunk: str-replace($chunk, '<', '%3C');
+    $chunk: str-replace($chunk, '>', '%3E');
+    $chunk: str-replace($chunk, '&', '%26');
+    $chunk: str-replace($chunk, '#', '%23');
+    $encoded: #{$encoded}#{$chunk};
+    $index: $index + $slice;
+  }
+
+  @return url("data:image/svg+xml;charset=utf8,#{$encoded}");
+}
+
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@mixin vertical-center {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+@mixin horizontal-center {
+  position: relative;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateX(-50%);
+}
+
+@mixin inner-grid {
+  position: relative;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateX(-50%);
+  max-width: 1440px;
+  width: 100%;
+}
+
+@mixin inner-grid-large {
+  position: relative;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateX(-50%);
+  max-width: 1920px;
+  width: 100%;
+}
+
+@mixin inner-grid-content {
+  position: relative;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateX(-50%);
+  max-width: 1042px;
+  width: 100%;
+}
+
+@mixin inner-grid-medium-content {
+  position: relative;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateX(-50%);
+  max-width: 1200px;
+  width: 100%;
+}
+
+@mixin inner-grid-small-content {
+  position: relative;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateX(-50%);
+  max-width: 1023px;
+  width: 100%;
+
+  @include mq(medium) {
+    max-width: 100%;
+  }
+  @include mq(large) {
+    max-width: 900px;
+  }
+  @include mq(xlarge) {
+    max-width: 950px;
+  }
+  @include mq(xxlarge) {
+    max-width: 1023px;
+  }
+}
+
+@mixin inner-grid-xsmall-content {
+  position: relative;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateX(-50%);
+  max-width: 710px;
+  width: 100%;
+}
+
+@mixin gutter-default {
+  padding: 0 40px;
+}
+
+@mixin abs-position ($top, $right, $bottom, $left) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin flex-dir-col-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@mixin flex-dir-col {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin arrow($direction: down, $size: 5px, $color: #555) {
+  width: 0;
+  height: 0;
+
+  @if ($direction==left) {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-right: $size solid $color;
+  }
+
+  @else if ($direction==right) {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+  }
+
+  @else if ($direction==down) {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-top: $size solid $color;
+  }
+
+  @else {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-bottom: $size solid $color;
+  }
+}
+
+//  If you want a consistent look across different screen sizes you 
+//  will find this aspect ratio mixin useful. It maintains the aspect 
+//  ratio at any screen size. To use this mixin, you need two HTML elements: 
+//  an outer and an inner one. The mixin calculates the aspect ratio of 
+//  the two elements and maintains that at any resolution.
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+
+  >.inner-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+// Quick positioning
+@mixin position($position, $args) {
+  @each $o in top right bottom left {
+    $i: index($args, $o);
+
+    @if $i and $i+1 <=length($args) and type-of(nth($args, $i + 1))==number {
+      #{$o}: nth($args, $i + 1);
+    }
+  }
+
+  position: $position;
+}
+
+// Positioning helpers
+@mixin absolute($args: '') {
+  @include position(absolute, $args);
+}
+
+@mixin fixed($args: '') {
+  @include position(fixed, $args);
+}
+
+@mixin relative($args: '') {
+  @include position(relative, $args);
+}
+
+// Gradients
+@mixin gradient($start-color, $end-color, $orientation) {
+  background: $start-color;
+
+  @if $orientation=='vertical' {
+    background: -webkit-linear-gradient(top, $start-color, $end-color);
+    background: linear-gradient(to bottom, $start-color, $end-color);
+  }
+
+  @else if $orientation=='horizontal' {
+    background: -webkit-linear-gradient(left, $start-color, $end-color);
+    background: linear-gradient(to right, $start-color, $end-color);
+  }
+
+  @else {
+    background: -webkit-radial-gradient(center, ellipse cover, $start-color, $end-color);
+    background: radial-gradient(ellipse at center, $start-color, $end-color);
+  }
+}
+
+@mixin mq-setValues($type, $small: null, $medium: null, $large: null, $xlarge: null, $xxlarge: null) {
+  @if ($small) {
+    @media screen and (min-width: 0) {
+      #{$type}: #{$small}
+    }
+  }
+
+  @if ($medium) {
+    @media screen and (min-width: 640px) {
+      #{$type}: #{$medium}
+    }
+  }
+
+  @if ($large) {
+    @media screen and (min-width: 1024px) {
+      #{$type}: #{$large}
+    }
+  }
+
+  @if ($xlarge) {
+    @media screen and (min-width: 1200px) {
+      #{$type}: #{$xlarge}
+    }
+  }
+
+  @if ($xxlarge) {
+    @media screen and (min-width: 1440px) {
+      #{$type}: #{$xxlarge}
+    }
+  }
+}
+
+@mixin dottedBorder($color: #8f8f8f, $orientation: horizontal, $position: top, $spacing: 5px, $size: 1px) {
+  background-position: $position;
+  @if $orientation == horizontal {
+    background-image: linear-gradient(to right, $color $size/$spacing * 100%, rgba(255,255,255,0) 0%);
+    background-size: $spacing $size;
+    background-repeat: repeat-x;
+  }
+  @else {
+    background-image: linear-gradient($color $size/$spacing * 100%, rgba(255,255,255,0) 0%);
+    background-size: $size $spacing;
+    background-repeat: repeat-y;
+  }
+  .ie9 & {
+    border-#{$position}:1px dotted $color;      
+  }
+}

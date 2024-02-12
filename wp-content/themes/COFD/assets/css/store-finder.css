@@ -1,0 +1,224 @@
+#finder_captcha table {
+	margin: 20px 0 !important;
+}
+
+#finder_body {
+	margin:0;
+	padding:0 0 50px;
+	width:100%;
+	background-color:transparent;
+}
+
+#finder_body a {
+	color: #0a0a0a;
+}
+
+#finder_body a:hover {
+	color: #0a0a0a;
+}
+
+#finder_form {
+	border-top:1px solid #0a0a0a;
+	margin-top:20px;
+}
+
+#finder_content {
+	margin:0;
+	padding:0;
+}
+
+#tab-list {
+	max-width:100%;
+	height:100%;
+}
+
+#tab-form .panel-body,#tab-list .panel-body {
+	padding:0;
+}
+
+.form-horizontal .form-group {
+	margin:0;
+}
+
+#finder_tab_nav a {
+	box-shadow:none;
+	color: #0a0a0a;
+	font-size:18px !important;
+	font-family: neuzeit-grotesk,sans-serif;
+font-weight: 400;
+font-style: normal;
+	line-height:36px;
+	padding:10px 20px;
+}
+
+#finder_tab_nav li {
+	border: none;
+}
+
+#finder_tab_nav li.active {
+	border: none;
+	color: #0a0a0a;
+}
+
+#finder_tab_nav li.active:hover {
+	background:none!important;
+	border: none;
+}
+
+#finder_tab_nav li.active:hover a {
+	color: #0a0a0a!important;
+}
+#finder {
+	max-width: 40%;
+}
+.panel {
+	background:none;
+	border-radius:0!important;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	font-size:16px;
+	padding:20px 0 0;
+}
+
+.panel-footer {
+	background:none;
+}
+
+.form-horizontal .control-label {
+	color:#0a0a0a!important;
+	font-family: neuzeit-grotesk,sans-serif;
+	font-weight: 400;
+	font-size:16px!important;
+	font-style:italic!important;
+	text-transform:lowercase!important;
+}
+#finder_BFBRCD {
+	display: none !important;
+}
+select.form-control {
+	background: #fff;
+	background-image:none!important;
+	border:1px solid #0a0a0a!important;
+	border-radius:0!important;
+	box-shadow:none!important;
+	color:#0a0a0a!important;
+	font-family: neuzeit-grotesk,sans-serif !important;
+	font-weight: 400;
+	font-style: normal;
+	font-size:18px!important;
+	height:42px!important;
+	margin:0!important;
+	text-indent:8px!important;
+	-webkit-appearance:none;
+}
+
+.finder_form_right select {
+	margin-bottom:15px!important;
+}
+
+select:focus,select.form-control:focus {
+	background-image:none!important;
+	border-color:#0a0a0a!important;
+	box-shadow:none!important;
+}
+
+input[type=text] {
+	background: #fff;
+	border:1px solid #0a0a0a!important;
+	border-radius:0!important;
+	color:#0a0a0a!important;
+	font-family: neuzeit-grotesk,sans-serif !important;
+	font-weight: 400;
+	font-style: normal;
+	font-size:18px!important;
+	height:42px!important;
+	margin:0 0 15px!important;
+	text-indent:8px!important;
+}
+
+input[type=text]:focus {
+	box-shadow:none!important;
+}
+
+input[type=text]::placeholder {
+	color:#0a0a0a!important;
+}
+
+.btn {
+	padding: .4em 1em .4em;
+    background: rgba(0, 0, 0, 1);
+    color: #fff;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: neuzeit-grotesk,sans-serif;
+	font-weight: 300;
+	font-style: normal;
+    outline: none;
+    border: none;
+}
+
+.btn:hover,.btn:active {
+	color: #fff !important;
+    background: #0a0a0a !important;
+    border: 1px solid #0a0a0a !important;
+}
+#finder_map_paging {
+    top: 140px;
+}
+.finder_vip_logo {
+	display:none;
+}
+.panel-primary>.panel-heading {
+	background: none !important;
+}
+.panel-title {
+	color:#0a0a0a!important;
+}
+.panel-title>a,.panel-title>small,
+.panel-title>.small,
+.panel-title>small>a,
+.panel-title>.small>a {
+	color:#0a0a0a!important;
+	font-size:16px!important;
+	opacity:1;
+}
+
+.label-default {
+	background-color:#0a0a0a;
+}
+.finder_miles {
+	background: #0a0a0a;
+	padding: .2em .6em !important;
+}
+.alert-warning {
+	background-color:transparent!important;
+	border-radius:0;
+	border:1px solid #0a0a0a!important;
+	color: #0a0a0a!important;
+	margin:30px 0!important;
+}
+#tab-form, #vipcopyright {
+	width: 100%;
+}
+
+@media screen and (min-width: 320px) and (max-width: 750px) {
+	#finder {
+		max-width: 100%;
+	}
+	.form-horizontal .control-label {
+		font-size: 24px !important;
+	}
+	select.form-control,
+	input[type=text] {
+		font-size: 24px !important;
+		height: 50px !important;
+	}
+	#finder_tab_nav a {
+		font-size: 15px !important;
+	}
+	.finder_dba {
+	    font-size: 18px;
+	    line-height: 28px;
+	}
+}

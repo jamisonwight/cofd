@@ -1,0 +1,140 @@
+@mixin font-gothic-reg {
+  font-family: "news-gothic-std", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@mixin font-gothic-reg-italic {
+  font-family: "news-gothic-std", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+@mixin font-gothic-bold {
+  font-family: "news-gothic-std", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@mixin font-gothic-bold-italic {
+  font-family: "news-gothic-std", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+@mixin font-gill-reg {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@mixin font-gill-reg-italic {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+@mixin font-gill-med {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@mixin font-gill-med-italic {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+@mixin font-gill-sBold {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+@mixin font-gill-sBold-italic {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+@mixin font-gill-bold {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@mixin font-gill-bold-italic {
+  font-family: "gill-sans-nova", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+
+.font-gothic-reg {
+  @include font-gothic-reg;
+}
+
+.font-gothic-italic {
+  @include font-gothic-reg-italic;
+}
+
+.font-gothic-bold {
+  @include font-gothic-bold;
+}
+
+.font-gothic-bold-italic {
+  @include font-gothic-bold-italic;
+}
+
+.font-gill-reg {
+  @include font-gill-reg;
+}
+
+.font-gill-med {
+  @include font-gill-med;
+}
+
+.font-gill-med-italic {
+  @include font-gill-med-italic;
+}
+
+.font-gill-sBold {
+  @include font-gill-sBold;
+}
+
+.font-gill-sBold-italic {
+  @include font-gill-sBold-italic;
+}
+
+.font-gill-Bold {
+  @include font-gill-bold;
+}
+
+.font-gill-bold-italic {
+  @include font-gill-bold-italic;
+}
+
+.font-style-italic {
+  font-style: italic;
+}
+
+.font-wt-light {
+  font-weight: 300;
+}
+
+.font-wt-reg {
+  font-weight: 400;
+}
+
+.font-wt-med {
+  font-weight: 500;
+}
+
+.font-wt-sBold {
+  font-weight: 600;
+}
+
+.font-wt-bold {
+  font-weight: 700;
+}

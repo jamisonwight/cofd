@@ -1,0 +1,52 @@
+.wpcf7-form {
+    .flex-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .small {
+        width: calc(33.33% - 5px)
+    }
+
+    .medium {
+        width: calc(50% - 5px)
+    }
+
+    .large {
+        width: 100%;
+    }
+
+    .wpcf7-submit {
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    .small,
+    .medium,
+    .large {
+        @include mq(large, 'max') {
+            width: 100%;
+        }
+    }
+}
+
+
+input[type="text"],
+input[type="email"],
+textarea {
+    color: $blue-light;
+    background: $black;
+    padding: 17px 0 15px;
+    text-indent: 20px;
+    border: 1px solid $blue-light;
+    width: 100%;
+    margin-bottom: 10px;
+    font-family: "news-gothic-std", sans-serif !important;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 12px !important;
+    letter-spacing: 1.41px !important;
+    text-transform: uppercase;
+}

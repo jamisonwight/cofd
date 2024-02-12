@@ -1,0 +1,71 @@
+// Set all color values
+$white: #ffffff;
+$black: #000;
+$off-black: #211E1E;
+$blue-alt: #B0C8E2;
+$blue-light: #D3D9F4;
+$blue: #7985B9;
+$blue-dark: #505774;
+$blue-darker: #3C425C;
+$grey-lighter: #EBEDF5;
+$grey-light: #CBD0E4;
+$grey: #2D2D2E;
+$grey-dark: #282829;
+$tan: #C6BEB2;
+
+.txt-white {
+    color: $white;
+}
+
+.txt-blue-light {
+    color: $blue-light;
+}
+
+.txt-blue {
+    color: $blue;
+}
+
+.txt-blue-dark {
+    color: $blue-dark;
+}
+
+.txt-black {
+    color: $off-black;
+}
+
+.txt-off-black {
+    color: $off-black;
+}
+
+.txt-tan {
+    color: $tan;
+}
+
+
+.b-blue-light {
+    background-color: $blue-light;
+}
+
+.b-blue {
+    background-color: $blue;
+}
+
+.b-blue-dark {
+    background-color: $blue-dark;
+}
+
+.b-tan {
+    background-color: $tan;
+}
+
+.b-white {
+    background-color: $white;
+}
+
+.b-black {
+    background-color: $black;
+}
+
+.b-off-black {
+    background-color: $off-black;
+}

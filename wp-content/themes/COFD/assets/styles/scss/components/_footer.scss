@@ -1,0 +1,69 @@
+footer {
+    padding: 60px 30px;
+
+    .footer-item {
+        padding: 0 30px;
+
+        @include mq(large, 'max') {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .heading-5 {
+            display: block;
+            padding-bottom: 10px;
+        }
+
+        .item {
+            padding-bottom: 15px;
+
+            p {
+                strong {
+                }
+            }
+
+            .map-link {
+                @include font-gill-bold;
+                text-decoration: underline;
+                font-size: 15px;
+                letter-spacing: 0.27px;
+            }
+        }
+
+        .btn-container {
+            padding-top: 20px;
+            align-self: flex-start;
+        }
+
+        small {
+            margin-top: 20px;
+            display: block;
+        }
+
+        a {
+            &:first-of-type {
+                img {
+                    width: 255px
+                }
+            }
+
+            &:last-of-type {
+                img {
+                    width: 226px;
+
+                    @include mq(large) {
+                        margin-right: 15px;
+                    }
+                }
+            }
+        }
+    }
+
+    .business-callouts {
+        @include mq(large) {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+    }
+}

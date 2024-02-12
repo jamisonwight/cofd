@@ -1,0 +1,134 @@
+.schedule-modal-trigger {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 20;
+    cursor: pointer;
+    overflow: visible !important;
+
+    svg {
+        display: block;
+        position: relative;
+        width: 80px;
+        transform-origin: center;
+        overflow: visible !important;
+
+        /* Safari 7.1+ */
+        _::-webkit-full-page-media, _:future, :root .tg td, :root {
+            image-rendering: optimizeQuality;
+            clip-path: inset(0);
+        }
+
+        @include mq(large, 'max') {
+            width: 60px;
+        }
+
+        circle {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            transform-origin: center;
+            transform-box: fill-box;
+            overflow: visible !important;
+        }
+
+        text {
+            @include font-gothic-bold;
+            letter-spacing: 2px;
+        }
+    }
+}
+
+.schedule-modal {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    max-width: 960px;
+    height: auto;
+    padding: 40px;
+    display: none;
+    z-index: 200;
+    background: $black;
+    box-shadow: 0 0 15px $blue-light;
+    border-radius: 10px;
+    color: $blue-light;
+    overflow-y: scroll !important;
+
+    @include mq(large, 'max') {
+       top: 0;
+       bottom: initial;
+       right: initial;
+       min-height: 100vh;
+       max-width: 100%;
+       width: 100%;
+       height: 100%;
+    }
+
+    .schedule-container {
+        position: relative;
+
+        header {
+            display: flex;
+            flex-direction: column;
+
+            @include mq(large, 'max') {
+                padding-top: 40px;
+                justify-content: center;
+                align-items: center;
+            }
+
+            img {
+                align-self: flex-start;
+                margin-bottom: 20px;
+
+                @include mq(large, 'max') {
+                    align-self: center;
+                }
+            }
+        }
+
+        button {
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            cursor: pointer;
+        }
+    }
+
+    .schedule-content-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        @include mq(large, 'max') {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .content-item {
+            width: 50%;
+            p {
+                padding: 10px 40px 20px 0;
+
+                @include mq(large, 'max') {
+                    max-width: 450px;
+                    padding-right: 0;
+                }
+            }
+
+            @include mq(large, 'max') {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                text-align: center;
+                margin: 40px 0;
+            }
+        }
+    }
+}
+
+.schedule-modal.is-open {
+    display: block;
+}
