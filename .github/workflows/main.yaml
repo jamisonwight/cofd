@@ -27,4 +27,4 @@ jobs:
           sudo rm /var/cache/apt/pkgcache.bin
           sudo rm /var/cache/apt/srcpkgcache.bin
           sudo apt-get update && sudo apt-get -y install sshpass
-          sshpass -p "${{ secrets.SFTP_PASSWORD }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no" --update --delete --exclude 'node_modules*/' --exclude 'node_modules/**' ./wp-content/ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/var/www/html/
+          sshpass -p "${{ secrets.SFTP_PASSWORD }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no" --update --exclude 'node_modules*/' --exclude 'node_modules/**' ./wp-content/ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/var/www/html/
