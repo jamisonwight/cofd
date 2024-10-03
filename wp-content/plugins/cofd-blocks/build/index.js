@@ -4814,7 +4814,7 @@ function getSquiggly(color) {
 }
 function imageDimensions(defaultW, customW, defaultH, customH) {
   let width = customW ? `w-[${customW}]` : defaultW;
-  let height = customH ? `!h-[${customH}]` : defaultH;
+  let height = customH ? `h-[${customH}]` : defaultH;
   return `${width} ${height}`;
 }
 function savePostAttributesToJSON(attributes, postID, apiPath) {
