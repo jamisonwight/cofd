@@ -1332,7 +1332,7 @@ __webpack_require__.r(__webpack_exports__);
       className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
       className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
-    }, "Custom Width"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
+    }, "Custom Image Width"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
       value: callout.imageCustomWidth,
       onChange: newValue => {
         const newCallouts = [...callouts];
@@ -1345,7 +1345,7 @@ __webpack_require__.r(__webpack_exports__);
       className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
       className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
-    }, "Custom Height"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
+    }, "Custom Image Height"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
       value: callout.imageCustomHeight,
       onChange: newValue => {
         const newCallouts = [...callouts];

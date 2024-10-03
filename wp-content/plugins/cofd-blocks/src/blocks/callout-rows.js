@@ -205,7 +205,7 @@ registerBlockType('cofd-blocks/callout-rows', {
                                     </MediaUploadCheck>
 
                                     <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
-                                        <h4 className={eStyles.my_sm}>Custom Width</h4>
+                                        <h4 className={eStyles.my_sm}>Custom Image Width</h4>
 
                                         <TextControl
                                             value={callout.imageCustomWidth}
@@ -218,7 +218,7 @@ registerBlockType('cofd-blocks/callout-rows', {
                                     </div>
 
                                     <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
-                                        <h4 className={eStyles.my_sm}>Custom Height</h4>
+                                        <h4 className={eStyles.my_sm}>Custom Image Height</h4>
 
                                         <TextControl
                                             value={callout.imageCustomHeight}
