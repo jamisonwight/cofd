@@ -157,7 +157,6 @@ registerBlockType('cofd-blocks/hero', {
             setAttributes({ text_light: !text_light })
         }
         
-
         return (
             <div className={`hero ${eStyles.main} ${eStyles.flex}`}>
                 <h2 className={eStyles.my_sm}>Hero</h2>

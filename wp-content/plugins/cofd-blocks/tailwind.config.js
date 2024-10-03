@@ -1,5 +1,6 @@
 module.exports = {
-    content: ["./src/**/*.{html,js}"],
+    mode: 'jit',
+    content: ["./src/**/*.{html,js}", "./dynamic-blocks/**/*.{html,php}"],
     theme: {
       extend: {
         colors: {

@@ -18,10 +18,15 @@ function enqueue_custom_blocks_script() {
     wp_enqueue_script(
         'cofd-blocks',
         plugin_dir_url(__FILE__) . 'build/index.js',
-        array('wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'acf',),
+        array('wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'acf'),
         null,
         'true'
     );
+
+     // Pass site URL to the script
+     wp_localize_script('cofd-blocks', 'cofdData', array(
+        'siteUrl' => get_site_url(),
+    ));
 }
 add_action('enqueue_block_editor_assets', 'enqueue_custom_blocks_script');
 
@@ -217,18 +222,18 @@ function getFormattedDate($start, $end = null) {
         // Check if both start and end dates are the same
         if ($startMoment->format('Ymd') === $endMoment->format('Ymd')) {
             // Only show the start date when the end date is the same
-            return $startMoment->format('F j Y');
+            return $startMoment->format('F j, Y');
         }
 
         // Check if both start and end dates are in the same month
         if ($startMoment->format('Ym') === $endMoment->format('Ym')) {
             // Format as "Month Day-Day Year" when end date is available
-            return $startMoment->format('F j') . '-' . $endMoment->format('j Y');
+            return $startMoment->format('F j') . '-' . $endMoment->format('j, Y');
         }
     }
 
     // Only show the start date when the end date is not available or in a different month
-    return $startMoment->format('F j Y') . ($end !== null ? ' - ' . (new DateTime($end))->format('F j Y') : '');
+    return $startMoment->format('F j, Y') . ($end !== null ? ' - ' . (new DateTime($end))->format('F j, Y') : '');
 }
 
 

@@ -355,7 +355,7 @@ if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.elementInDom)('.hero-slider')) {
         crossFade: true
       },
       autoplay: {
-        delay: 5000,
+        delay: 7000,
         disableOnInteraction: false
       },
       centeredSlides: false,
@@ -501,6 +501,65 @@ if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.elementInDom)('.table-content')) {
       } catch (n) {}
     });
   }(document);
+}
+
+/***/ }),
+
+/***/ "./src/lib/files/videoCursor.js":
+/*!**************************************!*\
+  !*** ./src/lib/files/videoCursor.js ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./src/lib/utils.js");
+
+if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.elementInDom)('.featured-bios')) {
+  const elements = document.querySelectorAll('.bio-item');
+  elements.forEach((obj, index) => {
+    const videoContainer = obj.querySelector('.bio-video-cursor');
+    const video = obj.querySelector('.bio-video-cursor video');
+    const offset = 40;
+    if (video) {
+      let isHovering = false;
+      obj.addEventListener('mouseenter', e => {
+        e.preventDefault();
+        console.log('mouse entering');
+        // Set isHovering to true when entering the content area
+        isHovering = true;
+      });
+      obj.addEventListener('pointermove', e => {
+        e.preventDefault();
+        const {
+          clientX,
+          clientY
+        } = e;
+        const cursorWidth = videoContainer.offsetWidth;
+        const cursorHeight = videoContainer.offsetHeight;
+        console.log(clientY);
+
+        // Calculate the position of the video cursor
+        let x = clientX - cursorHeight + 200;
+        let y = clientY - cursorWidth + 100;
+
+        // Set the video cursor position
+        videoContainer.style.left = `${x}px`;
+        videoContainer.style.top = `${y}px`;
+
+        // Play the video and show the video cursor
+        video.play();
+        videoContainer.style.opacity = 1;
+      });
+      obj.addEventListener('mouseleave', e => {
+        e.preventDefault();
+        console.log('mouse leaving');
+        // Pause the video and hide the video cursor when leaving the content area
+        isHovering = false;
+        video.pause();
+        videoContainer.style.opacity = 0;
+      });
+    }
+  });
 }
 
 /***/ }),
@@ -22517,7 +22576,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _files_table_content_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./files/table-content.js */ "./src/lib/files/table-content.js");
 /* harmony import */ var _files_gallery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./files/gallery.js */ "./src/lib/files/gallery.js");
 /* harmony import */ var _files_animateTitle_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./files/animateTitle.js */ "./src/lib/files/animateTitle.js");
+/* harmony import */ var _files_videoCursor_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./files/videoCursor.js */ "./src/lib/files/videoCursor.js");
 // Main file for library file imports
+
 
 
 

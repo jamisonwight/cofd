@@ -37,6 +37,14 @@ registerBlockType('cofd-blocks/bio', {
         bioImageURL: {
             type: 'string',
             default: '',
+        },
+        bioVideoID: {
+            type: 'string',
+            default: '',
+        },
+        bioVideoURL: {
+            type: 'string',
+            default: '',
         },        
         bioContent: {
             type: 'string',
@@ -63,6 +71,12 @@ registerBlockType('cofd-blocks/bio', {
             },
             bioImageURL: {
                 type: 'string',
+            },
+            bioVideoID: {
+                type: 'string',
+            },
+            bioVideoURL: {
+                type: 'string',
             },        
             eventContent: {
                 type: 'string',
@@ -80,6 +94,8 @@ registerBlockType('cofd-blocks/bio', {
         const {
             bioImageID,
             bioImageURL,
+            bioVideoID,
+            bioVideoURL,
             bioContent,
             bioCareerTitle,
         } = attributes
@@ -97,6 +113,20 @@ registerBlockType('cofd-blocks/bio', {
             setAttributes({
                 bioImageID: 0,
                 bioImageURL: '',
+            })
+        }
+
+        const onSelectVideo = (media) => {
+            setAttributes({
+                bioVideoID: media.id, 
+                bioVideoURL: media.url,
+            })
+        }
+
+        const onRemoveVideo = () => {
+            setAttributes({
+                bioVideoID: 0,
+                bioVideoURL: '',
             })
         }
 
@@ -174,6 +204,48 @@ registerBlockType('cofd-blocks/bio', {
                         </MediaUploadCheck>
                     </div>
 
+
+                    <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
+                        <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Bio Video</h4>
+
+                        <MediaUploadCheck>
+                            {bioVideoURL 
+                                ? <video 
+                                        src={bioVideoURL} 
+                                        alt="Video Preview"
+                                        className={eStyles.image} 
+                                        loop
+                                        muted
+                                    />
+                            : null
+                            }
+                            <MediaUpload
+                                onSelect={onSelectVideo}
+                                allowedTypes={['video']}
+                                value={bioVideoID}
+                                render={({ open }) => (
+                                    <div>
+                                        {bioVideoID ? (
+                                            <button
+                                                onClick={onRemoveVideo}
+                                                className={eStyles.button}
+                                                >
+                                                Remove Video
+                                            </button>
+                                        ) : (
+                                            <button 
+                                                onClick={open}
+                                                className={eStyles.button}
+                                                >
+                                                Select Video
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            />
+                        </MediaUploadCheck>
+                    </div>
+
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Content</h4>
 
@@ -194,6 +266,7 @@ registerBlockType('cofd-blocks/bio', {
         const {
             bioName,
             bioImageURL,
+            bioVideoURL,
             bioContent,
             bioCareerTitle,
         } = attributes
@@ -214,6 +287,12 @@ registerBlockType('cofd-blocks/bio', {
                                 className={`image ${styles.image}`} 
                             />
                         </div>
+
+                        {bioVideoURL &&
+                        <a href={bioVideoURL} data-fancybox className={`watch-link ${styles.watch_link}`}>
+                            <i class="fa-solid fa-play"></i>&nbsp; Watch Video
+                        </a>
+                        }
                     </div>
 
                     <div className={`content-right ${styles.content_right}`}>

@@ -2,10 +2,12 @@ export default {
     main: `relative block overflow-x-clip`,
     content_container: `relative left-[50%] translate-x-[-50%] max-w-[1024px] w-full flex flex-wrap py-[100px] ` +
         `px-[30px] -lg:pt-[40px] -lg:pb-[80px]`,
-    content_left: `w-full lg:w-[50%] lg:sticky lg:top-[100px] block lg:self-start`,
+    content_left: `w-full lg:w-[50%] lg:sticky lg:top-[100px] block lg:self-start text-center`,
     content_right: `relative w-full lg:w-[calc(50%_-_40px)] lg:pl-[20px] -lg:text-center`,
     image: `w-[296px] h-[414px] object-cover`,
     image_container: `flex justify-center gradient-backdrop-long`,
+    video_container: ``,
+    video: ``,
     name: `w-full -lg:flex-col -lg:justify-center -lg:items-center`,
     squiggly: `my-[10px]`,
     career_title: `heading-4 block my-[10px]`,
@@ -19,4 +21,5 @@ export default {
     btn_left: `btn-box btn-box-dark`,
     btn_right: `btn-box btn-box-blue`,
     all_faculty: `block w-full mt-[40px] mb-[80px]`,
+    watch_link: `text-center btn-box btn-box-dark block mt-[60px]`,
 }

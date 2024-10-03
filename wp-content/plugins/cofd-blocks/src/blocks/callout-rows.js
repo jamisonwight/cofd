@@ -1,11 +1,10 @@
 import { registerBlockType } from '@wordpress/blocks'
 import styles from '../styles/callout-rows'
 import eStyles from '../styles/edit'
-import { imageDimensions } from '../lib/utils'
+import { radialGradientBlue } from '../lib/gradients'
 import { 
     TextControl, 
     SelectControl,
-    ToggleControl,
 } from '@wordpress/components'
 import {
     MediaUpload, 
@@ -42,8 +41,6 @@ registerBlockType('cofd-blocks/callout-rows', {
                 content: '',
                 imageID: '',
                 imageURL: '',
-                imageCustomWidth: '',
-                imageCustomHeight: '',
                 buttonURL: [],
                 buttonText: '',
                 opensInNewTab: false,
@@ -165,7 +162,7 @@ registerBlockType('cofd-blocks/callout-rows', {
                                     </div>
                                 </div>
 
-                                <div className={`item text-blue-light ${eStyles.item} ${eStyles.flex_6}`}>
+                                <div className={`item text-black ${eStyles.item} ${eStyles.flex_6}`}>
                                     <h4 className={eStyles.my_sm}>Image</h4>
 
                                     <MediaUploadCheck>
@@ -203,32 +200,6 @@ registerBlockType('cofd-blocks/callout-rows', {
                                             )}
                                         />
                                     </MediaUploadCheck>
-
-                                    <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
-                                        <h4 className={eStyles.my_sm}>Custom Width</h4>
-
-                                        <TextControl
-                                            value={callout.imageCustomWidth}
-                                            onChange={(newValue) => {
-                                                const newCallouts = [...callouts]
-                                                newCallouts[index].imageCustomWidth = newValue
-                                                setAttributes({ callouts: newCallouts })
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
-                                        <h4 className={eStyles.my_sm}>Custom Height</h4>
-
-                                        <TextControl
-                                            value={callout.imageCustomHeight}
-                                            onChange={(newValue) => {
-                                                const newCallouts = [...callouts]
-                                                newCallouts[index].imageCustomHeight = newValue
-                                                setAttributes({ callouts: newCallouts })
-                                            }}
-                                        />
-                                    </div>
                                 </div>
 
                                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
@@ -257,7 +228,7 @@ registerBlockType('cofd-blocks/callout-rows', {
                     {callouts && 
                         callouts.map((callout) => {
                             const targetTab = (callout.opensInNewTab) ? '_blank' : '_self'
-            
+
                             if (callout.row_type == 'two-column') {
                                 return (
                                     <div className={`callout callout-two-column ${styles.row_type.two_column}`}>
@@ -287,13 +258,7 @@ registerBlockType('cofd-blocks/callout-rows', {
                                             </div>
                                         </div>
 
-                                        <div className={`image-container ${styles.image_container} ` +
-                                            `${imageDimensions(
-                                                styles.image_width,
-                                                callout.imageCustomWidth, 
-                                                styles.image_height, 
-                                                callout.imageCustomHeight)}`}
-                                            >
+                                        <div className={`image-container ${styles.image_container}`}>
                                             <img 
                                                 src={callout.imageURL} 
                                                 alt={`${callout.title} Image`} 
@@ -308,13 +273,7 @@ registerBlockType('cofd-blocks/callout-rows', {
                                 return (
                                     <div className={`callout callout-two-column-reverse ${styles.row_type.two_column_reverse}`}>
 
-                                        <div className={`image-container ${styles.image_container} ` + 
-                                            `${imageDimensions(
-                                                styles.image_width,
-                                                callout.imageCustomWidth, 
-                                                styles.image_height, 
-                                                callout.imageCustomHeight)}`}
-                                                >
+                                        <div className={`image-container ${styles.image_container}`}>
                                             <img 
                                                 src={callout.imageURL} 
                                                 alt={`${callout.title} Image`} 
@@ -380,13 +339,7 @@ registerBlockType('cofd-blocks/callout-rows', {
                                             </div>
                                         </div>
 
-                                        <div className={`image-full ${styles.image_full} ` + 
-                                            `${imageDimensions(
-                                                styles.image_full_width,
-                                                callout.imageCustomWidth, 
-                                                styles.image_full_height, 
-                                                callout.imageCustomHeight)}`}
-                                            >
+                                        <div className={`image-full ${styles.image_full}`}>
                                             <img 
                                                 src={callout.imageURL} 
                                                 alt={`${callout.title} Image`} 

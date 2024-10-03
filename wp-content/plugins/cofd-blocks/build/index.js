@@ -368,6 +368,14 @@ __webpack_require__.r(__webpack_exports__);
       type: 'string',
       default: ''
     },
+    bioVideoID: {
+      type: 'string',
+      default: ''
+    },
+    bioVideoURL: {
+      type: 'string',
+      default: ''
+    },
     bioContent: {
       type: 'string',
       default: ''
@@ -394,6 +402,12 @@ __webpack_require__.r(__webpack_exports__);
       bioImageURL: {
         type: 'string'
       },
+      bioVideoID: {
+        type: 'string'
+      },
+      bioVideoURL: {
+        type: 'string'
+      },
       eventContent: {
         type: 'string'
       },
@@ -411,6 +425,8 @@ __webpack_require__.r(__webpack_exports__);
     const {
       bioImageID,
       bioImageURL,
+      bioVideoID,
+      bioVideoURL,
       bioContent,
       bioCareerTitle
     } = attributes;
@@ -425,6 +441,18 @@ __webpack_require__.r(__webpack_exports__);
       setAttributes({
         bioImageID: 0,
         bioImageURL: ''
+      });
+    };
+    const onSelectVideo = media => {
+      setAttributes({
+        bioVideoID: media.id,
+        bioVideoURL: media.url
+      });
+    };
+    const onRemoveVideo = () => {
+      setAttributes({
+        bioVideoID: 0,
+        bioVideoURL: ''
       });
     };
     const onWordPressUpdate = () => {
@@ -483,6 +511,29 @@ __webpack_require__.r(__webpack_exports__);
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
+    }, "Bio Video"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8__.MediaUploadCheck, null, bioVideoURL ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("video", {
+      src: bioVideoURL,
+      alt: "Video Preview",
+      className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].image,
+      loop: true,
+      muted: true
+    }) : null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8__.MediaUpload, {
+      onSelect: onSelectVideo,
+      allowedTypes: ['video'],
+      value: bioVideoID,
+      render: ({
+        open
+      }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, bioVideoID ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+        onClick: onRemoveVideo,
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].button
+      }, "Remove Video") : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+        onClick: open,
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].button
+      }, "Select Video"))
+    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
     }, "Content"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8__.RichText, {
       ...blockProps,
       tagName: "p",
@@ -500,6 +551,7 @@ __webpack_require__.r(__webpack_exports__);
     const {
       bioName,
       bioImageURL,
+      bioVideoURL,
       bioContent,
       bioCareerTitle
     } = attributes;
@@ -521,7 +573,13 @@ __webpack_require__.r(__webpack_exports__);
       src: bioImageURL,
       alt: `${bioName} Image`,
       className: `image ${_styles_bio__WEBPACK_IMPORTED_MODULE_5__["default"].image}`
-    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    })), bioVideoURL && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: bioVideoURL,
+      "data-fancybox": true,
+      className: `watch-link ${_styles_bio__WEBPACK_IMPORTED_MODULE_5__["default"].watch_link}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+      class: "fa-solid fa-play"
+    }), "\xA0 Watch Video")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `content-right ${_styles_bio__WEBPACK_IMPORTED_MODULE_5__["default"].content_right}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `name ${_styles_bio__WEBPACK_IMPORTED_MODULE_5__["default"].name}`
@@ -3152,7 +3210,20 @@ __webpack_require__.r(__webpack_exports__);
       attributes,
       setAttributes
     } = props;
-    const biosData = Object.values(_json_bios_json__WEBPACK_IMPORTED_MODULE_4__);
+    const [biosData, setBiosData] = wp.element.useState([]);
+    const baseUrl = cofdData.siteUrl;
+    wp.element.useEffect(() => {
+      fetch(`${baseUrl}/wp-content/plugins/cofd-blocks/src/json/bios.json`).then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") === -1) {
+          throw new TypeError("Received non-JSON content");
+        }
+        return response.json();
+      }).then(data => setBiosData(Object.values(data))).catch(error => console.error('Error fetching bios:', error));
+    }, []);
     const toggleFeaturedBio = bioID => {
       let updatedFeaturedBios = [...attributes.featuredBios];
       if (updatedFeaturedBios.includes(bioID)) {
@@ -3165,7 +3236,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     };
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `featured-events pp ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex}`
+      className: `featured-bios ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
       className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
     }, "Featured Bios"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -3231,7 +3302,20 @@ __webpack_require__.r(__webpack_exports__);
       attributes,
       setAttributes
     } = props;
-    const eventsData = Object.values(_json_events_json__WEBPACK_IMPORTED_MODULE_4__);
+    const [eventsData, setEventsData] = wp.element.useState([]);
+    const baseUrl = cofdData.siteUrl;
+    wp.element.useEffect(() => {
+      fetch(`${baseUrl}/wp-content/plugins/cofd-blocks/src/json/events.json`).then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") === -1) {
+          throw new TypeError("Received non-JSON content");
+        }
+        return response.json();
+      }).then(data => setEventsData(Object.values(data))).catch(error => console.error('Error fetching events:', error));
+    }, []);
     const toggleFeaturedEvent = eventID => {
       let updatedFeaturedEvents = [...attributes.featuredEvents];
       if (updatedFeaturedEvents.includes(eventID)) {
@@ -3251,7 +3335,7 @@ __webpack_require__.r(__webpack_exports__);
       className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_2__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_2__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
       className: _styles_edit__WEBPACK_IMPORTED_MODULE_2__["default"].my_sm
-    }, "Select Featured Events"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Click the events in the order you want them to be displayed"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
+    }, "Select Events"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Click the events in the order you want them to be displayed"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
       className: `event-select ${_styles_edit__WEBPACK_IMPORTED_MODULE_2__["default"].postSelect.main}`
     }, eventsData.map(event => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
       key: event.eventID,
@@ -3597,11 +3681,16 @@ __webpack_require__.r(__webpack_exports__);
     } = attributes;
     const addSlide = () => {
       const newSlide = {
+        slideMediaType: 'image',
         title: '',
         content: '',
         bgGradient: 'linear-gradient(135deg, hsla(15, 3%, 72%, 1) 0%, hsla(36, 15%, 74%, 1) 0%, hsla(229, 31%, 60%, 1) 100%)',
         imageID: '',
         imageURL: '',
+        videoID: '',
+        videoURL: '',
+        posterURL: '',
+        posterID: '',
         buttonURL: [],
         buttonText: '',
         opensInNewTab: false
@@ -3634,6 +3723,38 @@ __webpack_require__.r(__webpack_exports__);
         slides: newSlides
       });
     };
+    const onSelectVideo = (media, index) => {
+      const newSlides = [...slides];
+      newSlides[index].videoID = media.id;
+      newSlides[index].videoURL = media.url;
+      setAttributes({
+        slides: newSlides
+      });
+    };
+    const onRemoveVideo = index => {
+      const newSlides = [...slides];
+      newSlides[index].videoID = 0;
+      newSlides[index].videoURL = '';
+      setAttributes({
+        slides: newSlides
+      });
+    };
+    const onSelectPoster = (media, index) => {
+      const newSlides = [...slides];
+      newSlides[index].posterID = media.id;
+      newSlides[index].posterURL = media.url;
+      setAttributes({
+        slides: newSlides
+      });
+    };
+    const onRemovePoster = index => {
+      const newSlides = [...slides];
+      newSlides[index].posterID = 0;
+      newSlides[index].posterURL = '';
+      setAttributes({
+        slides: newSlides
+      });
+    };
     const offsetCheckbox = () => {
       setAttributes({
         header_offset: !header_offset
@@ -3656,92 +3777,148 @@ __webpack_require__.r(__webpack_exports__);
       className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
     }, "Slides"), slides.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `slides w-full`
-    }, slides.map((slide, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `slide ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].inner_block}`,
-      key: index,
-      style: {
-        background: slide.bgGradient
-      }
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `item bg-black ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_6}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
-    }, "Title"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
-      value: slide.title,
-      onChange: newValue => {
-        const newSlides = [...slides];
-        newSlides[index].title = newValue;
-        setAttributes({
-          slides: newSlides
-        });
-      }
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].sub_item}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
-    }, "Background CSS"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
-      value: slide.bgGradient,
-      onChange: newValue => {
-        const newSlides = [...slides];
-        newSlides[index].bgGradient = newValue;
-        setAttributes({
-          slides: newSlides
-        });
-      }
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].sub_item}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
-    }, "Button Text"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
-      value: slide.buttonText,
-      onChange: newValue => {
-        const newSlides = [...slides];
-        newSlides[index].buttonText = newValue;
-        setAttributes({
-          slides: newSlides
-        });
-      }
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].sub_item}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
-    }, "Button URL"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.__experimentalLinkControl, {
-      label: "Link URL",
-      value: slide.buttonURL,
-      onChange: newUrl => {
-        const newSlides = [...slides];
-        newSlides[index].buttonURL = newUrl;
-        setAttributes({
-          slides: newSlides
-        });
-      }
+    }, slides.map((slide, index) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `slide ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].inner_block}`,
+        key: index,
+        style: {
+          background: slide.slideMediaType === 'image' ? slide.bgGradient : 'none'
+        }
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `item bg-black ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_6}`
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Slide Media Type"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.SelectControl, {
+        value: slide.slideMediaType,
+        options: [{
+          label: 'Image',
+          value: 'image'
+        }, {
+          label: 'Video',
+          value: 'video'
+        }],
+        onChange: newType => {
+          const newSlides = [...slides];
+          newSlides[index].slideMediaType = newType;
+          setAttributes({
+            slides: newSlides
+          });
+        }
+      }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Title"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+        value: slide.title,
+        onChange: newValue => {
+          const newSlides = [...slides];
+          newSlides[index].title = newValue;
+          setAttributes({
+            slides: newSlides
+          });
+        }
+      }), slide.slideMediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].sub_item}`
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Background CSS"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+        value: slide.bgGradient,
+        onChange: newValue => {
+          const newSlides = [...slides];
+          newSlides[index].bgGradient = newValue;
+          setAttributes({
+            slides: newSlides
+          });
+        }
+      })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].sub_item}`
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Button Text"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+        value: slide.buttonText,
+        onChange: newValue => {
+          const newSlides = [...slides];
+          newSlides[index].buttonText = newValue;
+          setAttributes({
+            slides: newSlides
+          });
+        }
+      })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].sub_item}`
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Button URL"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.__experimentalLinkControl, {
+        label: "Link URL",
+        value: slide.buttonURL,
+        onChange: newUrl => {
+          const newSlides = [...slides];
+          newSlides[index].buttonURL = newUrl;
+          setAttributes({
+            slides: newSlides
+          });
+        }
+      }))), slide.slideMediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `item text-black ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_6}`
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Cutout Image"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUploadCheck, null, slide.imageURL ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+        src: slide.imageURL,
+        alt: "Featured Cutout Image",
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].image
+      }) : null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUpload, {
+        onSelect: media => onSelectImage(media, index),
+        allowedTypes: ['image'],
+        value: slide.imageID,
+        render: ({
+          open
+        }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, slide.imageID ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+          onClick: () => onRemoveImage(index),
+          className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
+        }, "Remove Image") : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+          onClick: open,
+          className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
+        }, "Select Image"))
+      }))), slide.slideMediaType === 'video' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `video-container ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_6}`
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Video"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUploadCheck, null, slide.videoURL ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Video URL: ", slide.videoURL) : null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUpload, {
+        onSelect: media => onSelectVideo(media, index),
+        allowedTypes: ['video'],
+        value: slide.videoID,
+        render: ({
+          open
+        }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, slide.videoID ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+          onClick: () => onRemoveVideo(index),
+          className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
+        }, "Remove Video") : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+          onClick: open,
+          className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
+        }, "Select Video"))
+      })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
+      }, "Video Poster Image"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUploadCheck, null, slide.posterURL ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+        src: slide.posterURL,
+        alt: "Video Poster Image",
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].image
+      }) : null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUpload, {
+        onSelect: media => onSelectPoster(media, index),
+        allowedTypes: ['image'],
+        value: slide.posterID,
+        render: ({
+          open
+        }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, slide.posterID ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+          onClick: () => onRemovePoster(index),
+          className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
+        }, "Remove Image") : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+          onClick: open,
+          className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
+        }, "Select Image"))
+      }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_full}`
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button,
+        onClick: () => removeSlide(index)
+      }, "Remove Slide")));
     }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `item text-black ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_6}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].my_sm
-    }, "Cutout Image"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUploadCheck, null, slide.imageURL ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-      src: slide.imageURL,
-      alt: "Featured Cutout Image",
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].image
-    }) : null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.MediaUpload, {
-      onSelect: media => onSelectImage(media, index),
-      allowedTypes: ['image'],
-      value: slide.imageID,
-      render: ({
-        open
-      }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, slide.imageID ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-        onClick: () => onRemoveImage(index),
-        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
-      }, "Remove Image") : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-        onClick: open,
-        className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button
-      }, "Select Image"))
-    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_full}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button,
-      onClick: () => removeSlide(index)
-    }, "Remove Slide")))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
       className: _styles_edit__WEBPACK_IMPORTED_MODULE_3__["default"].button,
@@ -3766,14 +3943,24 @@ __webpack_require__.r(__webpack_exports__);
       className: `swiper-slide ${_styles_hero_slider__WEBPACK_IMPORTED_MODULE_2__["default"].swiper_slide} ${offset}`,
       key: index,
       style: {
-        background: slide.bgGradient
+        background: slide.slideMediaType === 'image' ? slide.bgGradient : 'none'
       }
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, slide.slideMediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `cutout-image ${_styles_hero_slider__WEBPACK_IMPORTED_MODULE_2__["default"].cutout.main}`
     }, slide.imageID && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: slide.imageURL,
       alt: "Hero Slider Feature Image",
       className: _styles_hero_slider__WEBPACK_IMPORTED_MODULE_2__["default"].cutout.image
+    })), slide.slideMediaType === 'video' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `video-container ${_styles_hero_slider__WEBPACK_IMPORTED_MODULE_2__["default"].video_container}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("video", {
+      src: slide.videoURL,
+      poster: slide.posterURL,
+      className: `video ${_styles_hero_slider__WEBPACK_IMPORTED_MODULE_2__["default"].video}`,
+      autoPlay: true,
+      muted: true,
+      playsInline: true,
+      loop: true
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `content ${_styles_hero_slider__WEBPACK_IMPORTED_MODULE_2__["default"].content.main}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
@@ -4744,10 +4931,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   main: `relative block overflow-x-clip`,
   content_container: `relative left-[50%] translate-x-[-50%] max-w-[1024px] w-full flex flex-wrap py-[100px] ` + `px-[30px] -lg:pt-[40px] -lg:pb-[80px]`,
-  content_left: `w-full lg:w-[50%] lg:sticky lg:top-[100px] block lg:self-start`,
+  content_left: `w-full lg:w-[50%] lg:sticky lg:top-[100px] block lg:self-start text-center`,
   content_right: `relative w-full lg:w-[calc(50%_-_40px)] lg:pl-[20px] -lg:text-center`,
   image: `w-[296px] h-[414px] object-cover`,
   image_container: `flex justify-center gradient-backdrop-long`,
+  video_container: ``,
+  video: ``,
   name: `w-full -lg:flex-col -lg:justify-center -lg:items-center`,
   squiggly: `my-[10px]`,
   career_title: `heading-4 block my-[10px]`,
@@ -4760,7 +4949,8 @@ __webpack_require__.r(__webpack_exports__);
   btn_content: `block mt-[40px] mb-[20px]`,
   btn_left: `btn-box btn-box-dark`,
   btn_right: `btn-box btn-box-blue`,
-  all_faculty: `block w-full mt-[40px] mb-[80px]`
+  all_faculty: `block w-full mt-[40px] mb-[80px]`,
+  watch_link: `text-center btn-box btn-box-dark block mt-[60px]`
 });
 
 /***/ }),
@@ -4956,7 +5146,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   main: `relative block overflow-x-clip`,
-  content_container: `relative left-[50%] translate-x-[-50%] min-h-[60vh] grid-large w-full flex flex-wrap py-[100px] ` + `px-[30px] -lg:pt-[40px] -lg:pb-[80px]`,
+  content_container: `relative min-h-[60vh] grid-large w-full flex flex-wrap py-[100px] ` + `px-[30px] -lg:pt-[40px] -lg:pb-[80px]`,
   content: `relative w-full -lg:text-center`,
   title: `w-full -lg:flex-col -lg:justify-center -lg:items-center mb-[40px]`,
   squiggly: `mt-[20px]`,
@@ -5107,18 +5297,20 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  main: `relative block overflow-clip pp`,
-  header_offset: `lg:pt-[195.55px] lg:mt-[-195.55px]`,
-  slider_container: `grid w-full h-full -lg:h-[90vh]`,
-  swiper_wrapper: `w-full flex justify-center items-center`,
-  swiper_slide: `w-full h-full -lg:flex -lg:items-end`,
+  main: `relative block overflow-clip`,
+  header_offset: `lg:mt-[-195.55px] h-[calc(100vh_-_59.51px)] md:h-[750px] lg:h-[100vh]`,
+  slider_container: `grid w-full h-full`,
+  swiper_wrapper: `relative w-full flex justify-center items-center`,
+  swiper_slide: `w-full h-full -lg:flex -lg:items-end gradient-overlay z-[2]`,
+  video_container: `w-full h-full absolute top-0 left-0 gradient-overlay gradient-overlay-top`,
+  video: `w-full h-full object-cover -lg:object-top`,
   cutout: {
-    main: `block w-full text-center -lg:h-[750px] -md:h-[450px]`,
+    main: `block w-full text-center -lg:h-[750px] -md:h-[450px] gradient-overlay-top`,
     image: `-lg:max-h-[calc(100vh_-_215.55px)] lg:h-[calc(100vh_-_185.55px)] h-full object-cover`
   },
   content: {
-    main: `w-full absolute bottom-[40px] -lg:bottom-0 -lg:top-[51.59px] text-center`,
-    title: `heading-3 text-white pb-[10px] !-lg:font-extrabold`,
+    main: `w-full absolute bottom-[40px] -lg:text-center z-[3] max-w-[1024px] ` + `lg:left-[50%] lg:translate-x-[-50%] lg:flex lg:flex-col lg:items-end lg:justify-end lg:px-[20px] xl:px-0`,
+    title: `heading-3 text-white pb-[10px] block`,
     btn_container: `relative pb-[10px] mb-[30px]`,
     btn: `block`
   },
@@ -5137,15 +5329,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   main: `relative block overflow-clip`,
   header_offset: `relative w-full`,
-  hero_container: `relative min-h-[calc(100vh_-_59.51px)] md:min-h-[750px] lg:min-h-[100vh] lg:pt-[195.55px] lg:mt-[-195.55px]`,
+  hero_container: `relative min-h-[calc(100vh_-_59.51px)] md:min-h-[750px] lg:min-h-[100vh] lg:pt-[195.55px] lg:mt-[-195.55px] gradient-overlay gradient-overlay-top`,
   image_container: `w-full h-full absolute top-0 left-0`,
   video_container: `w-full h-full absolute top-0 left-0`,
   video: `w-full h-full object-cover -lg:object-top`,
   background_image: `w-full h-full object-cover object-top -lg:object-center`,
-  content_container: `block w-full h-full py-[60px] -lg:py-[100px] flex flex-col justify-end ` + `absolute left-0 bottom-0`,
-  content: `w-full grid-large flex flex-col items-end justify-end px-[20px] xl:px-0`,
+  content_container: `block w-full h-full py-[60px] -lg:py-[100px] flex flex-col justify-end ` + `absolute left-0 bottom-0 z-[3]`,
+  content: `w-full relative max-w-[1024px] left-[50%] translate-x-[-50%] flex flex-col items-end justify-end px-[20px] xl:px-0`,
   title: `heading-1 mb-0 text-right`,
-  p: `max-w-[579px] text-right`,
+  p: `max-w-[579px] text-right font-[500]`,
   squiggly: `mt-[10px] mb-[20px]`,
   link: `link blue-light-hover block my-[40px]`
 });
@@ -5296,7 +5488,7 @@ module.exports = window["wp"]["element"];
   \****************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"1167":{"bioID":"1167","bioName":"Marco Leal","bioCareerTitle":"Studio Manager / Company Director","bioImageID":1708,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/marco-leal.jpeg","bioContent":"<strong>Marco Leal</strong> has been teaching for Conservatory of Dance since 2011.  With an athletic background, he won regional and national awards along with scholarships at prestigious conventions such as LA Dance Magic, Nuvo, and Jump.<br><br>He has worked with well-known choreographers Jackie Sleight and Wes Veldink. Marco has also studied under Justin Giles.  Marco has worked with our performance companies in many capacities teaching master classes, choreography, and co-directs shows at high schools across the valley.","bioLink":"http://localhost/cofd/bios/marco-leal/"},"1170":{"bioID":"1170","bioName":"Kelsey Metz","bioCareerTitle":"Company Choreographer","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/21COFD_Faculty_KelseyMets-800.jpg","bioContent":"<strong>Kelsey Metz</strong> began her dance training in a variety of styles in Arizona.  Her dance education growing up had strong focuses in Jazz, Ballet, Lyrical Tap, and Hip Hop at Dance Connection and Master Ballet Academy.  She began traveling for dance at the age of 11 and enjoyed learning from Master Teachers throughout the country.  At the age of 18, Kelsey began teaching and choreographing locally in Arizona whilst continuing to dance professionally.<br><br>Throughout her career as a Dancer, Kelsey has worked with many choreographers and artists including Mandy Moore, Peter Chu, Liz Imperio, Jess Hendrix, Ray Leeper, and Dana Metz.  Kelsey has performed around the country in theaters such as the Dorothy Chandler Pavilion, the El Portal, New York Civic Center, the Roseland Ballroom, Majestic Theatre, and several other local theaters in AZ.  She currently performs with the Bread Dance Contemporary Company (Phoenix, AZ) and is thrilled to begin her 10th Season teaching and directing at Conservatory of Dance (Phoenix, AZ).<br><br>Kelsey enjoys sharing her passion for dance with the younger generation and continues to expand her own personal Dance Education.  Kelsey has completed several professional dance intensives throughout the past few years including education in Countertechnique and Gaga movement language.  She recently completed her certification in Progressive Ballet Technique and Giordano Jazz Technique.  Kelsey hopes to never stop developing her own personal movement and is excited to share her knowledge through dancing, teaching and choreographing.","bioLink":"http://localhost/cofd/bios/kelsey-metz/"},"1175":{"bioID":"1175","bioName":"Hillary Conrad-zbyszinski","bioCareerTitle":"Studio Manager / Zbyszinski","bioImageID":1709,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/20COFD_HillaryZ-1200.jpg","bioContent":"<strong>Hillary</strong> is a choreographer, teacher and performer in Phoenix, Arizona.  She has earned a Bachelors of Performing Arts in Dance Performance at Oklahoma City University and currently is on staff at Conservatory of Dance in Phoenix.<br><br>Along with teaching dance, Hillary has choreographed several full length musicals for Scottsdale Musical Theater Company.  Some of her favorite choreography credits include “Annie” starring Bronson Pinchot and Kaitlyn Hopkins, Assistant Choreographer to Eloise Kropp for “42nd Street” also starring Debby Boone and Charles Shaughnessy and “A Christmas Carol: The Musical”.<br><br>Her performing credits include Loraine in “42nd Street,” Velma in “West Side Story,” and Hot Box girl in “Guys and Dolls” where she served as the dance captain.  Additionally, Hillary enjoys performing with the tap company “Tap 24.7”.<br><br>Hillary is currently sharing her passion for dance and loves to see the excitement on kids’ faces whether they are having fun or finally mastering that difficult step in their dance journey.","bioLink":"http://localhost/cofd/bios/1175/"},"1179":{"bioID":"1179","bioName":"Sharon Luchs","bioCareerTitle":"Youth Program Director","bioImageID":1712,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/8-Sharon-Luchs-1.png","bioContent":"<strong>Sharon Luchs</strong> has been teaching at Conservatory of Dance since 2015, following fourteen years with Agoura Hills Dance and Performing Arts Center in Agoura Hills, CA, where she taught, directed and choreographed for all levels and ages, from preschool to adult, including annual choreography for the full-length ballet Alice in Wonderland.<br>Sharon’s teaching credits span all levels of dance instruction, ranging from preschool movement to adult ballet, pointe and technique, and include extended teaching engagements in New York City at the Callina Moraytis School of Classical Ballet as well as the Learning Annex, and in Raleigh, NC at Danceurs Studio. While in Raleigh, she served as a multiple presenter in Dance Education for the North Carolina Association for the Education of Young Children.<br><br>For several years, Sharon was a judge for On Stage America’s regional dance competitions on both coasts. After graduating from East Carolina University with a B.F.A. in Dance, she performed extensively as Principal Dancer with both the North Carolina State Ballet and East Carolina Dance Theatre before concluding her post-graduate studies as a scholarship recipient at Harkness House in New York City.<br><br>In Phoenix, Sharon has taught at Ballet Theatre of Phoenix and choreographed for Convergence Ballet’s Alice in Wonderland.","bioLink":"http://localhost/cofd/bios/sharon-luchs/"},"1181":{"bioID":"1181","bioName":"Serena Christianson","bioCareerTitle":"Tap","bioImageID":1710,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/faculty-serena-800.jpg","bioContent":"<strong>Serena Christianson</strong> began studying dance at the age of three at Jack Dyville’s Dance Factory in Williston, North Dakota.  When she was in the fourth grade, she was asked to be a part of Kids Company, a youth competition team at the Dance Factory.  In seventh grade, she was a member of the B Company troupe, advancing to A Company the following year.  Throughout her tenure at the Dance Factory, she won multiple awards at International Dance Challenge, Spotlight Dance Cup, Hollywood Vibe Dance Competition, Dance Challenge, Montana Dance Challenge, and I Love Dance Competition.<br><br>In 2012, Christianson and her sister co-founded Kay Michael Lee Studio, “The Region’s Premier Source for Dance” in Williston, North Dakota.  Their full-service dance studio offers ballet, tap, jazz, hip hop, ballet, pointe, musical theatre, and contemporary classes for students ages 2 and up.  In addition to recreation classes, they offer an award-winning competition program.  Their Competition Company has performed and competed in North Dakota, Montana, Colorado, Minnesota, Wisconsin, Arizona, and Florida.  Her students have received many top honors for their performance and technique abilities at regional and national competitions.<br><br>Christianson earned her personal fitness trainer certification through AFAA (Aerobics and Fitness Association of America) in December 2012.  In 2015, she received the Certification in the Jazz Dance Technique &amp; Syllabus by James Robey.  In the spring 2018 term, Christianson taught an introductory tap class at Arizona State University.  Since 2016, she has taught the advanced tap classes at the Conservatory of Dance in Phoenix.","bioLink":"http://localhost/cofd/bios/serena-christianson/"},"1184":{"bioID":"1184","bioName":"Kelly Snailum","bioCareerTitle":"Pilates","bioImageID":1711,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/fa-kelly-800.jpg","bioContent":"<strong>Kelly</strong> is a PMA Certified Master Pilates and Barre Teacher Trainer. She has been teaching Pilates well over a decade and opened Remedy Pilates &amp; Barre in 2008.  Recognized across the Valley as an educator and advocate of the Pilates method.<br><br>As the depth of her practice grows, she continues to find the passion and power of Pilates each year.  “I strive to constantly be creative and innovative with the tools we are fortunate enough to work with. I enjoy working towards all types of goals from movement to transformation and do my best to stay on top of current trends, injury prevention and common problems. I think a well-rounded instructor can take on all client cases if they are determined to educate themselves for the betterment of their client.”<br><br>Kelly donates countless hours, hosts complimentary events and participates in charity auctions all over the Valley in hopes to spread the gift of Pilates and Barre.  When she is not teaching Pilates, Barre or TRX, you can find Kelly training for her next marathon or summit challenge, hanging out with her family – Mason and Dera Rae and husband, Rick, or snuggling up with her three puppies, Milly, Iggy and Chance.","bioLink":"http://localhost/cofd/bios/kelly-snailum/"},"1187":{"bioID":"1187","bioName":"Christina Spigner","bioCareerTitle":"Ballet Director","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/ChristinaSpigner-800.jpg","bioContent":"Paradise Valley native Christina Spigner recently retired from a decade-plus career with the world-renown Miami City Ballet (MCB). During her tenure, Christina served as the Company’s only Black female dancer. In light of her experience, Christina felt compelled to pursue a Diversity, Equity, and Inclusion (DEI) certification post-retirement and had the opportunity through her role on MCB’s administrative team to research and interview premiere ballet companies and schools nationally regarding their DEI work. This experience further equipped her and fueled her desire to uplift the next generation of young dancers through the message of inclusivity, belonging, and self-love. <br><br>As a ballet instructor, Christina is a strong advocate for approaching technique, flexibility, and dance performance holistically. She accomplishes this by sharing her knowledge of body awareness and strength training programs such as Gyrotonics, Pilates, and Feldenkrais. Additionally, Christina is a certified Progressing Ballet Technique teacher, a favorite body-conditioning regimen of top ballet companies and schools worldwide.<br><br> Since the early days of her training, Christina attended many of the nation’s leading ballet institutions, including Master Ballet Academy, Pacific Northwest Ballet School, Ballet Maestro, Interlochen Arts Camp, and The School of Ballet Arizona. Christina’s first break on the main stage was in 2004 as Ballet Arizona’s first Black Clara in George Balanchine’s The Nutcracker. <br><br>At the age of 15, Christina moved to Miami to attend the Miami City Ballet School and, only one year later, was offered a company apprenticeship by founder and New York City Ballet legend Edward Villella. As a sought-after ballerina, Christina’s career featured a diverse array of repertory in soloist and principal roles, including Balanchine’s The Four Temperaments (Sanguinic), Paul Taylor’s Company B (Mary/Rum and Coke), a triple threat performance in Jerome Robbins’ West Side Story Suite (Rosalia), and more. Additionally, she enjoyed a robust national and international touring schedule dancing on some of the world’s greatest stages and most prestigious dance festivals, including; New York City Center for The Balanchine Festival: The City Center Years (NYC), The Kennedy Center for Ballet Across America (D.C.), The Spoleto Festival (Charleston), The Koch Theater (NYC), Radio City Music Hall (NYC), The Harris Theater (Chicago), The Queen Elizabeth Theater (Vancouver), and Northrop Auditorium (Minneapolis). <br><br>Outside of Miami City Ballet, Christina has been a featured guest artist with Peter London Global Dance Company (Miami) and The Black Iris Project (NYC). The Black Iris Project, a nationally acclaimed ballet company, creates new and relevant classical ballet works celebrating diversity and Black history. In 2016, Christina made her Ballet Across America festival debut at the Kennedy Center by way of Misty Copeland’s nomination of the Black Iris Project. <br><br>Winner of numerous awards and honors, Christina was a nominee for the Princess Grace Award, winner of three national contemporary dance competitions, and awarded as one of Miami’s 40 Under 40 Black Leaders of Today and Tomorrow. Christina has been featured in a variety of publications and national marketing campaigns for her dancing and teaching, including Dance Magazine, Dance Spirit, Dance Teacher, The Miami Herald, City &amp; Shore, two Miami City Ballet campaigns, and a national dancewear campaign for SoDança (2017-2018). <br><br>“Despite your background, or past difficulties feeling like you fit into the mold of “ballet,” I feel the importance of contributing to the field as a diverse educator, allowing other diverse young dancers the opportunity to have representation, find belonging in this art form, and learn to love themselves within it. I want to be an active contributor to the world of ballet, especially in the mental health space. My passion is to share with young students how to relate to ballet and themselves in a way that is healthy and honoring.”","bioLink":"http://localhost/cofd/bios/christina-spigner/"},"1190":{"bioID":"1190","bioName":"Maddi Maloscia","bioCareerTitle":"Jazz / Lyrical","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/maddi-miloscia.jpg","bioContent":"Architecto reprehenderit doloribus ut. Fugit necessitatibus distinctio qui autem sequi quod audantium et. Quibusdammollitia voluptatem aspernatur. Explicabo quibusdam voluptatem ut ratione veritatis possimus. Sunt occaecati et sit esse inventore labore qui autem adipisci Excepturi eum illum nam","bioLink":"http://localhost/cofd/bios/maddi-maloscia/"},"1399":{"bioID":"1399","bioName":"Bill & Leah Hotaling","bioCareerTitle":"Owners","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/bill-leah.jpg","bioContent":"<strong>Bill Hotaling</strong> began his dance training in New York City. Since then, he has performed on stages throughout the world, from Radio City Music Hall in NY to the World Design Expo in Japan. He has appeared in music videos for groups such as Cameo and Sweet Obsession, and performed in many industrials for companies such as AT&amp;T and IBM. You can see him in commercials for “Rascals” candy and “Miller Ultra” beer as well as in the film <em>When Harry Met Sally</em>.  <br><br>Teaching and Choreographing have become his main focus. In New York City he has taught at three of the most successful dance studios: Broadway Dance Center, Steps on Broadway and Central Park Dance Studio He has choreographed theatrical productions of <em>“Chicago”</em>, <em>“The Music Man”,</em> <em>“Fiddler on the Roof”</em> and <em>“Pippin”.</em> <br> <br>He travels extensively, teaching workshops and master classes for the leading dance organizations (Manhattan Dance Project, Dance Masters of America, Dance Caravan…), colleges and universities (Disney American College, Columbia University…), and over 200 dance studios around the world. Most recently, Bill has taught jazz &amp; lyrical at the School of Ballet Arizona and at Arizona School of the Arts in Phoenix, AZ and the Poznan Dance Festival in Poland. He is the founder of the Manhattan Dance Project.<br><br><strong>Leah Hotaling</strong> was a Radio City Rockette for five years and has taught master classes on the Rockette style across the country. Her classes give students the opportunity to learn the precision technique that has made the Rockettes famous all over the world.<br><br>Leah has also performed at the movie premiers for <em>Moulin Rouge</em> starring Nicole Kidman and Disney’s <em>102 Dalmatians</em> starring Glen Close.   She has danced for Chita Rivera in a benefit show choreographed by Tony award winner Chet Walker. Leah has appeared in numerous dance instructional videos as well as on television and radio as a public relations spokesperson for Radio City Music Hall.<br><br>When she is not at the studio she enjoys spending her time with her children, Will and Drew, and husband, Bill.","bioLink":"http://localhost/cofd/bios/1399/"}}');
+module.exports = JSON.parse('{"1167":{"bioID":"1167","bioName":"Marco Leal","bioCareerTitle":"Studio Manager / Company Director","bioImageID":1708,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/marco-leal.jpeg","bioContent":"<strong>Marco Leal</strong> has been teaching for Conservatory of Dance since 2011.  With an athletic background, he won regional and national awards along with scholarships at prestigious conventions such as LA Dance Magic, Nuvo, and Jump.<br><br>He has worked with well-known choreographers Jackie Sleight and Wes Veldink. Marco has also studied under Justin Giles.  Marco has worked with our performance companies in many capacities teaching master classes, choreography, and co-directs shows at high schools across the valley.","bioLink":"http://localhost/cofd/bios/marco-leal/"},"1170":{"bioID":"1170","bioName":"Kelsey Metz","bioCareerTitle":"Company Choreographer","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/21COFD_Faculty_KelseyMets-800.jpg","bioContent":"<strong>Kelsey Metz</strong> began her dance training in a variety of styles in Arizona.  Her dance education growing up had strong focuses in Jazz, Ballet, Lyrical Tap, and Hip Hop at Dance Connection and Master Ballet Academy.  She began traveling for dance at the age of 11 and enjoyed learning from Master Teachers throughout the country.  At the age of 18, Kelsey began teaching and choreographing locally in Arizona whilst continuing to dance professionally.<br><br>Throughout her career as a Dancer, Kelsey has worked with many choreographers and artists including Mandy Moore, Peter Chu, Liz Imperio, Jess Hendrix, Ray Leeper, and Dana Metz.  Kelsey has performed around the country in theaters such as the Dorothy Chandler Pavilion, the El Portal, New York Civic Center, the Roseland Ballroom, Majestic Theatre, and several other local theaters in AZ.  She currently performs with the Bread Dance Contemporary Company (Phoenix, AZ) and is thrilled to begin her 10th Season teaching and directing at Conservatory of Dance (Phoenix, AZ).<br><br>Kelsey enjoys sharing her passion for dance with the younger generation and continues to expand her own personal Dance Education.  Kelsey has completed several professional dance intensives throughout the past few years including education in Countertechnique and Gaga movement language.  She recently completed her certification in Progressive Ballet Technique and Giordano Jazz Technique.  Kelsey hopes to never stop developing her own personal movement and is excited to share her knowledge through dancing, teaching and choreographing.","bioLink":"http://localhost/cofd/bios/kelsey-metz/"},"1175":{"bioID":"1175","bioName":"Hillary Conrad-zbyszinski","bioCareerTitle":"Studio Manager / Zbyszinski","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/20COFD_HillaryZ-1200.jpg","bioVideoID":918,"bioVideoURL":"http://localhost/cofd/wp-content/uploads/2023/11/about-us-fullcolor.mp4","bioContent":"<strong>Hillary</strong> is a choreographer, teacher and performer in Phoenix, Arizona.  She has earned a Bachelors of Performing Arts in Dance Performance at Oklahoma City University and currently is on staff at Conservatory of Dance in Phoenix.<br><br>Along with teaching dance, Hillary has choreographed several full length musicals for Scottsdale Musical Theater Company.  Some of her favorite choreography credits include “Annie” starring Bronson Pinchot and Kaitlyn Hopkins, Assistant Choreographer to Eloise Kropp for “42nd Street” also starring Debby Boone and Charles Shaughnessy and “A Christmas Carol: The Musical”.<br><br>Her performing credits include Loraine in “42nd Street,” Velma in “West Side Story,” and Hot Box girl in “Guys and Dolls” where she served as the dance captain.  Additionally, Hillary enjoys performing with the tap company “Tap 24.7”.<br><br>Hillary is currently sharing her passion for dance and loves to see the excitement on kids’ faces whether they are having fun or finally mastering that difficult step in their dance journey.","bioLink":"http://localhost/cofd/bios/1175/"},"1179":{"bioID":"1179","bioName":"Sharon Luchs","bioCareerTitle":"Youth Program Director","bioImageID":1712,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/8-Sharon-Luchs-1.png","bioContent":"<strong>Sharon Luchs</strong> has been teaching at Conservatory of Dance since 2015, following fourteen years with Agoura Hills Dance and Performing Arts Center in Agoura Hills, CA, where she taught, directed and choreographed for all levels and ages, from preschool to adult, including annual choreography for the full-length ballet Alice in Wonderland.<br>Sharon’s teaching credits span all levels of dance instruction, ranging from preschool movement to adult ballet, pointe and technique, and include extended teaching engagements in New York City at the Callina Moraytis School of Classical Ballet as well as the Learning Annex, and in Raleigh, NC at Danceurs Studio. While in Raleigh, she served as a multiple presenter in Dance Education for the North Carolina Association for the Education of Young Children.<br><br>For several years, Sharon was a judge for On Stage America’s regional dance competitions on both coasts. After graduating from East Carolina University with a B.F.A. in Dance, she performed extensively as Principal Dancer with both the North Carolina State Ballet and East Carolina Dance Theatre before concluding her post-graduate studies as a scholarship recipient at Harkness House in New York City.<br><br>In Phoenix, Sharon has taught at Ballet Theatre of Phoenix and choreographed for Convergence Ballet’s Alice in Wonderland.","bioLink":"http://localhost/cofd/bios/sharon-luchs/"},"1181":{"bioID":"1181","bioName":"Serena Christianson","bioCareerTitle":"Tap","bioImageID":1710,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/faculty-serena-800.jpg","bioContent":"<strong>Serena Christianson</strong> began studying dance at the age of three at Jack Dyville’s Dance Factory in Williston, North Dakota.  When she was in the fourth grade, she was asked to be a part of Kids Company, a youth competition team at the Dance Factory.  In seventh grade, she was a member of the B Company troupe, advancing to A Company the following year.  Throughout her tenure at the Dance Factory, she won multiple awards at International Dance Challenge, Spotlight Dance Cup, Hollywood Vibe Dance Competition, Dance Challenge, Montana Dance Challenge, and I Love Dance Competition.<br><br>In 2012, Christianson and her sister co-founded Kay Michael Lee Studio, “The Region’s Premier Source for Dance” in Williston, North Dakota.  Their full-service dance studio offers ballet, tap, jazz, hip hop, ballet, pointe, musical theatre, and contemporary classes for students ages 2 and up.  In addition to recreation classes, they offer an award-winning competition program.  Their Competition Company has performed and competed in North Dakota, Montana, Colorado, Minnesota, Wisconsin, Arizona, and Florida.  Her students have received many top honors for their performance and technique abilities at regional and national competitions.<br><br>Christianson earned her personal fitness trainer certification through AFAA (Aerobics and Fitness Association of America) in December 2012.  In 2015, she received the Certification in the Jazz Dance Technique &amp; Syllabus by James Robey.  In the spring 2018 term, Christianson taught an introductory tap class at Arizona State University.  Since 2016, she has taught the advanced tap classes at the Conservatory of Dance in Phoenix.","bioLink":"http://localhost/cofd/bios/serena-christianson/"},"1184":{"bioID":"1184","bioName":"Kelly Snailum","bioCareerTitle":"Pilates","bioImageID":1711,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/fa-kelly-800.jpg","bioContent":"<strong>Kelly</strong> is a PMA Certified Master Pilates and Barre Teacher Trainer. She has been teaching Pilates well over a decade and opened Remedy Pilates &amp; Barre in 2008.  Recognized across the Valley as an educator and advocate of the Pilates method.<br><br>As the depth of her practice grows, she continues to find the passion and power of Pilates each year.  “I strive to constantly be creative and innovative with the tools we are fortunate enough to work with. I enjoy working towards all types of goals from movement to transformation and do my best to stay on top of current trends, injury prevention and common problems. I think a well-rounded instructor can take on all client cases if they are determined to educate themselves for the betterment of their client.”<br><br>Kelly donates countless hours, hosts complimentary events and participates in charity auctions all over the Valley in hopes to spread the gift of Pilates and Barre.  When she is not teaching Pilates, Barre or TRX, you can find Kelly training for her next marathon or summit challenge, hanging out with her family – Mason and Dera Rae and husband, Rick, or snuggling up with her three puppies, Milly, Iggy and Chance.","bioLink":"http://localhost/cofd/bios/kelly-snailum/"},"1187":{"bioID":"1187","bioName":"Christina Spigner","bioCareerTitle":"Ballet Director","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/ChristinaSpigner-800.jpg","bioContent":"Paradise Valley native Christina Spigner recently retired from a decade-plus career with the world-renown Miami City Ballet (MCB). During her tenure, Christina served as the Company’s only Black female dancer. In light of her experience, Christina felt compelled to pursue a Diversity, Equity, and Inclusion (DEI) certification post-retirement and had the opportunity through her role on MCB’s administrative team to research and interview premiere ballet companies and schools nationally regarding their DEI work. This experience further equipped her and fueled her desire to uplift the next generation of young dancers through the message of inclusivity, belonging, and self-love. <br><br>As a ballet instructor, Christina is a strong advocate for approaching technique, flexibility, and dance performance holistically. She accomplishes this by sharing her knowledge of body awareness and strength training programs such as Gyrotonics, Pilates, and Feldenkrais. Additionally, Christina is a certified Progressing Ballet Technique teacher, a favorite body-conditioning regimen of top ballet companies and schools worldwide.<br><br> Since the early days of her training, Christina attended many of the nation’s leading ballet institutions, including Master Ballet Academy, Pacific Northwest Ballet School, Ballet Maestro, Interlochen Arts Camp, and The School of Ballet Arizona. Christina’s first break on the main stage was in 2004 as Ballet Arizona’s first Black Clara in George Balanchine’s The Nutcracker. <br><br>At the age of 15, Christina moved to Miami to attend the Miami City Ballet School and, only one year later, was offered a company apprenticeship by founder and New York City Ballet legend Edward Villella. As a sought-after ballerina, Christina’s career featured a diverse array of repertory in soloist and principal roles, including Balanchine’s The Four Temperaments (Sanguinic), Paul Taylor’s Company B (Mary/Rum and Coke), a triple threat performance in Jerome Robbins’ West Side Story Suite (Rosalia), and more. Additionally, she enjoyed a robust national and international touring schedule dancing on some of the world’s greatest stages and most prestigious dance festivals, including; New York City Center for The Balanchine Festival: The City Center Years (NYC), The Kennedy Center for Ballet Across America (D.C.), The Spoleto Festival (Charleston), The Koch Theater (NYC), Radio City Music Hall (NYC), The Harris Theater (Chicago), The Queen Elizabeth Theater (Vancouver), and Northrop Auditorium (Minneapolis). <br><br>Outside of Miami City Ballet, Christina has been a featured guest artist with Peter London Global Dance Company (Miami) and The Black Iris Project (NYC). The Black Iris Project, a nationally acclaimed ballet company, creates new and relevant classical ballet works celebrating diversity and Black history. In 2016, Christina made her Ballet Across America festival debut at the Kennedy Center by way of Misty Copeland’s nomination of the Black Iris Project. <br><br>Winner of numerous awards and honors, Christina was a nominee for the Princess Grace Award, winner of three national contemporary dance competitions, and awarded as one of Miami’s 40 Under 40 Black Leaders of Today and Tomorrow. Christina has been featured in a variety of publications and national marketing campaigns for her dancing and teaching, including Dance Magazine, Dance Spirit, Dance Teacher, The Miami Herald, City &amp; Shore, two Miami City Ballet campaigns, and a national dancewear campaign for SoDança (2017-2018). <br><br>“Despite your background, or past difficulties feeling like you fit into the mold of “ballet,” I feel the importance of contributing to the field as a diverse educator, allowing other diverse young dancers the opportunity to have representation, find belonging in this art form, and learn to love themselves within it. I want to be an active contributor to the world of ballet, especially in the mental health space. My passion is to share with young students how to relate to ballet and themselves in a way that is healthy and honoring.”","bioLink":"http://localhost/cofd/bios/christina-spigner/"},"1190":{"bioID":"1190","bioName":"Maddi Maloscia","bioCareerTitle":"Jazz / Lyrical","bioImageID":"","bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/maddi-miloscia.jpg","bioVideoID":918,"bioVideoURL":"http://localhost/cofd/wp-content/uploads/2023/11/about-us-fullcolor.mp4","bioContent":"Architecto reprehenderit doloribus ut. Fugit necessitatibus distinctio qui autem sequi quod audantium et. Quibusdammollitia voluptatem aspernatur. Explicabo quibusdam voluptatem ut ratione veritatis possimus. Sunt occaecati et sit esse inventore labore qui autem adipisci Excepturi eum illum nam","bioLink":"http://localhost/cofd/bios/maddi-maloscia/"},"1399":{"bioID":"1399","bioName":"Bill & Leah Hotaling","bioCareerTitle":"Owners","bioImageID":1401,"bioImageURL":"http://localhost/cofd/wp-content/uploads/2023/11/bill-leah.jpg","bioVideoID":"","bioVideoURL":"http://localhost/cofd/wp-content/uploads/2023/11/company-fullcolor.mp4","bioContent":"<strong>Bill Hotaling</strong> began his dance training in New York City. Since then, he has performed on stages throughout the world, from Radio City Music Hall in NY to the World Design Expo in Japan. He has appeared in music videos for groups such as Cameo and Sweet Obsession, and performed in many industrials for companies such as AT&amp;T and IBM. You can see him in commercials for “Rascals” candy and “Miller Ultra” beer as well as in the film <em>When Harry Met Sally</em>.  <br><br>Teaching and Choreographing have become his main focus. In New York City he has taught at three of the most successful dance studios: Broadway Dance Center, Steps on Broadway and Central Park Dance Studio He has choreographed theatrical productions of <em>“Chicago”</em>, <em>“The Music Man”,</em> <em>“Fiddler on the Roof”</em> and <em>“Pippin”.</em> <br> <br>He travels extensively, teaching workshops and master classes for the leading dance organizations (Manhattan Dance Project, Dance Masters of America, Dance Caravan…), colleges and universities (Disney American College, Columbia University…), and over 200 dance studios around the world. Most recently, Bill has taught jazz &amp; lyrical at the School of Ballet Arizona and at Arizona School of the Arts in Phoenix, AZ and the Poznan Dance Festival in Poland. He is the founder of the Manhattan Dance Project.<br><br><strong>Leah Hotaling</strong> was a Radio City Rockette for five years and has taught master classes on the Rockette style across the country. Her classes give students the opportunity to learn the precision technique that has made the Rockettes famous all over the world.<br><br>Leah has also performed at the movie premiers for <em>Moulin Rouge</em> starring Nicole Kidman and Disney’s <em>102 Dalmatians</em> starring Glen Close.   She has danced for Chita Rivera in a benefit show choreographed by Tony award winner Chet Walker. Leah has appeared in numerous dance instructional videos as well as on television and radio as a public relations spokesperson for Radio City Music Hall.<br><br>When she is not at the studio she enjoys spending her time with her children, Will and Drew, and husband, Bill.","bioLink":"http://localhost/cofd/bios/1399/"}}');
 
 /***/ }),
 

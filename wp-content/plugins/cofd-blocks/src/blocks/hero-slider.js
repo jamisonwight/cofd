@@ -12,6 +12,7 @@ import {
 import { 
     TextControl, 
     ToggleControl,
+    SelectControl,
 } from '@wordpress/components'
 
 registerBlockType('cofd-blocks/hero-slider', {
@@ -37,11 +38,16 @@ registerBlockType('cofd-blocks/hero-slider', {
 
         const addSlide = () => {
             const newSlide = {
+                slideMediaType: 'image',
                 title: '',
                 content: '',
                 bgGradient: 'linear-gradient(135deg, hsla(15, 3%, 72%, 1) 0%, hsla(36, 15%, 74%, 1) 0%, hsla(229, 31%, 60%, 1) 100%)',
                 imageID: '',
                 imageURL: '',
+                videoID: '',
+                videoURL: '',
+                posterURL: '',
+                posterID: '',
                 buttonURL: [],
                 buttonText: '',
                 opensInNewTab: false,
@@ -81,6 +87,46 @@ registerBlockType('cofd-blocks/hero-slider', {
             })
         }
 
+        const onSelectVideo = (media, index) => {
+            const newSlides = [...slides]
+            newSlides[index].videoID = media.id
+            newSlides[index].videoURL = media.url
+
+            setAttributes({
+                slides: newSlides
+            })
+        }
+
+        const onRemoveVideo = (index) => {
+            const newSlides = [...slides]
+            newSlides[index].videoID = 0
+            newSlides[index].videoURL = ''
+
+            setAttributes({
+                slides:  newSlides
+            })
+        }
+
+        const onSelectPoster = (media, index) => {
+            const newSlides = [...slides]
+            newSlides[index].posterID = media.id
+            newSlides[index].posterURL = media.url
+
+            setAttributes({
+                slides: newSlides
+            })
+        }
+
+        const onRemovePoster = (index) => {
+            const newSlides = [...slides]
+            newSlides[index].posterID = 0
+            newSlides[index].posterURL = ''
+
+            setAttributes({
+                slides:  newSlides
+            })
+        }
+
         const offsetCheckbox = () => {
             setAttributes({ header_offset: !header_offset })
         }
@@ -101,17 +147,31 @@ registerBlockType('cofd-blocks/hero-slider', {
                     <h4 className={eStyles.my_sm}>Slides</h4>
                     {slides.length > 0 &&
                     <div className={`slides w-full`}>
-                        {slides.map((slide, index) => (
+                        {slides.map((slide, index) => {
+                            return (
                             <div 
                                 className={`slide ${eStyles.flex} ${eStyles.inner_block}`} 
                                 key={index}
                                 style={{
-                                    background: slide.bgGradient,
+                                    background: slide.slideMediaType === 'image' ? slide.bgGradient : 'none',
                                 }}
                                 >
                                 <div className={`item bg-black ${eStyles.item} ${eStyles.flex_6}`}>
-                                    <h4 className={eStyles.my_sm}>Title</h4>
+                                    <h4 className={eStyles.my_sm}>Slide Media Type</h4>
+                                    <SelectControl
+                                        value={slide.slideMediaType}
+                                        options={[
+                                            { label: 'Image', value: 'image' },
+                                            { label: 'Video', value: 'video' },
+                                        ]}
+                                        onChange={(newType) => {
+                                            const newSlides = [...slides]
+                                            newSlides[index].slideMediaType = newType
+                                            setAttributes({ slides: newSlides })
+                                        }}
+                                    />
 
+                                    <h4 className={eStyles.my_sm}>Title</h4>
                                     <TextControl
                                         value={slide.title}
                                         onChange={(newValue) => {
@@ -121,6 +181,7 @@ registerBlockType('cofd-blocks/hero-slider', {
                                         }}
                                     />
 
+                                    {slide.slideMediaType === 'image' &&
                                     <div className={`sub-item ${eStyles.sub_item}`}>
                                         <h4 className={eStyles.my_sm}>Background CSS</h4>
 
@@ -133,6 +194,7 @@ registerBlockType('cofd-blocks/hero-slider', {
                                             }}
                                         />
                                     </div>
+                                    }
 
                                     <div className={`sub-item ${eStyles.sub_item}`}>
                                         <h4 className={eStyles.my_sm}>Button Text</h4>
@@ -162,6 +224,7 @@ registerBlockType('cofd-blocks/hero-slider', {
                                     </div>
                                 </div>
 
+                                {slide.slideMediaType === 'image' &&
                                 <div className={`item text-black ${eStyles.item} ${eStyles.flex_6}`}>
                                     <h4 className={eStyles.my_sm}>Cutout Image</h4>
 
@@ -201,12 +264,90 @@ registerBlockType('cofd-blocks/hero-slider', {
                                         />
                                     </MediaUploadCheck>
                                 </div>
+                                }
+
+                                {slide.slideMediaType === 'video' &&
+                                <div className={`video-container ${eStyles.item} ${eStyles.flex_6}`}>
+                                    <h4 className={eStyles.my_sm}>Video</h4>
+
+                                    <MediaUploadCheck>
+                                        {slide.videoURL 
+                                        ? <span>Video URL: {slide.videoURL}</span>
+                                        : null
+                                        }
+
+                                        <MediaUpload
+                                            onSelect={(media) => onSelectVideo(media, index)}
+                                            allowedTypes={['video']}
+                                            value={slide.videoID}
+                                            render={({ open }) => (
+                                                <div>
+                                                    {slide.videoID ? (
+                                                        <button
+                                                        onClick={() => onRemoveVideo(index)}
+                                                            className={eStyles.button}
+                                                            >
+                                                            Remove Video
+                                                        </button>
+                                                    ) : (
+                                                        <button 
+                                                            onClick={open}
+                                                            className={eStyles.button}
+                                                            >
+                                                            Select Video
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            )}
+                                        />
+                                    </MediaUploadCheck>
+
+                                    <h4 className={eStyles.my_sm}>Video Poster Image</h4>
+
+                                        <MediaUploadCheck>
+                                            {slide.posterURL
+                                                ? <img 
+                                                    src={slide.posterURL} 
+                                                    alt="Video Poster Image"
+                                                    className={eStyles.image} 
+                                                    />
+                                            : null
+                                            }
+
+                                            <MediaUpload
+                                                onSelect={(media) => onSelectPoster(media, index)}
+                                                allowedTypes={['image']}
+                                                value={slide.posterID}
+                                                render={({ open }) => (
+                                                    <div>
+                                                        {slide.posterID ? (
+                                                            <button
+                                                                onClick={() => onRemovePoster(index)}
+                                                                className={eStyles.button}
+                                                                >
+                                                                Remove Image
+                                                            </button>
+                                                        ) : (
+                                                            <button 
+                                                                onClick={open}
+                                                                className={eStyles.button}
+                                                                >
+                                                                Select Image
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            />
+                                        </MediaUploadCheck>
+                                </div>
+                                }
 
                                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
                                     <button className={eStyles.button} onClick={() => removeSlide(index)}>Remove Slide</button>
                                 </div>
                             </div>
-                        ))}
+                            )
+                        })}
                     </div>
                     }
                 </div>
@@ -231,9 +372,10 @@ registerBlockType('cofd-blocks/hero-slider', {
                                     className={`swiper-slide ${styles.swiper_slide} ${offset}`} 
                                     key={index}
                                     style={{
-                                        background: slide.bgGradient,
+                                        background: slide.slideMediaType === 'image' ? slide.bgGradient : 'none',
                                     }}
                                     >
+                                    {slide.slideMediaType === 'image' &&
                                     <div className={`cutout-image ${styles.cutout.main}`}>
                                         {slide.imageID && 
                                         <img
@@ -243,6 +385,21 @@ registerBlockType('cofd-blocks/hero-slider', {
                                         />
                                         }
                                     </div>
+                                    }
+
+                                    {slide.slideMediaType === 'video' &&
+                                        <div className={`video-container ${styles.video_container}`}>
+                                            <video 
+                                                src={slide.videoURL}
+                                                poster={slide.posterURL}
+                                                className={`video ${styles.video}`}
+                                                autoPlay
+                                                muted
+                                                playsInline
+                                                loop
+                                            />
+                                        </div>
+                                    }
 
                                     <div className={`content ${styles.content.main}`}>
                                         <img

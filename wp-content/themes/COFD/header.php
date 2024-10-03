@@ -39,6 +39,9 @@ $header_hover_white = (get_field('hover_text_white')) ? 'hover-text-white' : '';
     <!-- Typekit goes here -->
     <link rel="stylesheet" href="https://use.typekit.net/qqd5dbu.css">
 
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
 
     <?php wp_head(); ?>

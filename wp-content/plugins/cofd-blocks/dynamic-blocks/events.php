@@ -63,7 +63,7 @@ function dynamic_featured_events_archive_HTML($eventsData) {
                             <div class="content-wrap w-full flex flex-col items-center text-center">
                                 <h3 class="heading-4 mt-[60px]"><?php echo $event['eventTitle']; ?></h3>
                                 <span class="date heading-6 block py-[20px]"><?php echo esc_html(getFormattedDate($eventStartDate, $eventEndDate)); ?></span>
-                                <p class="-lg:max-w-[400px]"><?php echo truncateText($event['eventContent'], 50); ?></p>
+                                <p class="-lg:max-w-[400px]"><?php echo truncateText($event['eventContent'], 30); ?></p>
                                 <span
                                     class="event-link link text-black block mt-[20px]"
                                     >See Full Details

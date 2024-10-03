@@ -16,7 +16,25 @@ registerBlockType('cofd-blocks/featured-bios', {
     },
     edit: function (props) {
         const { attributes, setAttributes } = props
-        const biosData = Object.values(biosJson)
+        const [biosData, setBiosData] = wp.element.useState([])
+        const baseUrl = cofdData.siteUrl
+
+        wp.element.useEffect(() => {
+            fetch(`${baseUrl}/wp-content/plugins/cofd-blocks/src/json/bios.json`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") === -1) {
+                        throw new TypeError("Received non-JSON content");
+                    }
+                    return response.json();
+                })
+                .then((data) => setBiosData(Object.values(data)))
+                .catch((error) => console.error('Error fetching bios:', error));
+        }, []);
+
 
         const toggleFeaturedBio = (bioID) => {
             let updatedFeaturedBios = [...attributes.featuredBios];
@@ -31,7 +49,7 @@ registerBlockType('cofd-blocks/featured-bios', {
         }
 
         return (
-            <div className={`featured-events pp ${eStyles.main} ${eStyles.flex}`}>
+            <div className={`featured-bios ${eStyles.main} ${eStyles.flex}`}>
                 <h2 className={eStyles.my_sm}>Featured Bios</h2>
 
                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
