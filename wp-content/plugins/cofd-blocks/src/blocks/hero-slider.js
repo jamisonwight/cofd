@@ -361,6 +361,7 @@ registerBlockType('cofd-blocks/hero-slider', {
     save: function ({ attributes }) {
         const { slides, header_offset } = attributes
         const offset = (header_offset) ? styles.header_offset : ''
+        const mainStyles = styles.main
 
         return (
             <div className={`hero-slider ${styles.main} ${offset}`}>
