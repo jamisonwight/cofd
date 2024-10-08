@@ -136,6 +136,8 @@ registerBlockType('cofd-blocks/event', {
 
         const blockProps = useBlockProps()
 
+        const textFormats = cofdData.defaultTextFormats
+
         // Function to update the event date
         const onChangeDate = (newDate, time) => {
             var newDateTime = moment(newDate).format( 'YYYY-MM-DD HH:mm' )
@@ -235,7 +237,7 @@ registerBlockType('cofd-blocks/event', {
                             { ...blockProps }
                             tagName="p" 
                             value={ eventContent } 
-                            allowedFormats={ cofdData.defaultTextFormats } 
+                            allowedFormats={ textFormats } 
                             onChange={ ( eventContent ) => setAttributes({ eventContent })} 
                             placeholder='Type Here...'
                         />

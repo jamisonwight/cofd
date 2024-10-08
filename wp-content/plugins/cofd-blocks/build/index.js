@@ -2829,6 +2829,7 @@ __webpack_require__.r(__webpack_exports__);
     } = attributes;
     const isAfterSave = (0,_lib_utils__WEBPACK_IMPORTED_MODULE_4__.useAfterSave)();
     const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__.useBlockProps)();
+    const textFormats = cofdData.defaultTextFormats;
 
     // Function to update the event date
     const onChangeDate = (newDate, time) => {
@@ -2909,7 +2910,7 @@ __webpack_require__.r(__webpack_exports__);
       ...blockProps,
       tagName: "p",
       value: eventContent,
-      allowedFormats: cofdData.defaultTextFormats,
+      allowedFormats: textFormats,
       onChange: eventContent => setAttributes({
         eventContent
       }),
