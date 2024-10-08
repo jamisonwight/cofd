@@ -235,7 +235,7 @@ registerBlockType('cofd-blocks/event', {
                             { ...blockProps }
                             tagName="p" 
                             value={ eventContent } 
-                            allowedFormats={ [ 'core/bold', 'core/italic' ] } 
+                            allowedFormats={ cofdData.defaultTextFormats } 
                             onChange={ ( eventContent ) => setAttributes({ eventContent })} 
                             placeholder='Type Here...'
                         />

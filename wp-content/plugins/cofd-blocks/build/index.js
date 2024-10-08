@@ -2909,7 +2909,7 @@ __webpack_require__.r(__webpack_exports__);
       ...blockProps,
       tagName: "p",
       value: eventContent,
-      allowedFormats: ['core/bold', 'core/italic'],
+      allowedFormats: cofdData.defaultTextFormats,
       onChange: eventContent => setAttributes({
         eventContent
       }),
