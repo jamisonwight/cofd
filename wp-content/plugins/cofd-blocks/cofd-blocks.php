@@ -15,11 +15,14 @@ define( 'COFD_PATH', plugin_dir_path( __FILE__ ) );
 define( 'COFD_URL', plugin_dir_url( __FILE__ ) );
 
 function enqueue_custom_blocks_script() {
+    // Get the file modification time for cache-busting
+    $version = filemtime(COFD_PATH . 'build/index.js');
+
     wp_enqueue_script(
         'cofd-blocks',
-        plugin_dir_url(__FILE__) . 'build/index.js',
+        COFD_URL . 'build/index.js',
         array('wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'acf'),
-        null,
+        $version, // Use file modification time for version
         'true'
     );
 
@@ -33,22 +36,26 @@ add_action('enqueue_block_editor_assets', 'enqueue_custom_blocks_script');
 
 
 function enqueue_custom_libs_script() {
+    $version = filemtime(COFD_PATH . 'build/lib.js');
+
     wp_enqueue_script(
         'cofd-blocks-libs',
-        plugin_dir_url(__FILE__) . 'build/lib.js',
+        COFD_URL . 'build/lib.js',
         array('wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n'),
-        null,
+        $version, // Cache-busting version
         'true'
     );
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_libs_script');
 
 function enqueue_custom_lib_styles() {
+    $version = filemtime(COFD_PATH . 'build/lib.css');
+
     wp_enqueue_style(
         'cofd-lib-styles', // A unique handle for your stylesheet
-        plugin_dir_url(__FILE__) . 'build/lib.css', // Path to your CSS file
+        COFD_URL . 'build/lib.css', // Path to your CSS file
         array(), // Dependencies (if any)
-        '1.0', // Version number
+        $version, // Cache-busting version
         'all' // Media type ('all', 'screen', 'print', etc.)
     );
 }
@@ -56,18 +63,18 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_lib_styles');
 
 
 function enqueue_custom_blocks_styles() {
+    $version = filemtime(COFD_PATH . 'build/style-index.css');
+
     wp_enqueue_style(
         'cofd-blocks-styles', // A unique handle for your stylesheet
-        plugin_dir_url(__FILE__) . 'build/style-index.css', // Path to your CSS file
+        COFD_URL . 'build/style-index.css', // Path to your CSS file
         array(), // Dependencies (if any)
-        '1.0', // Version number
+        $version, // Cache-busting version
         'all' // Media type ('all', 'screen', 'print', etc.)
     );
 }
-add_action('enqueue_block_editor_assets', 'enqueue_custom_blocks_styles');
+add_action('enqueue_block_assets', 'enqueue_custom_blocks_styles');
 add_action('wp_enqueue_scripts', 'enqueue_custom_blocks_styles');
-
-
 
 // EVENTS
 // Define a Save Events endpoint for your REST API
@@ -127,7 +134,6 @@ function delete_event_data_on_post_delete($post_id) {
 // Hook into the delete_post action to delete event data on post deletion
 add_action('delete_post', 'delete_event_data_on_post_delete');
 
-
 // BIOS
 // Define a Save Bios endpoint for your REST API
 function save_bio_attributes_json_callback(WP_REST_Request $request) {
@@ -185,7 +191,6 @@ function delete_bio_data_on_post_delete($post_id) {
 
 // Hook into the delete_post action to delete bio data on post deletion
 add_action('delete_post', 'delete_bio_data_on_post_delete');
-
 
 // ACF OPTION FIELDS
 // Register the REST API endpoint for ACF options
