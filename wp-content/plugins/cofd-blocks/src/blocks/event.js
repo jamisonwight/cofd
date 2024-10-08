@@ -460,8 +460,8 @@ registerBlockType('cofd-blocks/event', {
                             <span className={`end-time ${styles.time_item}`}>{getEndTime()}</span>
                         </div>
 
-                        <div className={`content ${styles.content}`}>
-                            <RichText.Content value={eventContent} tagName="p" />
+                        <div className={`content ${styles.content}`} dangerouslySetInnerHTML={{ __html: eventContent }}>
+                            {/* <RichText.Content value={eventContent} tagName="p" /> */}
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
