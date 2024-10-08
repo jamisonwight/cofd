@@ -97,6 +97,7 @@ export async function getDataToJSON(apiPath) {
         method: 'GET',
     })
     .then((response) => {
+        console.log(response.body)
         return response
     })
     .catch((error) => {

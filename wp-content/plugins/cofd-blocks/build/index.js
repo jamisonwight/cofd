@@ -4840,6 +4840,7 @@ async function getDataToJSON(apiPath) {
     path: apiPath,
     method: 'GET'
   }).then(response => {
+    console.log(response.body);
     return response;
   }).catch(error => {
     console.error(error); // Log any errors

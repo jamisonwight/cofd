@@ -101,6 +101,7 @@ add_action('rest_api_init', function () {
     register_rest_route('cofd-blocks/v1', '/save-event-attributes', array(
         'methods' => 'POST',
         'callback' => 'save_event_attributes_json_callback',
+        'permission_callback' => '__return_true',
     ));
 });
 
@@ -159,6 +160,7 @@ add_action('rest_api_init', function () {
     register_rest_route('cofd-blocks/v1', '/save-bio-attributes', array(
         'methods' => 'POST',
         'callback' => 'save_bio_attributes_json_callback',
+        'permission_callback' => '__return_true',
     ));
 });
 
@@ -204,6 +206,7 @@ add_action('rest_api_init', function () {
     register_rest_route('cofd-blocks/v1', '/acf-options', array(
         'methods' => 'GET',
         'callback' => 'get_acf_option_data_callback',
+        'permission_callback' => '__return_true',
     ));
 });
 
