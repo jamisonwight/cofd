@@ -18,6 +18,7 @@ import {
 registerBlockType('cofd-blocks/hero-slider', {
     title: 'Hero Slider',
     icon: 'layout', // Replace with a suitable icon
+    version: '2',
     category: 'common',
     attributes: {
         slides: {
@@ -370,7 +371,7 @@ registerBlockType('cofd-blocks/hero-slider', {
                         <div className={`swiper-wrapper ${styles.swiper_wrapper}`}>
                             {slides.map((slide, index) => (
                                 <div 
-                                    className={`swiper-slide ${styles.swiper_slide} ${offset}`} 
+                                    className={`swiper-slide ${styles.swiper_slide}`} 
                                     key={index}
                                     style={{
                                         background: slide.slideMediaType === 'image' ? slide.bgGradient : 'none',
