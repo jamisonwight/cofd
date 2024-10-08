@@ -235,7 +235,6 @@ registerBlockType('cofd-blocks/event', {
 
                         <RichText
                             { ...blockProps }
-                            tagName="p" 
                             value={ eventContent } 
                             allowedFormats={ textFormats } 
                             onChange={ ( eventContent ) => setAttributes({ eventContent })} 
