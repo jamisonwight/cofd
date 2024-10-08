@@ -7,10 +7,6 @@
 Thumbs.db
 .htaccess
 
-# COFD Blocks plugin
-wp-content/plugins/cofd-blocks/src/json/*
-
-
 # wordpress specific
 node_modules/
 wp-config.php
@@ -23,8 +19,9 @@ wp-content/wp-cache-config.php
 wp-content/cache/*
 wp-content/cache/supercache/*
 wp-content/themes/COFD/node_modules/**
-wp-content/plugins/
+wp-content/plugins/*
 !wp-content/plugins/cofd-blocks/
+wp-content/plugins/cofd-blocks/src/json/*
 
 # wp core (as of 4.9.5)
 /db-config.php

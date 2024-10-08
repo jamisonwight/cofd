@@ -1,8 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks'
 import { useEffect, useState } from '@wordpress/element'
 import eStyles from '../styles/edit'
-import biosJson from '../json/bios.json'
-
 
 registerBlockType('cofd-blocks/featured-bios', {
     title: 'Featured Bios',
@@ -17,10 +15,10 @@ registerBlockType('cofd-blocks/featured-bios', {
     edit: function (props) {
         const { attributes, setAttributes } = props
         const [biosData, setBiosData] = wp.element.useState([])
-        const baseUrl = cofdData.siteUrl
+        const bioJSONUrl = cofdData.jsonUrl + 'bios.json'
 
         wp.element.useEffect(() => {
-            fetch(`${baseUrl}/wp-content/plugins/cofd-blocks/src/json/bios.json`)
+            fetch(bioJSONUrl)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);

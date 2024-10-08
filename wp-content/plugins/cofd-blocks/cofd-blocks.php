@@ -26,6 +26,7 @@ function enqueue_custom_blocks_script() {
      // Pass site URL to the script
      wp_localize_script('cofd-blocks', 'cofdData', array(
         'siteUrl' => get_site_url(),
+        'jsonUrl' => get_site_url().'/wp-content/plugins/cofd-blocks/src/json/',
     ));
 }
 add_action('enqueue_block_editor_assets', 'enqueue_custom_blocks_script');
