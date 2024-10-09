@@ -2834,7 +2834,7 @@ __webpack_require__.r(__webpack_exports__);
       eventHide
     } = attributes;
     const isAfterSave = (0,_lib_utils__WEBPACK_IMPORTED_MODULE_4__.useAfterSave)();
-    const codeMirrorRef = useRef();
+    const codeMirrorRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
     const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__.useBlockProps)();
     const initializeCodeMirror = () => {
       // Initialize CodeMirror 6 editor

@@ -1,6 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks'
 import { select, subscribe } from '@wordpress/data'
-import { useEffect, RawHTML } from '@wordpress/element';
+import { useEffect, RawHTML, useRef } from '@wordpress/element';
 import { savePostAttributesToJSON, useAfterSave } from '../lib/utils'
 import styles from '../styles/event'
 import eStyles from '../styles/edit'
