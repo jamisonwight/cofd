@@ -147,8 +147,7 @@ registerBlockType('cofd-blocks/event', {
             const startState = EditorState.create({
                 doc: attributes.eventContent,
                 extensions: [
-                    basicSetup, 
-                    dracula,   // Basic setup with line numbers, etc.
+                    basicSetup,   // Basic setup with line numbers, etc.
                     html(),        // HTML mode for syntax highlighting
                     EditorView.updateListener.of((update) => {
                         if (update.docChanged) {

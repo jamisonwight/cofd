@@ -2850,7 +2850,7 @@ __webpack_require__.r(__webpack_exports__);
       // Initialize CodeMirror 6 editor
       const startState = _codemirror_state__WEBPACK_IMPORTED_MODULE_12__.EditorState.create({
         doc: attributes.eventContent,
-        extensions: [codemirror__WEBPACK_IMPORTED_MODULE_13__.basicSetup, thememirror__WEBPACK_IMPORTED_MODULE_9__.dracula,
+        extensions: [codemirror__WEBPACK_IMPORTED_MODULE_13__.basicSetup,
         // Basic setup with line numbers, etc.
         (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__.html)(),
         // HTML mode for syntax highlighting
