@@ -9,7 +9,7 @@ import squiggly from '../assets/images/squiggly-blue.svg'
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
-import { oneDark } from '@codemirror/theme-one-dark';
+import {dracula} from 'thememirror';
 
 import { TextControl, DateTimePicker, ToggleControl } from '@wordpress/components'
 import {
@@ -148,7 +148,7 @@ registerBlockType('cofd-blocks/event', {
                 doc: attributes.eventContent,
                 extensions: [
                     basicSetup, 
-                    oneDark,   // Basic setup with line numbers, etc.
+                    dracula,   // Basic setup with line numbers, etc.
                     html(),        // HTML mode for syntax highlighting
                     EditorView.updateListener.of((update) => {
                         if (update.docChanged) {
