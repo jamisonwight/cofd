@@ -811,12 +811,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gsap-core.js */ "./node_modules/gsap/gsap-core.js");
 /*!
- * CSSPlugin 3.12.2
- * https://greensock.com
+ * CSSPlugin 3.12.5
+ * https://gsap.com
  *
- * Copyright 2008-2023, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * Copyright 2008-2024, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license or for
+ * Club GSAP members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
 */
 
@@ -895,7 +895,8 @@ _renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
   var _this = this;
 
   var target = this.target,
-      style = target.style;
+      style = target.style,
+      cache = target._gsap;
 
   if (property in _transformProps && style) {
     this.tfm = this.tfm || {};
@@ -904,7 +905,9 @@ _renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
       property = _propertyAliases[property] || property;
       ~property.indexOf(",") ? property.split(",").forEach(function (a) {
         return _this.tfm[a] = _get(target, a);
-      }) : this.tfm[property] = target._gsap.x ? target._gsap[property] : _get(target, property); // note: scale would map to "scaleX,scaleY", thus we loop and apply them both.
+      }) : this.tfm[property] = cache.x ? cache[property] : _get(target, property); // note: scale would map to "scaleX,scaleY", thus we loop and apply them both.
+
+      property === _transformOriginProp && (this.tfm.zOrigin = cache.zOrigin);
     } else {
       return _propertyAliases.transform.split(",").forEach(function (p) {
         return _saveStyle.call(_this, p, isNotCSS);
@@ -915,7 +918,7 @@ _renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
       return;
     }
 
-    if (target._gsap.svg) {
+    if (cache.svg) {
       this.svgo = target.getAttribute("data-svg-origin");
       this.props.push(_transformOriginProp, isNotCSS, "");
     }
@@ -960,6 +963,13 @@ _renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
     if ((!i || !i.isStart) && !style[_transformProp]) {
       _removeIndependentTransforms(style);
 
+      if (cache.zOrigin && style[_transformOriginProp]) {
+        style[_transformOriginProp] += " " + cache.zOrigin + "px"; // since we're uncaching, we must put the zOrigin back into the transformOrigin so that we can pull it out accurately when we parse again. Otherwise, we'd lose the z portion of the origin since we extract it to protect from Safari bugs.
+
+        cache.zOrigin = 0;
+        cache.renderTransform();
+      }
+
       cache.uncache = 1; // if it's a startAt that's being reverted in the _initTween() of the core, we don't need to uncache transforms. This is purely a performance optimization.
     }
   }
@@ -982,7 +992,7 @@ _renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
     _createElement = function _createElement(type, ns) {
   var e = _doc.createElementNS ? _doc.createElementNS((ns || "http://www.w3.org/1999/xhtml").replace(/^https/, "http"), type) : _doc.createElement(type); //some servers swap in https for http in the namespace which can break things, making "style" inaccessible.
 
-  return e.style ? e : _doc.createElement(type); //some environments won't allow access to the element's style when created with a namespace in which case we default to the standard createElement() to work around the issue. Also note that when GSAP is embedded directly inside an SVG file, createElement() won't allow access to the style object in Firefox (see https://greensock.com/forums/topic/20215-problem-using-tweenmax-in-standalone-self-containing-svg-file-err-cannot-set-property-csstext-of-undefined/).
+  return e && e.style ? e : _doc.createElement(type); //some environments won't allow access to the element's style when created with a namespace in which case we default to the standard createElement() to work around the issue. Also note that when GSAP is embedded directly inside an SVG file, createElement() won't allow access to the style object in Firefox (see https://gsap.com/forums/topic/20215-problem-using-tweenmax-in-standalone-self-containing-svg-file-err-cannot-set-property-csstext-of-undefined/).
 },
     _getComputedProperty = function _getComputedProperty(target, property, skipPrefixFallback) {
   var cs = getComputedStyle(target);
@@ -1092,19 +1102,22 @@ _renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
     //reports if the element is an SVG on which getBBox() actually works
 _removeProperty = function _removeProperty(target, property) {
   if (property) {
-    var style = target.style;
+    var style = target.style,
+        first2Chars;
 
     if (property in _transformProps && property !== _transformOriginProp) {
       property = _transformProp;
     }
 
     if (style.removeProperty) {
-      if (property.substr(0, 2) === "ms" || property.substr(0, 6) === "webkit") {
+      first2Chars = property.substr(0, 2);
+
+      if (first2Chars === "ms" || property.substr(0, 6) === "webkit") {
         //Microsoft and some Webkit browsers don't conform to the standard of capitalizing the first prefix character, so we adjust so that when we prefix the caps with a dash, it's correct (otherwise it'd be "ms-transform" instead of "-ms-transform" for IE9, for example)
         property = "-" + property;
       }
 
-      style.removeProperty(property.replace(_capsExp, "-$1").toLowerCase());
+      style.removeProperty(first2Chars === "--" ? property : property.replace(_capsExp, "-$1").toLowerCase());
     } else {
       //note: old versions of IE use "removeAttribute()" instead of "removeProperty()"
       style.removeAttribute(property);
@@ -1175,13 +1188,21 @@ _convertToUnit = function _convertToUnit(target, property, value, unit) {
   if (cache && toPercent && cache.width && horizontal && cache.time === _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._ticker.time && !cache.uncache) {
     return (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(curValue / cache.width * amount);
   } else {
-    (toPercent || curUnit === "%") && !_nonStandardLayouts[_getComputedProperty(parent, "display")] && (style.position = _getComputedProperty(target, "position"));
-    parent === target && (style.position = "static"); // like for borderRadius, if it's a % we must have it relative to the target itself but that may not have position: relative or position: absolute in which case it'd go up the chain until it finds its offsetParent (bad). position: static protects against that.
+    if (toPercent && (property === "height" || property === "width")) {
+      // if we're dealing with width/height that's inside a container with padding and/or it's a flexbox/grid container, we must apply it to the target itself rather than the _tempDiv in order to ensure complete accuracy, factoring in the parent's padding.
+      var v = target.style[property];
+      target.style[property] = amount + unit;
+      px = target[measureProperty];
+      v ? target.style[property] = v : _removeProperty(target, property);
+    } else {
+      (toPercent || curUnit === "%") && !_nonStandardLayouts[_getComputedProperty(parent, "display")] && (style.position = _getComputedProperty(target, "position"));
+      parent === target && (style.position = "static"); // like for borderRadius, if it's a % we must have it relative to the target itself but that may not have position: relative or position: absolute in which case it'd go up the chain until it finds its offsetParent (bad). position: static protects against that.
 
-    parent.appendChild(_tempDiv);
-    px = _tempDiv[measureProperty];
-    parent.removeChild(_tempDiv);
-    style.position = "absolute";
+      parent.appendChild(_tempDiv);
+      px = _tempDiv[measureProperty];
+      parent.removeChild(_tempDiv);
+      style.position = "absolute";
+    }
 
     if (horizontal && toPercent) {
       cache = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._getCache)(parent);
@@ -1220,7 +1241,7 @@ _convertToUnit = function _convertToUnit(target, property, value, unit) {
     _tweenComplexCSSString = function _tweenComplexCSSString(target, prop, start, end) {
   // note: we call _tweenComplexCSSString.call(pluginInstance...) to ensure that it's scoped properly. We may call it from within a plugin too, thus "this" would refer to the plugin.
   if (!start || start === "none") {
-    // some browsers like Safari actually PREFER the prefixed property and mis-report the unprefixed value like clipPath (BUG). In other words, even though clipPath exists in the style ("clipPath" in target.style) and it's set in the CSS properly (along with -webkit-clip-path), Safari reports clipPath as "none" whereas WebkitClipPath reports accurately like "ellipse(100% 0% at 50% 0%)", so in this case we must SWITCH to using the prefixed property instead. See https://greensock.com/forums/topic/18310-clippath-doesnt-work-on-ios/
+    // some browsers like Safari actually PREFER the prefixed property and mis-report the unprefixed value like clipPath (BUG). In other words, even though clipPath exists in the style ("clipPath" in target.style) and it's set in the CSS properly (along with -webkit-clip-path), Safari reports clipPath as "none" whereas WebkitClipPath reports accurately like "ellipse(100% 0% at 50% 0%)", so in this case we must SWITCH to using the prefixed property instead. See https://gsap.com/forums/topic/18310-clippath-doesnt-work-on-ios/
     var p = _checkPropPrefix(prop, target, 1),
         s = p && _getComputedProperty(target, p, 1);
 
@@ -1228,7 +1249,7 @@ _convertToUnit = function _convertToUnit(target, property, value, unit) {
       prop = p;
       start = s;
     } else if (prop === "borderColor") {
-      start = _getComputedProperty(target, "borderTopColor"); // Firefox bug: always reports "borderColor" as "", so we must fall back to borderTopColor. See https://greensock.com/forums/topic/24583-how-to-return-colors-that-i-had-after-reverse/
+      start = _getComputedProperty(target, "borderTopColor"); // Firefox bug: always reports "borderColor" as "", so we must fall back to borderTopColor. See https://gsap.com/forums/topic/24583-how-to-return-colors-that-i-had-after-reverse/
     }
   }
 
@@ -1254,9 +1275,10 @@ _convertToUnit = function _convertToUnit(target, property, value, unit) {
   end += "";
 
   if (end === "auto") {
+    startValue = target.style[prop];
     target.style[prop] = end;
     end = _getComputedProperty(target, prop) || end;
-    target.style[prop] = start;
+    startValue ? target.style[prop] = startValue : _removeProperty(target, prop);
   }
 
   a = [start, end];
@@ -1460,7 +1482,7 @@ _specialProps = {
   		}
   	}
   	cache.classPT = plugin._pt = new PropTween(plugin._pt, target, "className", 0, 0, _renderClassName, data, 0, -11);
-  	if (style.cssText !== cssText) { //only apply if things change. Otherwise, in cases like a background-image that's pulled dynamically, it could cause a refresh. See https://greensock.com/forums/topic/20368-possible-gsap-bug-switching-classnames-in-chrome/.
+  	if (style.cssText !== cssText) { //only apply if things change. Otherwise, in cases like a background-image that's pulled dynamically, it could cause a refresh. See https://gsap.com/forums/topic/20368-possible-gsap-bug-switching-classnames-in-chrome/.
   		style.cssText = cssText; //we recorded cssText before we swapped classes and ran _getAllStyles() because in cases when a className tween is overwritten, we remove all the related tweening properties from that class change (otherwise class-specific stuff can't override properties we've directly set on the target's style object due to specificity).
   	}
   	_parseTransform(target, true); //to clear the caching of transforms
@@ -1553,13 +1575,16 @@ _identity2DMatrix = [1, 0, 0, 1, 0, 0],
   if (!originIsAbsolute) {
     bounds = _getBBox(target);
     xOrigin = bounds.x + (~originSplit[0].indexOf("%") ? xOrigin / 100 * bounds.width : xOrigin);
-    yOrigin = bounds.y + (~(originSplit[1] || originSplit[0]).indexOf("%") ? yOrigin / 100 * bounds.height : yOrigin);
+    yOrigin = bounds.y + (~(originSplit[1] || originSplit[0]).indexOf("%") ? yOrigin / 100 * bounds.height : yOrigin); // if (!("xOrigin" in cache) && (xOrigin || yOrigin)) { // added in 3.12.3, reverted in 3.12.4; requires more exploration
+    // 	xOrigin -= bounds.x;
+    // 	yOrigin -= bounds.y;
+    // }
   } else if (matrix !== _identity2DMatrix && (determinant = a * d - b * c)) {
     //if it's zero (like if scaleX and scaleY are zero), skip it to avoid errors with dividing by zero.
     x = xOrigin * (d / determinant) + yOrigin * (-c / determinant) + (c * ty - d * tx) / determinant;
     y = xOrigin * (-b / determinant) + yOrigin * (a / determinant) - (a * ty - b * tx) / determinant;
     xOrigin = x;
-    yOrigin = y;
+    yOrigin = y; // theory: we only had to do this for smoothing and it assumes that the previous one was not originIsAbsolute.
   }
 
   if (smooth || smooth !== false && cache.smooth) {
@@ -1795,7 +1820,7 @@ _identity2DMatrix = [1, 0, 0, 1, 0, 0],
   cache.skewY = skewY + deg;
   cache.transformPerspective = perspective + px;
 
-  if (cache.zOrigin = parseFloat(origin.split(" ")[2]) || 0) {
+  if (cache.zOrigin = parseFloat(origin.split(" ")[2]) || !uncache && cache.zOrigin || 0) {
     style[_transformOriginProp] = _firstTwoOnly(origin);
   }
 
@@ -2185,7 +2210,7 @@ var CSSPlugin = {
           // in case someone hard-codes a complex value as the start, like top: "calc(2vh / 2)". Without this, it'd use the computed value (always in px)
           startValue = typeof startAt[p] === "function" ? startAt[p].call(tween, index, target, targets) : startAt[p];
           (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._isString)(startValue) && ~startValue.indexOf("random(") && (startValue = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._replaceRandom)(startValue));
-          (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(startValue + "") || (startValue += _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units[p] || (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(_get(target, p)) || ""); // for cases when someone passes in a unitless value like {x: 100}; if we try setting translate(100, 0px) it won't work.
+          (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(startValue + "") || startValue === "auto" || (startValue += _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units[p] || (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(_get(target, p)) || ""); // for cases when someone passes in a unitless value like {x: 100}; if we try setting translate(100, 0px) it won't work.
 
           (startValue + "").charAt(1) === "=" && (startValue = _get(target, p)); // can't work with relative values
         } else {
@@ -2389,12 +2414,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /*!
- * Observer 3.12.2
- * https://greensock.com
+ * Observer 3.12.5
+ * https://gsap.com
  *
- * @license Copyright 2008-2023, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * @license Copyright 2008-2024, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license or for
+ * Club GSAP members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
 */
 
@@ -2444,9 +2469,9 @@ var gsap,
     _isViewport = function _isViewport(el) {
   return !!~_root.indexOf(el);
 },
-    _addListener = function _addListener(element, type, func, nonPassive, capture) {
+    _addListener = function _addListener(element, type, func, passive, capture) {
   return element.addEventListener(type, func, {
-    passive: !nonPassive,
+    passive: passive !== false,
     capture: !!capture
   });
 },
@@ -2589,7 +2614,7 @@ var gsap,
     _initCore = function _initCore(core) {
   gsap = core || _getGSAP();
 
-  if (gsap && typeof document !== "undefined" && document.body) {
+  if (!_coreInitted && gsap && typeof document !== "undefined" && document.body) {
     _win = window;
     _doc = document;
     _docEl = _doc.documentElement;
@@ -2690,6 +2715,7 @@ var Observer = /*#__PURE__*/function () {
         self = this,
         prevDeltaX = 0,
         prevDeltaY = 0,
+        passive = vars.passive || !preventDefault,
         scrollFuncX = _getScrollFunc(target, _horizontal),
         scrollFuncY = _getScrollFunc(target, _vertical),
         scrollX = scrollFuncX(),
@@ -2833,7 +2859,7 @@ var Observer = /*#__PURE__*/function () {
 
       self._vy.reset();
 
-      _addListener(isNormalizer ? target : ownerDoc, _eventTypes[1], _onDrag, preventDefault, true);
+      _addListener(isNormalizer ? target : ownerDoc, _eventTypes[1], _onDrag, passive, true);
 
       self.deltaX = self.deltaY = 0;
       onPress && onPress(self);
@@ -2846,14 +2872,16 @@ var Observer = /*#__PURE__*/function () {
       _removeListener(isNormalizer ? target : ownerDoc, _eventTypes[1], _onDrag, true);
 
       var isTrackingDrag = !isNaN(self.y - self.startY),
-          wasDragging = self.isDragging && (Math.abs(self.x - self.startX) > 3 || Math.abs(self.y - self.startY) > 3),
+          wasDragging = self.isDragging,
+          isDragNotClick = wasDragging && (Math.abs(self.x - self.startX) > 3 || Math.abs(self.y - self.startY) > 3),
           // some touch devices need some wiggle room in terms of sensing clicks - the finger may move a few pixels.
       eventData = _getEvent(e);
 
-      if (!wasDragging && isTrackingDrag) {
+      if (!isDragNotClick && isTrackingDrag) {
         self._vx.reset();
 
-        self._vy.reset();
+        self._vy.reset(); //if (preventDefault && allowClicks && self.isPressed) { // check isPressed because in a rare edge case, the inputObserver in ScrollTrigger may stopPropagation() on the press/drag, so the onRelease may get fired without the onPress/onDrag ever getting called, thus it could trigger a click to occur on a link after scroll-dragging it.
+
 
         if (preventDefault && allowClicks) {
           gsap.delayedCall(0.08, function () {
@@ -2873,9 +2901,9 @@ var Observer = /*#__PURE__*/function () {
       }
 
       self.isDragging = self.isGesturing = self.isPressed = false;
-      onStop && !isNormalizer && onStopDelayedCall.restart(true);
+      onStop && wasDragging && !isNormalizer && onStopDelayedCall.restart(true);
       onDragEnd && wasDragging && onDragEnd(self);
-      onRelease && onRelease(self, wasDragging);
+      onRelease && onRelease(self, isDragNotClick);
     },
         _onGestureStart = function _onGestureStart(e) {
       return e.touches && e.touches.length > 1 && (self.isGesturing = true) && onGestureStart(e, self.isDragging);
@@ -2918,6 +2946,7 @@ var Observer = /*#__PURE__*/function () {
       self.x = x;
       self.y = y;
       moved = true;
+      onStop && onStopDelayedCall.restart(true);
       (dx || dy) && onTouchOrPointerDelta(dx, dy);
     },
         _onHover = function _onHover(e) {
@@ -2946,17 +2975,17 @@ var Observer = /*#__PURE__*/function () {
       if (!self.isEnabled) {
         _addListener(isViewport ? ownerDoc : target, "scroll", _onScroll);
 
-        type.indexOf("scroll") >= 0 && _addListener(isViewport ? ownerDoc : target, "scroll", onScroll, preventDefault, capture);
-        type.indexOf("wheel") >= 0 && _addListener(target, "wheel", _onWheel, preventDefault, capture);
+        type.indexOf("scroll") >= 0 && _addListener(isViewport ? ownerDoc : target, "scroll", onScroll, passive, capture);
+        type.indexOf("wheel") >= 0 && _addListener(target, "wheel", _onWheel, passive, capture);
 
         if (type.indexOf("touch") >= 0 && _isTouch || type.indexOf("pointer") >= 0) {
-          _addListener(target, _eventTypes[0], _onPress, preventDefault, capture);
+          _addListener(target, _eventTypes[0], _onPress, passive, capture);
 
           _addListener(ownerDoc, _eventTypes[2], _onRelease);
 
           _addListener(ownerDoc, _eventTypes[3], _onRelease);
 
-          allowClicks && _addListener(target, "click", clickCapture, false, true);
+          allowClicks && _addListener(target, "click", clickCapture, true, true);
           onClick && _addListener(target, "click", _onClick);
           onGestureStart && _addListener(ownerDoc, "gesturestart", _onGestureStart);
           onGestureEnd && _addListener(ownerDoc, "gestureend", _onGestureEnd);
@@ -3046,7 +3075,7 @@ var Observer = /*#__PURE__*/function () {
 
   return Observer;
 }();
-Observer.version = "3.12.2";
+Observer.version = "3.12.5";
 
 Observer.create = function (vars) {
   return new Observer(vars);
@@ -3082,12 +3111,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Observer.js */ "./node_modules/gsap/Observer.js");
 /*!
- * ScrollTrigger 3.12.2
- * https://greensock.com
+ * ScrollTrigger 3.12.5
+ * https://gsap.com
  *
- * @license Copyright 2008-2023, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * @license Copyright 2008-2024, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license or for
+ * Club GSAP members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
 */
 
@@ -3125,6 +3154,8 @@ var gsap,
     _scrollRestoration,
     _div100vh,
     _100vh,
+    _isReverted,
+    _clampingMax,
     _limitCallbacks,
     // if true, we'll only trigger callbacks if the active state toggles, so if you scroll immediately past both the start and end positions of a ScrollTrigger (thus inactive to inactive), neither its onEnter nor onLeave will be called. This is useful during startup.
 _startup = 1,
@@ -3221,7 +3252,9 @@ _pointerDownHandler = function _pointerDownHandler() {
 },
     _callback = function _callback(self, func) {
   if (self.enabled) {
-    var result = func(self);
+    var result = self._ctx ? self._ctx.add(function () {
+      return func(self);
+    }) : func(self);
     result && result.totalTime && (self.callbackAnimation = result);
   }
 },
@@ -3513,6 +3546,7 @@ _revertRecorded = function _revertRecorded(media) {
     }
   }
 
+  _isReverted = true;
   media && _revertRecorded(media);
   media || _dispatch("revert");
 },
@@ -3539,12 +3573,17 @@ _revertRecorded = function _revertRecorded(media) {
     _refresh100vh = function _refresh100vh() {
   _body.appendChild(_div100vh);
 
-  _100vh = _div100vh.offsetHeight || _win.innerHeight;
+  _100vh = !_normalizer && _div100vh.offsetHeight || _win.innerHeight;
 
   _body.removeChild(_div100vh);
 },
+    _hideAllMarkers = function _hideAllMarkers(hide) {
+  return _toArray(".gsap-marker-start, .gsap-marker-end, .gsap-marker-scroller-start, .gsap-marker-scroller-end").forEach(function (el) {
+    return el.style.display = hide ? "none" : "block";
+  });
+},
     _refreshAll = function _refreshAll(force, skipRevert) {
-  if (_lastScrollTime && !force) {
+  if (_lastScrollTime && !force && !_isReverted) {
     _addListener(ScrollTrigger, "scrollEnd", _softRefresh);
 
     return;
@@ -3577,7 +3616,9 @@ _revertRecorded = function _revertRecorded(media) {
   }); // don't loop with _i because during a refresh() someone could call ScrollTrigger.update() which would iterate through _i resulting in a skip.
 
 
-  _triggers.forEach(function (t, i) {
+  _isReverted = false;
+
+  _triggers.forEach(function (t) {
     // nested pins (pinnedContainer) with pinSpacing may expand the container, so we must accommodate that here.
     if (t._subPinOffset && t.pin) {
       var prop = t.vars.horizontal ? "offsetWidth" : "offsetHeight",
@@ -3588,13 +3629,22 @@ _revertRecorded = function _revertRecorded(media) {
     }
   });
 
+  _clampingMax = 1; // pinSpacing might be propping a page open, thus when we .setPositions() to clamp a ScrollTrigger's end we should leave the pinSpacing alone. That's what this flag is for.
+
+  _hideAllMarkers(true);
+
   _triggers.forEach(function (t) {
     // the scroller's max scroll position may change after all the ScrollTriggers refreshed (like pinning could push it down), so we need to loop back and correct any with end: "max". Same for anything with a clamped end
-    var max = _maxScroll(t.scroller, t._dir);
+    var max = _maxScroll(t.scroller, t._dir),
+        endClamp = t.vars.end === "max" || t._endClamp && t.end > max,
+        startClamp = t._startClamp && t.start >= max;
 
-    (t.vars.end === "max" || t._endClamp && t.end > max) && t.setPositions(t.start, Math.max(t.start + 1, max), true);
+    (endClamp || startClamp) && t.setPositions(startClamp ? max - 1 : t.start, endClamp ? Math.max(startClamp ? max : t.start + 1, max) : t.end, true);
   });
 
+  _hideAllMarkers(false);
+
+  _clampingMax = 0;
   refreshInits.forEach(function (result) {
     return result && result.render && result.render(-1);
   }); // if the onRefreshInit() returns an animation (typically a gsap.set()), revert it. This makes it easy to put things in a certain spot before refreshing for measurement purposes, and then put things back.
@@ -3629,7 +3679,8 @@ _revertRecorded = function _revertRecorded(media) {
     _direction = 1,
     _primary,
     _updateAll = function _updateAll(force) {
-  if (!_refreshingAll || force === 2) {
+  if (force === 2 || !_refreshingAll && !_isReverted) {
+    // _isReverted could be true if, for example, a matchMedia() is in the process of executing. We don't want to update during the time everything is reverted.
     ScrollTrigger.isUpdating = true;
     _primary && _primary.update(0); // ScrollSmoother uses refreshPriority -9999 to become the primary that gets updated before all others because it affects the scroll position.
 
@@ -3939,6 +3990,7 @@ _getTweenCreator = function _getTweenCreator(scroller, direction) {
     change1 = change1 || scrollTo - initialValue;
     tween && tween.kill();
     vars[prop] = scrollTo;
+    vars.inherit = false;
     vars.modifiers = modifiers;
 
     modifiers[prop] = function () {
@@ -3947,8 +3999,7 @@ _getTweenCreator = function _getTweenCreator(scroller, direction) {
 
     vars.onUpdate = function () {
       _Observer_js__WEBPACK_IMPORTED_MODULE_0__._scrollers.cache++;
-
-      _updateAll();
+      getTween.tween && _updateAll(); // if it was interrupted/killed, like in a context.revert(), don't force an updateAll()
     };
 
     vars.onComplete = function () {
@@ -4109,6 +4160,7 @@ var ScrollTrigger = /*#__PURE__*/function () {
         scrubTween ? scrubTween.duration(value) : scrubTween = gsap.to(animation, {
           ease: "expo",
           totalProgress: "+=0",
+          inherit: false,
           duration: scrubSmooth,
           paused: true,
           onComplete: function onComplete() {
@@ -4120,7 +4172,7 @@ var ScrollTrigger = /*#__PURE__*/function () {
 
     if (animation) {
       animation.vars.lazy = false;
-      animation._initted && !self.isReverted || animation.vars.immediateRender !== false && vars.immediateRender !== false && animation.duration() && animation.render(0, true, true); // special case: if this ScrollTrigger gets re-initted, a from() tween with a stagger could get initted initially and then reverted on the re-init which means it'll need to get rendered again here to properly display things. Otherwise, See https://greensock.com/forums/topic/36777-scrollsmoother-splittext-nextjs/ and https://codepen.io/GreenSock/pen/eYPyPpd?editors=0010
+      animation._initted && !self.isReverted || animation.vars.immediateRender !== false && vars.immediateRender !== false && animation.duration() && animation.render(0, true, true); // special case: if this ScrollTrigger gets re-initted, a from() tween with a stagger could get initted initially and then reverted on the re-init which means it'll need to get rendered again here to properly display things. Otherwise, See https://gsap.com/forums/topic/36777-scrollsmoother-splittext-nextjs/ and https://codepen.io/GreenSock/pen/eYPyPpd?editors=0010
 
       self.animation = animation.pause();
       animation.scrollTrigger = self;
@@ -4165,12 +4217,16 @@ var ScrollTrigger = /*#__PURE__*/function () {
               velocity = refreshedRecently ? 0 : (totalProgress - snap2) / (_getTime() - _time2) * 1000 || 0,
               change1 = gsap.utils.clamp(-progress, 1 - progress, _abs(velocity / 2) * velocity / 0.185),
               naturalEnd = progress + (snap.inertia === false ? 0 : change1),
-              endValue = _clamp(0, 1, snapFunc(naturalEnd, self)),
-              endScroll = Math.round(start + endValue * change),
+              endValue,
+              endScroll,
               _snap = snap,
               onStart = _snap.onStart,
               _onInterrupt = _snap.onInterrupt,
               _onComplete = _snap.onComplete;
+          endValue = snapFunc(naturalEnd, self);
+          _isNumber(endValue) || (endValue = naturalEnd); // in case the function didn't return a number, fall back to using the naturalEnd
+
+          endScroll = Math.round(start + endValue * change);
 
           if (scroll <= end && scroll >= start && endScroll !== scroll) {
             if (tween && !tween._initted && tween.data <= _abs(endScroll - scroll)) {
@@ -4193,6 +4249,12 @@ var ScrollTrigger = /*#__PURE__*/function () {
               onComplete: function onComplete() {
                 self.update();
                 lastSnap = scrollFunc();
+
+                if (animation) {
+                  // the resolution of the scrollbar is limited, so we should correct the scrubbed animation's playhead at the end to match EXACTLY where it was supposed to snap
+                  scrubTween ? scrubTween.resetTo("totalProgress", endValue, animation._tTime / animation._tDur) : animation.progress(endValue);
+                }
+
                 snap1 = snap2 = animation && !isToggle ? animation.totalProgress() : self.progress;
                 onSnapComplete && onSnapComplete(self);
                 _onComplete && _onComplete(self);
@@ -4481,7 +4543,7 @@ var ScrollTrigger = /*#__PURE__*/function () {
         gsap.set([markerStart, markerEnd], cs);
       }
 
-      if (pin) {
+      if (pin && !(_clampingMax && self.end >= _maxScroll(scroller, direction))) {
         cs = _getComputedStyle(pin);
         isVertical = direction === _Observer_js__WEBPACK_IMPORTED_MODULE_0__._vertical;
         scroll = scrollFunc(); // recalculate because the triggers can affect the scroll
@@ -4489,7 +4551,7 @@ var ScrollTrigger = /*#__PURE__*/function () {
         pinStart = parseFloat(pinGetter(direction.a)) + otherPinOffset;
 
         if (!max && end > 1) {
-          // makes sure the scroller has a scrollbar, otherwise if something has width: 100%, for example, it would be too big (exclude the scrollbar). See https://greensock.com/forums/topic/25182-scrolltrigger-width-of-page-increase-where-markers-are-set-to-false/
+          // makes sure the scroller has a scrollbar, otherwise if something has width: 100%, for example, it would be too big (exclude the scrollbar). See https://gsap.com/forums/topic/25182-scrolltrigger-width-of-page-increase-where-markers-are-set-to-false/
           forcedOverflow = (isViewport ? _doc.scrollingElement || _docEl : scroller).style;
           forcedOverflow = {
             style: forcedOverflow,
@@ -4513,7 +4575,12 @@ var ScrollTrigger = /*#__PURE__*/function () {
           spacerState = [pinSpacing + direction.os2, change + otherPinOffset + _px];
           spacerState.t = spacer;
           i = pinSpacing === _padding ? _getSize(pin, direction) + change + otherPinOffset : 0;
-          i && spacerState.push(direction.d, i + _px); // for box-sizing: border-box (must include padding).
+
+          if (i) {
+            spacerState.push(direction.d, i + _px); // for box-sizing: border-box (must include padding).
+
+            spacer.style.flexBasis !== "auto" && (spacer.style.flexBasis = i + _px);
+          }
 
           _setState(spacerState);
 
@@ -4527,6 +4594,9 @@ var ScrollTrigger = /*#__PURE__*/function () {
           }
 
           useFixedPosition && scrollFunc(prevScroll);
+        } else {
+          i = _getSize(pin, direction);
+          i && spacer.style.flexBasis !== "auto" && (spacer.style.flexBasis = i + _px);
         }
 
         if (useFixedPosition) {
@@ -4608,7 +4678,7 @@ var ScrollTrigger = /*#__PURE__*/function () {
       _refreshing = 0;
       animation && isToggle && (animation._initted || prevAnimProgress) && animation.progress() !== prevAnimProgress && animation.progress(prevAnimProgress || 0, true).render(animation.time(), true, true); // must force a re-render because if saveStyles() was used on the target(s), the styles could have been wiped out during the refresh().
 
-      if (isFirstRefresh || prevProgress !== self.progress || containerAnimation) {
+      if (isFirstRefresh || prevProgress !== self.progress || containerAnimation || invalidateOnRefresh) {
         // ensures that the direction is set properly (when refreshing, progress is set back to 0 initially, then back again to wherever it needs to be) and that callbacks are triggered.
         animation && !isToggle && animation.totalProgress(containerAnimation && start < -0.001 && !prevProgress ? gsap.utils.normalize(start, end, 0) : prevProgress, true); // to avoid issues where animation callbacks like onStart aren't triggered.
 
@@ -4698,7 +4768,13 @@ var ScrollTrigger = /*#__PURE__*/function () {
       } // anticipate the pinning a few ticks ahead of time based on velocity to avoid a visual glitch due to the fact that most browsers do scrolling on a separate thread (not synced with requestAnimationFrame).
 
 
-      anticipatePin && !clipped && pin && !_refreshing && !_startup && _lastScrollTime && start < scroll + (scroll - scroll2) / (_getTime() - _time2) * anticipatePin && (clipped = 0.0001);
+      if (anticipatePin && pin && !_refreshing && !_startup && _lastScrollTime) {
+        if (!clipped && start < scroll + (scroll - scroll2) / (_getTime() - _time2) * anticipatePin) {
+          clipped = 0.0001;
+        } else if (clipped === 1 && end > scroll + (scroll - scroll2) / (_getTime() - _time2) * anticipatePin) {
+          clipped = 0.9999;
+        }
+      }
 
       if (clipped !== prevProgress && self.enabled) {
         isActive = self.isActive = !!clipped && clipped < 1;
@@ -5055,6 +5131,8 @@ var ScrollTrigger = /*#__PURE__*/function () {
         ScrollTrigger.isTouch = _Observer_js__WEBPACK_IMPORTED_MODULE_0__.Observer.isTouch;
         _fixIOSBug = _Observer_js__WEBPACK_IMPORTED_MODULE_0__.Observer.isTouch && /(iPad|iPhone|iPod|Mac)/g.test(navigator.userAgent); // since 2017, iOS has had a bug that causes event.clientX/Y to be inaccurate when a scroll occurs, thus we must alternate ignoring every other touchmove event to work around it. See https://bugs.webkit.org/show_bug.cgi?id=181954 and https://codepen.io/GreenSock/pen/ExbrPNa/087cef197dc35445a0951e8935c41503
 
+        _ignoreMobileResize = _Observer_js__WEBPACK_IMPORTED_MODULE_0__.Observer.isTouch === 1;
+
         _addListener(_win, "wheel", _onScroll); // mostly for 3rd party smooth scrolling libraries.
 
 
@@ -5125,7 +5203,7 @@ var ScrollTrigger = /*#__PURE__*/function () {
         _addListener(_doc, "touchcancel", _passThrough); // some older Android devices intermittently stop dispatching "touchmove" events if we don't listen for "touchcancel" on the document.
 
 
-        _addListener(_body, "touchstart", _passThrough); //works around Safari bug: https://greensock.com/forums/topic/21450-draggable-in-iframe-on-mobile-is-buggy/
+        _addListener(_body, "touchstart", _passThrough); //works around Safari bug: https://gsap.com/forums/topic/21450-draggable-in-iframe-on-mobile-is-buggy/
 
 
         _multiListener(_addListener, _doc, "pointerdown,touchstart,mousedown", _pointerDownHandler);
@@ -5227,7 +5305,7 @@ var ScrollTrigger = /*#__PURE__*/function () {
 
   return ScrollTrigger;
 }();
-ScrollTrigger.version = "3.12.2";
+ScrollTrigger.version = "3.12.5";
 
 ScrollTrigger.saveStyles = function (targets) {
   return targets ? _toArray(targets).forEach(function (target) {
@@ -5624,6 +5702,7 @@ _inputObserver = function _inputObserver(target, type, inputs, nested) {
   tween = gsap.to(self, {
     ease: "power4",
     paused: true,
+    inherit: false,
     scrollX: normalizeScrollX ? "+=0.1" : "+=0",
     scrollY: "+=0.1",
     modifiers: {
@@ -5658,7 +5737,9 @@ ScrollTrigger.normalizeScroll = function (vars) {
   }
 
   if (vars === false) {
-    return _normalizer && _normalizer.kill();
+    _normalizer && _normalizer.kill();
+    _normalizer = vars;
+    return;
   }
 
   var normalizer = vars instanceof _Observer_js__WEBPACK_IMPORTED_MODULE_0__.Observer ? vars : _getScrollNormalizer(vars);
@@ -5773,12 +5854,12 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 /*!
- * GSAP 3.12.2
- * https://greensock.com
+ * GSAP 3.12.5
+ * https://gsap.com
  *
- * @license Copyright 2008-2023, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * @license Copyright 2008-2024, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license or for
+ * Club GSAP members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
 */
 
@@ -6501,7 +6582,7 @@ distribute = function distribute(v) {
 
         while (max < (max = a[wrapAt++].getBoundingClientRect().left) && wrapAt < l) {}
 
-        wrapAt--;
+        wrapAt < l && wrapAt--;
       }
 
       distances = cache[l] = [];
@@ -6771,10 +6852,11 @@ distribute = function distribute(v) {
     _quickTween,
     _registerPluginQueue = [],
     _createPlugin = function _createPlugin(config) {
-  if (_windowExists() && config) {
-    // edge case: some build tools may pass in a null/undefined value
-    config = !config.name && config["default"] || config; //UMD packaging wraps things oddly, so for example MotionPathHelper becomes {MotionPathHelper:MotionPathHelper, default:MotionPathHelper}.
+  if (!config) return;
+  config = !config.name && config["default"] || config; // UMD packaging wraps things oddly, so for example MotionPathHelper becomes {MotionPathHelper:MotionPathHelper, default:MotionPathHelper}.
 
+  if (_windowExists() || config.headless) {
+    // edge case: some build tools may pass in a null/undefined value
     var name = config.name,
         isFunc = _isFunction(config),
         Plugin = name && !isFunc && config.init ? function () {
@@ -6825,7 +6907,7 @@ distribute = function distribute(v) {
 
     config.register && config.register(gsap, Plugin, PropTween);
   } else {
-    config && _registerPluginQueue.push(config);
+    _registerPluginQueue.push(config);
   }
 },
 
@@ -7064,7 +7146,7 @@ _tickerActive,
         time,
         frame;
 
-    elapsed > _lagThreshold && (_startTime += elapsed - _adjustedLag);
+    (elapsed > _lagThreshold || elapsed < 0) && (_startTime += elapsed - _adjustedLag);
     _lastUpdate += elapsed;
     time = _lastUpdate - _startTime;
     overlap = time - _nextTime;
@@ -7106,11 +7188,10 @@ _tickerActive,
 
           _install(_installScope || _win.GreenSockGlobals || !_win.gsap && _win || {});
 
-          _raf = _win.requestAnimationFrame;
-
           _registerPluginQueue.forEach(_createPlugin);
         }
 
+        _raf = typeof requestAnimationFrame !== "undefined" && requestAnimationFrame;
         _id && _self.sleep();
 
         _req = _raf || function (f) {
@@ -7123,7 +7204,7 @@ _tickerActive,
       }
     },
     sleep: function sleep() {
-      (_raf ? _win.cancelAnimationFrame : clearTimeout)(_id);
+      (_raf ? cancelAnimationFrame : clearTimeout)(_id);
       _tickerActive = 0;
       _req = _emptyFunc;
     },
@@ -7507,11 +7588,11 @@ var Animation = /*#__PURE__*/function () {
   };
 
   _proto.totalProgress = function totalProgress(value, suppressEvents) {
-    return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.ratio;
+    return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.rawTime() > 0 ? 1 : 0;
   };
 
   _proto.progress = function progress(value, suppressEvents) {
-    return arguments.length ? this.totalTime(this.duration() * (this._yoyo && !(this.iteration() & 1) ? 1 - value : value) + _elapsedCycleDuration(this), suppressEvents) : this.duration() ? Math.min(1, this._time / this._dur) : this.ratio;
+    return arguments.length ? this.totalTime(this.duration() * (this._yoyo && !(this.iteration() & 1) ? 1 - value : value) + _elapsedCycleDuration(this), suppressEvents) : this.duration() ? Math.min(1, this._time / this._dur) : this.rawTime() > 0 ? 1 : 0;
   };
 
   _proto.iteration = function iteration(value, suppressEvents) {
@@ -7530,7 +7611,7 @@ var Animation = /*#__PURE__*/function () {
   // }
   ;
 
-  _proto.timeScale = function timeScale(value) {
+  _proto.timeScale = function timeScale(value, suppressEvents) {
     if (!arguments.length) {
       return this._rts === -_tinyNum ? 0 : this._rts; // recorded timeScale. Special case: if someone calls reverse() on an animation with timeScale of 0, we assign it -_tinyNum to remember it's reversed.
     }
@@ -7547,7 +7628,7 @@ var Animation = /*#__PURE__*/function () {
     this._rts = +value || 0;
     this._ts = this._ps || value === -_tinyNum ? 0 : this._rts; // _ts is the functional timeScale which would be 0 if the animation is paused.
 
-    this.totalTime(_clamp(-Math.abs(this._delay), this._tDur, tTime), true);
+    this.totalTime(_clamp(-Math.abs(this._delay), this._tDur, tTime), suppressEvents !== false);
 
     _setEnd(this); // if parent.smoothChildTiming was false, the end time didn't get updated in the _alignPlayhead() method, so do it here.
 
@@ -7623,11 +7704,11 @@ var Animation = /*#__PURE__*/function () {
         time = arguments.length ? rawTime : animation.rawTime();
 
     while (animation) {
-      time = animation._start + time / (animation._ts || 1);
+      time = animation._start + time / (Math.abs(animation._ts) || 1);
       animation = animation._dp;
     }
 
-    return !this.parent && this._sat ? this._sat.vars.immediateRender ? -Infinity : this._sat.globalTime(rawTime) : time; // the _startAt tweens for .fromTo() and .from() that have immediateRender should always be FIRST in the timeline (important for context.revert()). "_sat" stands for _startAtTween, referring to the parent tween that created the _startAt. We must discern if that tween had immediateRender so that we can know whether or not to prioritize it in revert().
+    return !this.parent && this._sat ? this._sat.globalTime(rawTime) : time; // the _startAt tweens for .fromTo() and .from() that have immediateRender should always be FIRST in the timeline (important for context.revert()). "_sat" stands for _startAtTween, referring to the parent tween that created the _startAt. We must discern if that tween had immediateRender so that we can know whether or not to prioritize it in revert().
   };
 
   _proto.repeat = function repeat(value) {
@@ -7928,7 +8009,7 @@ var Timeline = /*#__PURE__*/function (_Animation) {
         }
 
         prevIteration = _animationCycle(this._tTime, cycleDuration);
-        !prevTime && this._tTime && prevIteration !== iteration && this._tTime - prevIteration * cycleDuration - this._dur <= 0 && (prevIteration = iteration); // edge case - if someone does addPause() at the very beginning of a repeating timeline, that pause is technically at the same spot as the end which causes this._time to get set to 0 when the totalTime would normally place the playhead at the end. See https://greensock.com/forums/topic/23823-closing-nav-animation-not-working-on-ie-and-iphone-6-maybe-other-older-browser/?tab=comments#comment-113005 also, this._tTime - prevIteration * cycleDuration - this._dur <= 0 just checks to make sure it wasn't previously in the "repeatDelay" portion
+        !prevTime && this._tTime && prevIteration !== iteration && this._tTime - prevIteration * cycleDuration - this._dur <= 0 && (prevIteration = iteration); // edge case - if someone does addPause() at the very beginning of a repeating timeline, that pause is technically at the same spot as the end which causes this._time to get set to 0 when the totalTime would normally place the playhead at the end. See https://gsap.com/forums/topic/23823-closing-nav-animation-not-working-on-ie-and-iphone-6-maybe-other-older-browser/?tab=comments#comment-113005 also, this._tTime - prevIteration * cycleDuration - this._dur <= 0 just checks to make sure it wasn't previously in the "repeatDelay" portion
 
         if (yoyo && iteration & 1) {
           time = dur - time;
@@ -8640,8 +8721,6 @@ _forceAllPropTweens,
       immediateRender = vars.immediateRender,
       lazy = vars.lazy,
       onUpdate = vars.onUpdate,
-      onUpdateParams = vars.onUpdateParams,
-      callbackScope = vars.callbackScope,
       runBackwards = vars.runBackwards,
       yoyoEase = vars.yoyoEase,
       keyframes = vars.keyframes,
@@ -8704,9 +8783,9 @@ _forceAllPropTweens,
         lazy: !prevStartAt && _isNotFalse(lazy),
         startAt: null,
         delay: 0,
-        onUpdate: onUpdate,
-        onUpdateParams: onUpdateParams,
-        callbackScope: callbackScope,
+        onUpdate: onUpdate && function () {
+          return _callback(tween, "onUpdate");
+        },
         stagger: 0
       }, startAt))); //copy the properties/values into a new object to avoid collisions, like var to = {x:0}, from = {x:500}; timeline.fromTo(e, from, to).fromTo(e, to, from);
 
@@ -8815,7 +8894,7 @@ _forceAllPropTweens,
 
   keyframes && time <= 0 && tl.render(_bigNum, true, true); // if there's a 0% keyframe, it'll render in the "before" state for any staggered/delayed animations thus when the following tween initializes, it'll use the "before" state instead of the "after" state as the initial values.
 },
-    _updatePropTweens = function _updatePropTweens(tween, property, value, start, startIsRelative, ratio, time) {
+    _updatePropTweens = function _updatePropTweens(tween, property, value, start, startIsRelative, ratio, time, skipRecursion) {
   var ptCache = (tween._pt && tween._ptCache || (tween._ptCache = {}))[property],
       pt,
       rootPT,
@@ -8850,7 +8929,7 @@ _forceAllPropTweens,
         _initTween(tween, time);
 
         _forceAllPropTweens = 0;
-        return 1;
+        return skipRecursion ? _warn(property + " not eligible for reset") : 1; // if someone tries to do a quickTo() on a special property like borderRadius which must get split into 4 different properties, that's not eligible for .resetTo().
       }
 
       ptCache.push(pt);
@@ -8973,7 +9052,7 @@ var Tween = /*#__PURE__*/function (_Animation2) {
         curTarget,
         staggerFunc,
         staggerVarsToMerge;
-    _this3._targets = parsedTargets.length ? _harness(parsedTargets) : _warn("GSAP target " + targets + " not found. https://greensock.com", !_config.nullTargetWarn) || [];
+    _this3._targets = parsedTargets.length ? _harness(parsedTargets) : _warn("GSAP target " + targets + " not found. https://gsap.com", !_config.nullTargetWarn) || [];
     _this3._ptLookup = []; //PropTween lookup. An array containing an object for each target, having keys for each tweening property
 
     _this3._overwrite = overwrite;
@@ -9144,7 +9223,7 @@ var Tween = /*#__PURE__*/function (_Animation2) {
         } else {
           iteration = ~~(tTime / cycleDuration);
 
-          if (iteration && iteration === tTime / cycleDuration) {
+          if (iteration && iteration === _roundPrecise(tTime / cycleDuration)) {
             time = dur;
             iteration--;
           }
@@ -9161,7 +9240,7 @@ var Tween = /*#__PURE__*/function (_Animation2) {
 
         prevIteration = _animationCycle(this._tTime, cycleDuration);
 
-        if (time === prevTime && !force && this._initted) {
+        if (time === prevTime && !force && this._initted && iteration === prevIteration) {
           //could be during the repeatDelay part. No need to render and fire callbacks.
           this._tTime = tTime;
           return this;
@@ -9170,7 +9249,8 @@ var Tween = /*#__PURE__*/function (_Animation2) {
         if (iteration !== prevIteration) {
           timeline && this._yEase && _propagateYoyoEase(timeline, isYoyo); //repeatRefresh functionality
 
-          if (this.vars.repeatRefresh && !isYoyo && !this._lock) {
+          if (this.vars.repeatRefresh && !isYoyo && !this._lock && this._time !== cycleDuration && this._initted) {
+            // this._time will === cycleDuration when we render at EXACTLY the end of an iteration. Without this condition, it'd often do the repeatRefresh render TWICE (again on the very next tick).
             this._lock = force = 1; //force, otherwise if lazy is true, the _attemptInitTween() will return and we'll jump out and get caught bouncing on each tick.
 
             this.render(_roundPrecise(cycleDuration * iteration), true).invalidate()._lock = 0;
@@ -9185,8 +9265,8 @@ var Tween = /*#__PURE__*/function (_Animation2) {
           return this;
         }
 
-        if (prevTime !== this._time) {
-          // rare edge case - during initialization, an onUpdate in the _startAt (.fromTo()) might force this tween to render at a different spot in which case we should ditch this render() call so that it doesn't revert the values.
+        if (prevTime !== this._time && !(force && this.vars.repeatRefresh && iteration !== prevIteration)) {
+          // rare edge case - during initialization, an onUpdate in the _startAt (.fromTo()) might force this tween to render at a different spot in which case we should ditch this render() call so that it doesn't revert the values. But we also don't want to dump if we're doing a repeatRefresh render!
           return this;
         }
 
@@ -9227,7 +9307,7 @@ var Tween = /*#__PURE__*/function (_Animation2) {
         pt = pt._next;
       }
 
-      timeline && timeline.render(totalTime < 0 ? totalTime : !time && isYoyo ? -_tinyNum : timeline._dur * timeline._ease(time / this._dur), suppressEvents, force) || this._startAt && (this._zTime = totalTime);
+      timeline && timeline.render(totalTime < 0 ? totalTime : timeline._dur * timeline._ease(time / this._dur), suppressEvents, force) || this._startAt && (this._zTime = totalTime);
 
       if (this._onUpdate && !suppressEvents) {
         isNegative && _rewindStartAt(this, totalTime, suppressEvents, force); //note: for performance reasons, we tuck this conditional logic inside less traveled areas (most tweens don't have an onUpdate). We'd just have it at the end before the onComplete, but the values should be updated before any onUpdate is called, so we ALSO put it here and then if it's not called, we do so later near the onComplete.
@@ -9266,7 +9346,7 @@ var Tween = /*#__PURE__*/function (_Animation2) {
     return _Animation2.prototype.invalidate.call(this, soft);
   };
 
-  _proto3.resetTo = function resetTo(property, value, start, startIsRelative) {
+  _proto3.resetTo = function resetTo(property, value, start, startIsRelative, skipRecursion) {
     _tickerActive || _ticker.wake();
     this._ts || this.play();
     var time = Math.min(this._dur, (this._dp._time - this._start) * this._ts),
@@ -9282,8 +9362,8 @@ var Tween = /*#__PURE__*/function (_Animation2) {
     // 	}
     // } else {
 
-    if (_updatePropTweens(this, property, value, start, startIsRelative, ratio, time)) {
-      return this.resetTo(property, value, start, startIsRelative); // if a PropTween wasn't found for the property, it'll get forced with a re-initialization so we need to jump out and start over again.
+    if (_updatePropTweens(this, property, value, start, startIsRelative, ratio, time, skipRecursion)) {
+      return this.resetTo(property, value, start, startIsRelative, 1); // if a PropTween wasn't found for the property, it'll get forced with a re-initialization so we need to jump out and start over again.
     } //}
 
 
@@ -9664,7 +9744,9 @@ var _media = [],
     _dispatch("matchMediaRevert");
 
     matches.forEach(function (c) {
-      return c.onMatch(c);
+      return c.onMatch(c, function (func) {
+        return c.add(null, func);
+      });
     });
     _lastMediaTime = time;
 
@@ -9715,7 +9797,9 @@ var Context = /*#__PURE__*/function () {
     };
 
     self.last = f;
-    return name === _isFunction ? f(self) : name ? self[name] = f : f;
+    return name === _isFunction ? f(self, function (func) {
+      return self.add(null, func);
+    }) : name ? self[name] = f : f;
   };
 
   _proto5.ignore = function ignore(func) {
@@ -9741,37 +9825,57 @@ var Context = /*#__PURE__*/function () {
     var _this4 = this;
 
     if (revert) {
-      var tweens = this.getTweens();
-      this.data.forEach(function (t) {
-        // Flip plugin tweens are very different in that they should actually be pushed to their end. The plugin replaces the timeline's .revert() method to do exactly that. But we also need to remove any of those nested tweens inside the flip timeline so that they don't get individually reverted.
-        if (t.data === "isFlip") {
-          t.revert();
-          t.getChildren(true, true, false).forEach(function (tween) {
-            return tweens.splice(tweens.indexOf(tween), 1);
-          });
+      (function () {
+        var tweens = _this4.getTweens(),
+            i = _this4.data.length,
+            t;
+
+        while (i--) {
+          // Flip plugin tweens are very different in that they should actually be pushed to their end. The plugin replaces the timeline's .revert() method to do exactly that. But we also need to remove any of those nested tweens inside the flip timeline so that they don't get individually reverted.
+          t = _this4.data[i];
+
+          if (t.data === "isFlip") {
+            t.revert();
+            t.getChildren(true, true, false).forEach(function (tween) {
+              return tweens.splice(tweens.indexOf(tween), 1);
+            });
+          }
+        } // save as an object so that we can cache the globalTime for each tween to optimize performance during the sort
+
+
+        tweens.map(function (t) {
+          return {
+            g: t._dur || t._delay || t._sat && !t._sat.vars.immediateRender ? t.globalTime(0) : -Infinity,
+            t: t
+          };
+        }).sort(function (a, b) {
+          return b.g - a.g || -Infinity;
+        }).forEach(function (o) {
+          return o.t.revert(revert);
+        }); // note: all of the _startAt tweens should be reverted in reverse order that they were created, and they'll all have the same globalTime (-1) so the " || -1" in the sort keeps the order properly.
+
+        i = _this4.data.length;
+
+        while (i--) {
+          // make sure we loop backwards so that, for example, SplitTexts that were created later on the same element get reverted first
+          t = _this4.data[i];
+
+          if (t instanceof Timeline) {
+            if (t.data !== "nested") {
+              t.scrollTrigger && t.scrollTrigger.revert();
+              t.kill(); // don't revert() the timeline because that's duplicating efforts since we already reverted all the tweens
+            }
+          } else {
+            !(t instanceof Tween) && t.revert && t.revert(revert);
+          }
         }
-      }); // save as an object so that we can cache the globalTime for each tween to optimize performance during the sort
 
-      tweens.map(function (t) {
-        return {
-          g: t.globalTime(0),
-          t: t
-        };
-      }).sort(function (a, b) {
-        return b.g - a.g || -Infinity;
-      }).forEach(function (o) {
-        return o.t.revert(revert);
-      }); // note: all of the _startAt tweens should be reverted in reverse order that they were created, and they'll all have the same globalTime (-1) so the " || -1" in the sort keeps the order properly.
+        _this4._r.forEach(function (f) {
+          return f(revert, _this4);
+        });
 
-      this.data.forEach(function (e) {
-        return !(e instanceof Tween) && e.revert && e.revert(revert);
-      });
-
-      this._r.forEach(function (f) {
-        return f(revert, _this4);
-      });
-
-      this.isReverted = true;
+        _this4.isReverted = true;
+      })();
     } else {
       this.data.forEach(function (e) {
         return e.kill && e.kill();
@@ -9801,6 +9905,7 @@ var MatchMedia = /*#__PURE__*/function () {
   function MatchMedia(scope) {
     this.contexts = [];
     this.scope = scope;
+    _context && _context.data.push(this);
   }
 
   var _proto6 = MatchMedia.prototype;
@@ -9834,7 +9939,9 @@ var MatchMedia = /*#__PURE__*/function () {
       }
     }
 
-    active && func(context);
+    active && func(context, function (f) {
+      return context.add(null, f);
+    });
     return this;
   } // refresh() {
   // 	let time = _lastMediaTime,
@@ -10204,7 +10311,7 @@ var gsap = _gsap.registerPlugin({
   }
 }, _buildModifierPlugin("roundProps", _roundModifier), _buildModifierPlugin("modifiers"), _buildModifierPlugin("snap", snap)) || _gsap; //to prevent the core plugins from being dropped via aggressive tree shaking, we must include them in the variable declaration in this way.
 
-Tween.version = Timeline.version = gsap.version = "3.12.2";
+Tween.version = Timeline.version = gsap.version = "3.12.5";
 _coreReady = 1;
 _windowExists() && _wake();
 var Power0 = _easeMap.Power0,
