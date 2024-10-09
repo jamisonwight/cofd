@@ -238,10 +238,10 @@ registerBlockType('cofd-blocks/event', {
 
                         <RichText
                             tagName='p'
-                            value={ eventContent } 
-                            onChange={ ( eventContent ) => {
+                            value={ eventContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, '') } 
+                            onChange={ ( newContent ) => {
                                 // Strip unwanted tags, allow only <h1>, <code>, etc.
-                                const sanitizedContent = eventContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, '')
+                                const sanitizedContent = newContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, '')
                                 setAttributes({ eventContent: sanitizedContent })
                             }}
                         />
