@@ -2739,8 +2739,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     eventContent: {
       type: 'string',
-      source: 'html',
-      selector: 'p'
+      default: '<h1>HTML Goes here</h1>'
     },
     lButtonContent: {
       type: 'string',
@@ -2909,12 +2908,10 @@ __webpack_require__.r(__webpack_exports__);
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
     }, "Content"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.RichText, {
       tagName: "p",
-      value: eventContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, ''),
-      onChange: newContent => {
-        // Strip unwanted tags, allow only <h1>, <code>, etc.
-        const sanitizedContent = newContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, '');
+      value: eventContent,
+      onChange: eventContent => {
         setAttributes({
-          eventContent: sanitizedContent
+          eventContent: eventContent
         });
       }
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
@@ -3111,7 +3108,7 @@ __webpack_require__.r(__webpack_exports__);
       className: `end-time ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].time_item}`
     }, getEndTime())), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
       className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].content}`
-    }, renderHTML(eventContent)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, null, eventContent)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
       className: `callouts ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].callouts}`
     }, lButtonURL.url && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
       className: `btn-container ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].btn_container}`

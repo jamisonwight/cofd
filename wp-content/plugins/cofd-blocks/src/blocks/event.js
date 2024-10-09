@@ -49,8 +49,7 @@ registerBlockType('cofd-blocks/event', {
         },
         eventContent: {
             type: 'string',
-            source: 'html',
-            selector: 'p'
+            default: '<h1>HTML Goes here</h1>'
         },
         lButtonContent: {
             type: 'string',
@@ -238,11 +237,9 @@ registerBlockType('cofd-blocks/event', {
 
                         <RichText
                             tagName='p'
-                            value={ eventContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, '') } 
-                            onChange={ ( newContent ) => {
-                                // Strip unwanted tags, allow only <h1>, <code>, etc.
-                                const sanitizedContent = newContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, '')
-                                setAttributes({ eventContent: sanitizedContent })
+                            value={ eventContent }
+                            onChange={( eventContent ) => {
+                                setAttributes({ eventContent: eventContent })
                             }}
                         />
                     </div>
@@ -467,7 +464,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            {renderHTML(eventContent)}
+                            <RawHTML>{ eventContent }</RawHTML>
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
