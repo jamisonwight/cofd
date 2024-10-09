@@ -1,6 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks'
 import { select, subscribe } from '@wordpress/data'
-import { useEffect, RawHTML } from '@wordpress/element';
+import { useEffect, RawHTML, createElement } from '@wordpress/element';
 import { savePostAttributesToJSON, useAfterSave } from '../lib/utils'
 import styles from '../styles/event'
 import eStyles from '../styles/edit'
@@ -425,6 +425,8 @@ registerBlockType('cofd-blocks/event', {
             return eventEndDate ? `-${formatTime(eventEndDate)}` : ''
         }
 
+        const renderHTML= (html) => createElement(RawHTML, null, html)
+
         console.log(eventContent)
 
         return (
@@ -461,7 +463,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            <RawHTML>{eventContent}</RawHTML>
+                            {renderHTML(eventContent)}
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
