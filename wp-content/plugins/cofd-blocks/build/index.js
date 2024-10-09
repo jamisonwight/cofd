@@ -2852,7 +2852,7 @@ __webpack_require__.r(__webpack_exports__);
         doc: attributes.eventContent,
         extensions: [codemirror__WEBPACK_IMPORTED_MODULE_13__.basicSetup,
         // Basic setup with line numbers, etc.
-        (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__.html)(),
+        thememirror__WEBPACK_IMPORTED_MODULE_9__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__.html)(),
         // HTML mode for syntax highlighting
         codemirror__WEBPACK_IMPORTED_MODULE_15__.EditorView.updateListener.of(update => {
           if (update.docChanged) {
@@ -2863,10 +2863,14 @@ __webpack_require__.r(__webpack_exports__);
           }
         })]
       });
-      new codemirror__WEBPACK_IMPORTED_MODULE_15__.EditorView({
+      const view = new codemirror__WEBPACK_IMPORTED_MODULE_15__.EditorView({
         state: startState,
         parent: codeMirrorRef.current
       });
+      // Clean up the editor on unmount
+      return () => {
+        view.destroy(); // Properly destroy the editor instance to avoid memory leaks
+      };
     };
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
       initializeCodeMirror();

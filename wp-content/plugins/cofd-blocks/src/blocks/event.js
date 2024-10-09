@@ -148,6 +148,7 @@ registerBlockType('cofd-blocks/event', {
                 doc: attributes.eventContent,
                 extensions: [
                     basicSetup,   // Basic setup with line numbers, etc.
+                    dracula,
                     html(),        // HTML mode for syntax highlighting
                     EditorView.updateListener.of((update) => {
                         if (update.docChanged) {
@@ -157,10 +158,14 @@ registerBlockType('cofd-blocks/event', {
                     })
                 ]
             });
-            new EditorView({
+            const view = new EditorView({
                 state: startState,
                 parent: codeMirrorRef.current,
             });
+            // Clean up the editor on unmount
+            return () => {
+                view.destroy(); // Properly destroy the editor instance to avoid memory leaks
+            };
         };
         useEffect(() => {
             initializeCodeMirror();
