@@ -234,7 +234,6 @@ registerBlockType('cofd-blocks/event', {
                         <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Content</h4>
 
                         <RichText
-                            { ...blockProps }
                             tagName='p'
                             multiline={ false }
                             value={ eventContent } 
@@ -463,7 +462,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            <RawHTML>{eventContent}</RawHTML>
+                            <RawHTML>{eventContent ? eventContent : ''}</RawHTML>
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
