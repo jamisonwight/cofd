@@ -423,8 +423,6 @@ registerBlockType('cofd-blocks/event', {
             return eventEndDate ? `-${formatTime(eventEndDate)}` : ''
         }
 
-        console.log(lButtonURL)
-
         return (
             <div className={`event ${styles.main}`}>
                 <div className={`gradients`}>
@@ -458,9 +456,7 @@ registerBlockType('cofd-blocks/event', {
                             <span className={`end-time ${styles.time_item}`}>{getEndTime()}</span>
                         </div>
 
-                        <div className={`content ${styles.content}`}>
-                            <RichText.Content value={eventContent} tagName="p" />
-                        </div>
+                        <div className={`content ${styles.content}`} dangerouslySetInnerHTML={{ __html: eventContent }}></div>
 
                         <div className={`callouts ${styles.callouts}`}>
                             {lButtonURL.url && 
