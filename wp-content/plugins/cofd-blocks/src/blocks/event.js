@@ -12,6 +12,7 @@ import {
     useBlockProps,
     MediaUpload,
     MediaUploadCheck,
+    InnerBlocks
 } from '@wordpress/block-editor'
 import {
     __experimentalLinkControl as LinkControl,
@@ -49,7 +50,7 @@ registerBlockType('cofd-blocks/event', {
         },
         eventContent: {
             type: 'string',
-            default: '<h1>HTML Goes here</h1>'
+            default: ''
         },
         lButtonContent: {
             type: 'string',
@@ -235,12 +236,10 @@ registerBlockType('cofd-blocks/event', {
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Content</h4>
 
-                        <RichText
-                            tagName='p'
-                            value={ eventContent }
-                            onChange={( eventContent ) => {
-                                setAttributes({ eventContent: eventContent })
-                            }}
+                        <TextControl
+                            label="Event Content (HTML)"
+                            value={eventContent}
+                            onChange={(newContent) => setAttributes({ eventContent: newContent })}
                         />
                     </div>
 
