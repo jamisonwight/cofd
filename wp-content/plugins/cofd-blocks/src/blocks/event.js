@@ -244,7 +244,6 @@ registerBlockType('cofd-blocks/event', {
                             value={ eventContent } 
                             onChange={ ( eventContent ) => setAttributes({ eventContent })} 
                             preserveWhiteSpace={ true }
-                            keepPlaceholderOnFocus
                         />
                     </div>
 
@@ -466,7 +465,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            <RawHTML>{eventContent}</RawHTML>
+                            <RichText.Content value={eventContent} tagName="p" />
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
