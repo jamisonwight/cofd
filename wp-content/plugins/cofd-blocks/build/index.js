@@ -2680,22 +2680,27 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/utils */ "./src/lib/utils.js");
-/* harmony import */ var _styles_event__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../styles/event */ "./src/styles/event.js");
-/* harmony import */ var _styles_edit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/edit */ "./src/styles/edit.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "moment");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _assets_images_squiggly_blue_svg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../assets/images/squiggly-blue.svg */ "./src/assets/images/squiggly-blue.svg");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../lib/utils */ "./src/lib/utils.js");
+/* harmony import */ var _styles_event__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/event */ "./src/styles/event.js");
+/* harmony import */ var _styles_edit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../styles/edit */ "./src/styles/edit.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _assets_images_squiggly_blue_svg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../assets/images/squiggly-blue.svg */ "./src/assets/images/squiggly-blue.svg");
+Object(function webpackMissingModule() { var e = new Error("Cannot find module 'codemirror/lib/codemirror'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+Object(function webpackMissingModule() { var e = new Error("Cannot find module 'codemirror/mode/xml/xml'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+Object(function webpackMissingModule() { var e = new Error("Cannot find module 'codemirror/addon/format/formatting'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__);
 
 
 
@@ -2706,8 +2711,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ // Correct import for HTML/XML syntax highlighting
+ // Import formatting addon
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)('cofd-blocks/event', {
+
+
+
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('cofd-blocks/event', {
   title: 'Event',
   icon: 'layout',
   // Replace with a suitable icon
@@ -2824,15 +2834,49 @@ __webpack_require__.r(__webpack_exports__);
       rButtonURL,
       eventHide
     } = attributes;
-    const isAfterSave = (0,_lib_utils__WEBPACK_IMPORTED_MODULE_3__.useAfterSave)();
-    const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.useBlockProps)();
-    const renderHTML = html => {
-      (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, null, html);
+    const isAfterSave = (0,_lib_utils__WEBPACK_IMPORTED_MODULE_4__.useAfterSave)();
+    const codeMirrorRef = useRef();
+    const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.useBlockProps)();
+    const initializeCodeMirror = () => {
+      const editor = Object(function webpackMissingModule() { var e = new Error("Cannot find module 'codemirror/lib/codemirror'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(codeMirrorRef.current, {
+        value: attributes.eventContent,
+        mode: 'xml',
+        // For HTML/XML formatting
+        lineNumbers: true,
+        indentUnit: 2,
+        autoCloseTags: true,
+        extraKeys: {
+          'Ctrl-Space': 'autocomplete',
+          'Shift-Tab': 'indentLess',
+          'Ctrl-Q': function (cm) {
+            cm.foldCode(cm.getCursor());
+          },
+          'Ctrl-A': 'selectAll',
+          'Ctrl-F': 'findPersistent'
+        }
+      });
+      // Set up auto-formatting on initialization and changes
+      editor.on('change', cm => {
+        const formattedContent = cm.getValue();
+        setAttributes({
+          eventContent: formattedContent
+        });
+      });
+      // Automatically format the code when editor is initialized
+      editor.autoFormatRange({
+        line: 0,
+        ch: 0
+      }, {
+        line: editor.lineCount()
+      });
     };
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
+      initializeCodeMirror();
+    }, []); // Run once after mount
 
     // Function to update the event date
     const onChangeDate = (newDate, time) => {
-      var newDateTime = moment__WEBPACK_IMPORTED_MODULE_6___default()(newDate).format('YYYY-MM-DD HH:mm');
+      var newDateTime = moment__WEBPACK_IMPORTED_MODULE_7___default()(newDate).format('YYYY-MM-DD HH:mm');
       if (time == 'start') setAttributes({
         eventStartDate: newDateTime
       });
@@ -2858,13 +2902,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     };
     const onWordPressUpdate = () => {
-      const postID = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.select)('core/editor').getCurrentPostId();
-      (0,_lib_utils__WEBPACK_IMPORTED_MODULE_3__.savePostAttributesToJSON)(attributes, postID, '/cofd-blocks/v1/save-event-attributes');
+      const postID = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)('core/editor').getCurrentPostId();
+      (0,_lib_utils__WEBPACK_IMPORTED_MODULE_4__.savePostAttributesToJSON)(attributes, postID, '/cofd-blocks/v1/save-event-attributes');
     };
-    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
-      const postTitle = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.select)("core/editor").getEditedPostAttribute("title");
-      const postID = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.select)("core/editor").getEditedPostAttribute("id");
-      const postLink = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.select)('core/editor').getEditedPostAttribute('link');
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
+      const postTitle = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)("core/editor").getEditedPostAttribute("title");
+      const postID = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)("core/editor").getEditedPostAttribute("id");
+      const postLink = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)('core/editor').getEditedPostAttribute('link');
 
       // Update the attributes with post title and ID
       setAttributes({
@@ -2876,69 +2920,68 @@ __webpack_require__.r(__webpack_exports__);
         onWordPressUpdate();
       }
     }, [isAfterSave]);
-    console.log(eventContent);
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Featured Image"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.MediaUploadCheck, null, eventImageURL ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("img", {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
+    }, "Featured Image"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.MediaUploadCheck, null, eventImageURL ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: eventImageURL,
       alt: "Featured Event Image",
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].image
-    }) : null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.MediaUpload, {
+      className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].image
+    }) : null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.MediaUpload, {
       onSelect: onSelectImage,
       allowedTypes: ['image'],
       value: eventImageID,
       render: ({
         open
-      }) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", null, eventImageID ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("button", {
+      }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, eventImageID ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
         onClick: onRemoveImage,
-        className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].button
-      }, "Remove Image") : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("button", {
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].button
+      }, "Remove Image") : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
         onClick: open,
-        className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].button
+        className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].button
       }, "Select Image"))
-    }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Content"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.PlainText, {
-      placeholder: "Enter Event Content (HTML)",
-      value: eventContent,
-      onChange: newContent => setAttributes({
-        eventContent: newContent
-      })
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Start Date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.DateTimePicker, {
+    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
+    }, "Content"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      ref: codeMirrorRef,
+      style: {
+        border: '1px solid #ccc',
+        height: '200px'
+      }
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
+    }, "Start Date"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_10__.DateTimePicker, {
       currentDate: eventStartDate,
       onChange: newDate => onChangeDate(newDate, 'start'),
       is12Hour: true,
       dateFormat: "F j, Y",
       timeFormat: "g:i a",
       placeholder: "Select Event Date and Time"
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("p", null, "Selected Date: ", eventStartDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "End Date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.DateTimePicker, {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Selected Date: ", eventStartDate)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
+    }, "End Date"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_10__.DateTimePicker, {
       currentDate: eventEndDate,
       onChange: newDate => onChangeDate(newDate, 'end'),
       is12Hour: true,
       dateFormat: "F j, Y",
       timeFormat: "g:i a",
       placeholder: "Select Event Date and Time"
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("p", null, "Selected Date: ", eventEndDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "First Button Content"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.RichText, {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Selected Date: ", eventEndDate)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
+    }, "First Button Content"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.RichText, {
       ...blockProps,
       tagName: "p",
       value: lButtonContent,
@@ -2947,20 +2990,20 @@ __webpack_require__.r(__webpack_exports__);
         lButtonContent
       }),
       placeholder: "Type Here..."
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm
-    }, "First Button Text"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.TextControl, {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm
+    }, "First Button Text"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_10__.TextControl, {
       value: lButtonText,
       onChange: lButtonText => setAttributes({
         lButtonText
       })
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm
-    }, "First Button URL"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.__experimentalLinkControl, {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm
+    }, "First Button URL"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.__experimentalLinkControl, {
       value: lButtonURL,
       onChange: newURL => setAttributes({
         lButtonURL: newURL
@@ -2970,11 +3013,11 @@ __webpack_require__.r(__webpack_exports__);
           lButtonURL: {}
         });
       }
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Second Button Content"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.RichText, {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
+    }, "Second Button Content"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.RichText, {
       ...blockProps,
       tagName: "p",
       value: rButtonContent,
@@ -2983,20 +3026,20 @@ __webpack_require__.r(__webpack_exports__);
         rButtonContent
       }),
       placeholder: "Type Here..."
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm
-    }, "Second Button Text"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.TextControl, {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm
+    }, "Second Button Text"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_10__.TextControl, {
       value: rButtonText,
       onChange: rButtonText => setAttributes({
         rButtonText
       })
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm
-    }, "Second Button URL"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.__experimentalLinkControl, {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm
+    }, "Second Button URL"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.__experimentalLinkControl, {
       value: rButtonURL,
       onChange: newURL => setAttributes({
         rButtonURL: newURL
@@ -3006,11 +3049,11 @@ __webpack_require__.r(__webpack_exports__);
           rButtonURL: {}
         });
       }
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
-      className: _styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm
-    }, "Hide Event From All Events Page"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.ToggleControl, {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: _styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm
+    }, "Hide Event From All Events Page"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_10__.ToggleControl, {
       checked: eventHide,
       onChange: toggleEventHide
     }))));
@@ -3033,15 +3076,9 @@ __webpack_require__.r(__webpack_exports__);
       rButtonText,
       rButtonURL
     } = attributes;
-
-    // Get the current post's URL
-    const postUrl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.select)("core/editor").getEditedPostAttribute("link");
-
-    // Extract the site URL from the post URL
-    const siteUrl = postUrl ? postUrl.split("/").slice(0, 3).join("/") : "";
     const getFormattedDate = () => {
-      const startMoment = moment__WEBPACK_IMPORTED_MODULE_6___default()(eventStartDate);
-      const endMoment = moment__WEBPACK_IMPORTED_MODULE_6___default()(eventEndDate);
+      const startMoment = moment__WEBPACK_IMPORTED_MODULE_7___default()(eventStartDate);
+      const endMoment = moment__WEBPACK_IMPORTED_MODULE_7___default()(eventEndDate);
 
       // Check if both start and end dates are the same
       const datesAreEqual = startMoment.isSame(endMoment, 'day');
@@ -3058,7 +3095,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     const formatTime = dateTime => {
-      return moment__WEBPACK_IMPORTED_MODULE_6___default()(dateTime).format('h:mm A');
+      return moment__WEBPACK_IMPORTED_MODULE_7___default()(dateTime).format('h:mm A');
     };
     const getStartTime = () => {
       return formatTime(eventStartDate);
@@ -3066,75 +3103,73 @@ __webpack_require__.r(__webpack_exports__);
     const getEndTime = () => {
       return eventEndDate ? `-${formatTime(eventEndDate)}` : '';
     };
-    const renderHTML = html => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, null, html);
-    console.log(eventContent);
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `event ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].main}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `event ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].main}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `gradients`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "radial-gradient radial-gradient-top-right"
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "radial-gradient radial-gradient-bottom-left"
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `content-container ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].content_container}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `content-left ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].content_left}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `image-container gradient-backdrop ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].image_container}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("img", {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `content-container ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].content_container}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `content-left ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].content_left}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `image-container gradient-backdrop ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].image_container}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: eventImageURL,
       alt: `${eventTitle} Image`,
-      className: `image ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].image}`
-    }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `content-right ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].content_right}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `title ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].title}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("span", {
-      className: _styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].h3
-    }, eventTitle), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("img", {
-      className: `squiggly ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].squiggly}`,
+      className: `image ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].image}`
+    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `content-right ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].content_right}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `title ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].title}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: _styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].h3
+    }, eventTitle), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+      className: `squiggly ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].squiggly}`,
       alt: "Squiggly Icon",
-      src: _assets_images_squiggly_blue_svg__WEBPACK_IMPORTED_MODULE_7__["default"]
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("span", {
-      className: `date ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].date}`
-    }, getFormattedDate()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `time ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].time}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("span", {
-      className: `start-time ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].time_item}`
-    }, getStartTime()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("span", {
-      className: `end-time ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].time_item}`
-    }, getEndTime())), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].content}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, null, eventContent)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `callouts ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].callouts}`
-    }, lButtonURL.url && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `btn-container ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].btn_container}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].btn_content}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.RichText.Content, {
+      src: _assets_images_squiggly_blue_svg__WEBPACK_IMPORTED_MODULE_8__["default"]
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: `date ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].date}`
+    }, getFormattedDate()), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `time ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].time}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: `start-time ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].time_item}`
+    }, getStartTime()), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: `end-time ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].time_item}`
+    }, getEndTime())), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].content}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.RawHTML, null, eventContent)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `callouts ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].callouts}`
+    }, lButtonURL.url && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `btn-container ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_container}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_content}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.RichText.Content, {
       value: lButtonContent,
       tagName: "p"
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("a", {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: lButtonURL.url,
-      className: _styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].btn_left,
+      className: _styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_left,
       target: lButtonURL.opensInNewTab ? '_blank' : '_self',
       rel: "noopener"
-    }, lButtonText)), rButtonURL.url && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `btn-container ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].btn_container}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].btn_content}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.RichText.Content, {
+    }, lButtonText)), rButtonURL.url && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `btn-container ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_container}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_content}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.RichText.Content, {
       value: rButtonContent,
       tagName: "p"
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("a", {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: rButtonURL.url,
-      className: _styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].btn_right,
+      className: _styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_right,
       target: rButtonURL.opensInNewTab ? '_blank' : '_self',
       rel: "noopener"
-    }, rButtonText))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
-      className: `all-events ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].all_events}`
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("a", {
+    }, rButtonText))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `all-events ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].all_events}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: `/events`,
       className: "btn-default btn-blue"
     }, "All Events")));

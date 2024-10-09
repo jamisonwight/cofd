@@ -804,6 +804,9 @@ video {
 .border-\[2px\] {
   border-width: 2px;
 }
+.border {
+  border-width: 1px;
+}
 .border-b-\[1px\] {
   border-bottom-width: 1px;
 }

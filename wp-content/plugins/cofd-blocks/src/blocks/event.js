@@ -1,11 +1,15 @@
 import { registerBlockType } from '@wordpress/blocks'
 import { select, subscribe } from '@wordpress/data'
-import { useEffect, RawHTML, createElement } from '@wordpress/element';
+import { useEffect, RawHTML } from '@wordpress/element';
 import { savePostAttributesToJSON, useAfterSave } from '../lib/utils'
 import styles from '../styles/event'
 import eStyles from '../styles/edit'
 import moment from 'moment'
 import squiggly from '../assets/images/squiggly-blue.svg'
+import CodeMirror from 'codemirror/lib/codemirror';
+import 'codemirror/mode/xml/xml'; // Correct import for HTML/XML syntax highlighting
+import 'codemirror/addon/format/formatting'; // Import formatting addon
+
 import { TextControl, DateTimePicker, ToggleControl } from '@wordpress/components'
 import {
     RichText,
@@ -17,6 +21,7 @@ import {
 import {
     __experimentalLinkControl as LinkControl,
 } from '@wordpress/block-editor'
+
 
 
 registerBlockType('cofd-blocks/event', {
@@ -132,12 +137,37 @@ registerBlockType('cofd-blocks/event', {
             rButtonURL,
             eventHide,
         } = attributes
-
         const isAfterSave = useAfterSave()
-
+        const codeMirrorRef = useRef();
         const blockProps = useBlockProps()
 
-        const renderHTML = (html) => { createElement(RawHTML, null, html) }
+        const initializeCodeMirror = () => {
+            const editor = CodeMirror(codeMirrorRef.current, {
+                value: attributes.eventContent,
+                mode: 'xml', // For HTML/XML formatting
+                lineNumbers: true,
+                indentUnit: 2,
+                autoCloseTags: true,
+                extraKeys: {
+                    'Ctrl-Space': 'autocomplete',
+                    'Shift-Tab': 'indentLess',
+                    'Ctrl-Q': function(cm) { cm.foldCode(cm.getCursor()); },
+                    'Ctrl-A': 'selectAll',
+                    'Ctrl-F': 'findPersistent'
+                }
+            });
+            // Set up auto-formatting on initialization and changes
+            editor.on('change', (cm) => {
+                const formattedContent = cm.getValue();
+                setAttributes({ eventContent: formattedContent });
+            });
+            // Automatically format the code when editor is initialized
+            editor.autoFormatRange({ line: 0, ch: 0 }, { line: editor.lineCount() });
+        };
+
+        useEffect(() => {
+            initializeCodeMirror();
+        }, []); // Run once after mount
 
         // Function to update the event date
         const onChangeDate = (newDate, time) => {
@@ -187,8 +217,6 @@ registerBlockType('cofd-blocks/event', {
             }
         }, [ isAfterSave ])
 
-        console.log(eventContent)
-
         return (
             <div className={`event ${eStyles.main} ${eStyles.flex}`}>
                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
@@ -236,11 +264,13 @@ registerBlockType('cofd-blocks/event', {
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Content</h4>
 
-                        <PlainText
+                        <div ref={codeMirrorRef} style={{ border: '1px solid #ccc', height: '200px' }} />
+
+                        {/* <PlainText
                             placeholder="Enter Event Content (HTML)"
                             value={eventContent}
                             onChange={(newContent) => setAttributes({ eventContent: newContent })}
-                        />
+                        /> */}
                     </div>
 
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
@@ -387,11 +417,6 @@ registerBlockType('cofd-blocks/event', {
             rButtonURL,
         } = attributes
 
-        // Get the current post's URL
-        const postUrl = select("core/editor").getEditedPostAttribute("link")
-
-        // Extract the site URL from the post URL
-        const siteUrl = postUrl ? postUrl.split("/").slice(0, 3).join("/") : ""
 
         const getFormattedDate = () => {
             const startMoment = moment(eventStartDate)
@@ -424,10 +449,6 @@ registerBlockType('cofd-blocks/event', {
         const getEndTime = () => {
             return eventEndDate ? `-${formatTime(eventEndDate)}` : ''
         }
-
-        const renderHTML= (html) => createElement(RawHTML, null, html)
-
-        console.log(eventContent)
 
         return (
             <div className={`event ${styles.main}`}>
