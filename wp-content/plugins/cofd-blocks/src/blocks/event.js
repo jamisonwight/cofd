@@ -9,6 +9,7 @@ import squiggly from '../assets/images/squiggly-blue.svg'
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
+import { oneDark } from '@codemirror/theme-one-dark';
 
 import { TextControl, DateTimePicker, ToggleControl } from '@wordpress/components'
 import {
@@ -260,7 +261,7 @@ registerBlockType('cofd-blocks/event', {
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Content</h4>
 
-                        <div ref={codeMirrorRef} style={{ border: '1px solid #ccc', height: '200px' }} />
+                        <div ref={codeMirrorRef} style={{ border: '1px solid #ccc', height: '600px' }} />
 
                         {/* <PlainText
                             placeholder="Enter Event Content (HTML)"

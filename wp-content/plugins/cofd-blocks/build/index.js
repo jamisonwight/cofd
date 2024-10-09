@@ -2724,6 +2724,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('cofd-blocks/event', {
   title: 'Event',
   icon: 'layout',
@@ -2949,7 +2950,7 @@ __webpack_require__.r(__webpack_exports__);
       ref: codeMirrorRef,
       style: {
         border: '1px solid #ccc',
-        height: '200px'
+        height: '600px'
       }
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
