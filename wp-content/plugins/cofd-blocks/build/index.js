@@ -2878,6 +2878,7 @@ __webpack_require__.r(__webpack_exports__);
         onWordPressUpdate();
       }
     }, [isAfterSave]);
+    console.log(eventContent);
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -2910,10 +2911,9 @@ __webpack_require__.r(__webpack_exports__);
     }, "Content"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__.RichText, {
       tagName: "p",
       value: eventContent,
-      onChange: eventContent => setAttributes({
-        eventContent
-      }),
-      preserveWhiteSpace: true
+      onChange: newContent => setAttributes({
+        eventContent: newContent
+      })
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
@@ -3068,9 +3068,7 @@ __webpack_require__.r(__webpack_exports__);
     const getEndTime = () => {
       return eventEndDate ? `-${formatTime(eventEndDate)}` : '';
     };
-    const htmlToElem = html => wp.element.RawHTML({
-      children: html
-    });
+    console.log(eventContent);
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `event ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].main}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {

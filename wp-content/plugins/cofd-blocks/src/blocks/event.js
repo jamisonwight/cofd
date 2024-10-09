@@ -187,6 +187,8 @@ registerBlockType('cofd-blocks/event', {
             }
         }, [ isAfterSave ])
 
+        console.log(eventContent)
+
         return (
             <div className={`event ${eStyles.main} ${eStyles.flex}`}>
                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
@@ -237,8 +239,7 @@ registerBlockType('cofd-blocks/event', {
                         <RichText
                             tagName='p'
                             value={ eventContent } 
-                            onChange={ ( eventContent ) => setAttributes({ eventContent })} 
-                            preserveWhiteSpace={ true }
+                            onChange={ ( newContent ) => setAttributes({ eventContent: newContent })} 
                         />
                     </div>
 
@@ -424,7 +425,7 @@ registerBlockType('cofd-blocks/event', {
             return eventEndDate ? `-${formatTime(eventEndDate)}` : ''
         }
 
-        const htmlToElem = ( html ) => wp.element.RawHTML( { children: html } );
+        console.log(eventContent)
 
         return (
             <div className={`event ${styles.main}`}>
