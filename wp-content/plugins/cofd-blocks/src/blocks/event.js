@@ -137,7 +137,7 @@ registerBlockType('cofd-blocks/event', {
 
         const blockProps = useBlockProps()
 
-        const textFormats = cofdData.defaultTextFormats
+        const renderHTML= (html) => createElement(RawHTML, null, html)
 
         // Function to update the event date
         const onChangeDate = (newDate, time) => {
@@ -238,8 +238,8 @@ registerBlockType('cofd-blocks/event', {
 
                         <RichText
                             tagName='p'
-                            value={ eventContent } 
-                            onChange={ ( newContent ) => setAttributes({ eventContent: newContent })} 
+                            value={ renderHTML(eventContent) } 
+                            onChange={ ( newContent ) => setAttributes({ eventContent: renderHTML(newContent) })} 
                         />
                     </div>
 
@@ -424,8 +424,6 @@ registerBlockType('cofd-blocks/event', {
         const getEndTime = () => {
             return eventEndDate ? `-${formatTime(eventEndDate)}` : ''
         }
-
-        const renderHTML= (html) => createElement(RawHTML, null, html)
 
         console.log(eventContent)
 
