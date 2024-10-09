@@ -3110,7 +3110,10 @@ __webpack_require__.r(__webpack_exports__);
       className: `end-time ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].time_item}`
     }, getEndTime())), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].content}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("rawHTML", null, eventContent)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__.RichText.Content, {
+      tagName: "rawHTML",
+      value: eventContent
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `callouts ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].callouts}`
     }, lButtonURL.url && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `btn-container ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_container}`

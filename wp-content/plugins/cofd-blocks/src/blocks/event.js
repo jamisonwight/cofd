@@ -463,7 +463,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            <rawHTML>{eventContent}</rawHTML>
+                            <RichText.Content tagName="rawHTML" value={eventContent} />
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
