@@ -2847,14 +2847,12 @@ __webpack_require__.r(__webpack_exports__);
     const codeMirrorRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
     const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__.useBlockProps)();
     const initializeCodeMirror = () => {
+      if (!codeMirrorRef.current) return;
+
       // Initialize CodeMirror 6 editor
       const startState = _codemirror_state__WEBPACK_IMPORTED_MODULE_12__.EditorState.create({
         doc: attributes.eventContent,
-        extensions: [codemirror__WEBPACK_IMPORTED_MODULE_13__.basicSetup,
-        // Basic setup with line numbers, etc.
-        thememirror__WEBPACK_IMPORTED_MODULE_9__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__.html)(),
-        // HTML mode for syntax highlighting
-        codemirror__WEBPACK_IMPORTED_MODULE_15__.EditorView.updateListener.of(update => {
+        extensions: [codemirror__WEBPACK_IMPORTED_MODULE_13__.basicSetup, thememirror__WEBPACK_IMPORTED_MODULE_9__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__.html)(), codemirror__WEBPACK_IMPORTED_MODULE_15__.EditorView.updateListener.of(update => {
           if (update.docChanged) {
             const doc = update.state.doc.toString();
             setAttributes({
@@ -2873,7 +2871,12 @@ __webpack_require__.r(__webpack_exports__);
       };
     };
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
-      initializeCodeMirror();
+      console.log("Initializing CodeMirror");
+      const cleanup = initializeCodeMirror();
+      return () => {
+        console.log("Cleaning up CodeMirror");
+        if (cleanup) cleanup(); // Call the cleanup function on component unmount
+      };
     }, []); // Initialize only once
 
     // Function to update the event date

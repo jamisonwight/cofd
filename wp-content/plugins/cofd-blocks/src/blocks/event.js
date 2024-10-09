@@ -143,13 +143,15 @@ registerBlockType('cofd-blocks/event', {
         const blockProps = useBlockProps()
 
         const initializeCodeMirror = () => {
+            if (!codeMirrorRef.current) return;
+        
             // Initialize CodeMirror 6 editor
             const startState = EditorState.create({
                 doc: attributes.eventContent,
                 extensions: [
-                    basicSetup,   // Basic setup with line numbers, etc.
+                    basicSetup,
                     dracula,
-                    html(),        // HTML mode for syntax highlighting
+                    html(),
                     EditorView.updateListener.of((update) => {
                         if (update.docChanged) {
                             const doc = update.state.doc.toString();
@@ -168,7 +170,12 @@ registerBlockType('cofd-blocks/event', {
             };
         };
         useEffect(() => {
-            initializeCodeMirror();
+            console.log("Initializing CodeMirror");
+            const cleanup = initializeCodeMirror();
+            return () => {
+                console.log("Cleaning up CodeMirror");
+                if (cleanup) cleanup(); // Call the cleanup function on component unmount
+            };
         }, []); // Initialize only once
 
         // Function to update the event date
