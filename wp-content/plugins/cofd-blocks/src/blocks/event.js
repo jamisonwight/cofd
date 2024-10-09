@@ -235,10 +235,8 @@ registerBlockType('cofd-blocks/event', {
 
                         <RichText
                             tagName='p'
-                            multiline={ false }
                             value={ eventContent } 
                             onChange={ ( eventContent ) => setAttributes({ eventContent })} 
-                            placeholder='Type Here...'
                             preserveWhiteSpace={ true }
                             keepPlaceholderOnFocus
                         />
@@ -462,7 +460,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            <RawHTML>{eventContent ? eventContent : ''}</RawHTML>
+                            <RawHTML>{eventContent}</RawHTML>
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>

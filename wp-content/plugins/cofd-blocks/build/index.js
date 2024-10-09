@@ -2908,12 +2908,10 @@ __webpack_require__.r(__webpack_exports__);
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
     }, "Content"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__.RichText, {
       tagName: "p",
-      multiline: false,
       value: eventContent,
       onChange: eventContent => setAttributes({
         eventContent
       }),
-      placeholder: "Type Here...",
       preserveWhiteSpace: true,
       keepPlaceholderOnFocus: true
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -3109,7 +3107,7 @@ __webpack_require__.r(__webpack_exports__);
       className: `end-time ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].time_item}`
     }, getEndTime())), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `content ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].content}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.RawHTML, null, eventContent ? eventContent : '')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.RawHTML, null, eventContent)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `callouts ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].callouts}`
     }, lButtonURL.url && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `btn-container ${_styles_event__WEBPACK_IMPORTED_MODULE_5__["default"].btn_container}`
