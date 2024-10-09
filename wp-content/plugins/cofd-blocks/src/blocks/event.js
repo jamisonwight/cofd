@@ -6,9 +6,8 @@ import styles from '../styles/event'
 import eStyles from '../styles/edit'
 import moment from 'moment'
 import squiggly from '../assets/images/squiggly-blue.svg'
-import CodeMirror from 'codemirror/lib/codemirror';
-import 'codemirror/mode/xml/xml'; // Correct import for HTML/XML syntax highlighting
-import 'codemirror/addon/format/formatting'; // Import formatting addon
+import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
+import { html } from '@codemirror/lang-html';
 
 import { TextControl, DateTimePicker, ToggleControl } from '@wordpress/components'
 import {
@@ -142,32 +141,28 @@ registerBlockType('cofd-blocks/event', {
         const blockProps = useBlockProps()
 
         const initializeCodeMirror = () => {
-            const editor = CodeMirror(codeMirrorRef.current, {
-                value: attributes.eventContent,
-                mode: 'xml', // For HTML/XML formatting
-                lineNumbers: true,
-                indentUnit: 2,
-                autoCloseTags: true,
-                extraKeys: {
-                    'Ctrl-Space': 'autocomplete',
-                    'Shift-Tab': 'indentLess',
-                    'Ctrl-Q': function(cm) { cm.foldCode(cm.getCursor()); },
-                    'Ctrl-A': 'selectAll',
-                    'Ctrl-F': 'findPersistent'
-                }
+            // Initialize CodeMirror 6 editor
+            const startState = EditorState.create({
+                doc: attributes.eventContent,
+                extensions: [
+                    basicSetup,    // Basic setup with line numbers, etc.
+                    html(),        // HTML mode for syntax highlighting
+                    EditorView.updateListener.of((update) => {
+                        if (update.docChanged) {
+                            const doc = update.state.doc.toString();
+                            setAttributes({ eventContent: doc });
+                        }
+                    })
+                ]
             });
-            // Set up auto-formatting on initialization and changes
-            editor.on('change', (cm) => {
-                const formattedContent = cm.getValue();
-                setAttributes({ eventContent: formattedContent });
+            new EditorView({
+                state: startState,
+                parent: codeMirrorRef.current,
             });
-            // Automatically format the code when editor is initialized
-            editor.autoFormatRange({ line: 0, ch: 0 }, { line: editor.lineCount() });
         };
-
         useEffect(() => {
             initializeCodeMirror();
-        }, []); // Run once after mount
+        }, []); // Initialize only once
 
         // Function to update the event date
         const onChangeDate = (newDate, time) => {
