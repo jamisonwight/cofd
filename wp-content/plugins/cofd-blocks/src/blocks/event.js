@@ -6,7 +6,8 @@ import styles from '../styles/event'
 import eStyles from '../styles/edit'
 import moment from 'moment'
 import squiggly from '../assets/images/squiggly-blue.svg'
-import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
+import { EditorView, basicSetup } from 'codemirror';
+import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
 
 import { TextControl, DateTimePicker, ToggleControl } from '@wordpress/components'
