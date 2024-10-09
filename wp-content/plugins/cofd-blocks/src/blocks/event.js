@@ -48,9 +48,8 @@ registerBlockType('cofd-blocks/event', {
             default: '',
         },
         eventContent: {
-            type: 'array',
-            source: 'html',
-            selector: 'p'
+            type: 'string',
+            default: '',
         },
         lButtonContent: {
             type: 'string',
@@ -84,11 +83,6 @@ registerBlockType('cofd-blocks/event', {
             type: 'boolen',
             default: false,
         },
-    },
-    example: {
-        attributes: {
-            text: 'Here is the test <a href="https://example.com">link</a>'
-        }
     },
     schema: {
         attributes: {

@@ -2741,9 +2741,8 @@ __webpack_require__.r(__webpack_exports__);
       default: ''
     },
     eventContent: {
-      type: 'array',
-      source: 'html',
-      selector: 'p'
+      type: 'string',
+      default: ''
     },
     lButtonContent: {
       type: 'string',
@@ -2776,11 +2775,6 @@ __webpack_require__.r(__webpack_exports__);
     eventHide: {
       type: 'boolen',
       default: false
-    }
-  },
-  example: {
-    attributes: {
-      text: 'Here is the test <a href="https://example.com">link</a>'
     }
   },
   schema: {
