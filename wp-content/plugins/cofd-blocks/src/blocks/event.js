@@ -235,9 +235,8 @@ registerBlockType('cofd-blocks/event', {
 
                         <RichText
                             { ...blockProps }
-                            tagName='div'
-                            multiline='p'
-                            identifier='content' 
+                            tagName='p'
+                            multiline={ false }
                             value={ eventContent } 
                             onChange={ ( eventContent ) => setAttributes({ eventContent })} 
                             placeholder='Type Here...'
