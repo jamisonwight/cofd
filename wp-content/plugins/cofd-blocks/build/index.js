@@ -2827,7 +2827,9 @@ __webpack_require__.r(__webpack_exports__);
     } = attributes;
     const isAfterSave = (0,_lib_utils__WEBPACK_IMPORTED_MODULE_3__.useAfterSave)();
     const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.useBlockProps)();
-    const renderHTML = html => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, null, html);
+    const renderHTML = html => {
+      (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, null, html);
+    };
 
     // Function to update the event date
     const onChangeDate = (newDate, time) => {
@@ -3065,6 +3067,7 @@ __webpack_require__.r(__webpack_exports__);
     const getEndTime = () => {
       return eventEndDate ? `-${formatTime(eventEndDate)}` : '';
     };
+    const renderHTML = html => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, null, html);
     console.log(eventContent);
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
       className: `event ${_styles_event__WEBPACK_IMPORTED_MODULE_4__["default"].main}`
