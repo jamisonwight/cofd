@@ -2778,6 +2778,11 @@ __webpack_require__.r(__webpack_exports__);
       default: false
     }
   },
+  example: {
+    attributes: {
+      text: 'Here is the test <a href="https://example.com">link</a>'
+    }
+  },
   schema: {
     attributes: {
       eventID: {
