@@ -2908,7 +2908,7 @@ __webpack_require__.r(__webpack_exports__);
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_6__["default"].pt_sm}`
     }, "Content"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__.RichText, {
       ...blockProps,
-      tagName: "p",
+      tagName: "rawHTML",
       identifier: "content",
       value: eventContent,
       onChange: eventContent => setAttributes({
