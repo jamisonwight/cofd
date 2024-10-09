@@ -2909,10 +2909,14 @@ __webpack_require__.r(__webpack_exports__);
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
     }, "Content"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.RichText, {
       tagName: "p",
-      value: renderHTML(eventContent),
-      onChange: newContent => setAttributes({
-        eventContent: renderHTML(newContent)
-      })
+      value: eventContent,
+      onChange: newContent => {
+        // Strip unwanted tags, allow only <h1>, <code>, etc.
+        const sanitizedContent = eventContent.replace(/<\/?(?!h1|h2|h3|ul|li|a|strong|i|span|iframe)[^>]+>/g, '');
+        setAttributes({
+          eventContent: sanitizedContent
+        });
+      }
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("div", {
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
