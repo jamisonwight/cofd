@@ -48,8 +48,9 @@ registerBlockType('cofd-blocks/event', {
             default: '',
         },
         eventContent: {
-            type: 'string',
-            default: '',
+            type: 'array',
+            source: 'html',
+            selector: 'p'
         },
         lButtonContent: {
             type: 'string',
