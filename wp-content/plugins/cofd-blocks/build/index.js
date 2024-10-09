@@ -2742,7 +2742,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     eventContent: {
       type: 'string',
-      default: ''
+      source: 'html',
+      selector: 'p'
     },
     lButtonContent: {
       type: 'string',
