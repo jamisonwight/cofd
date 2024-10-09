@@ -2739,7 +2739,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     eventContent: {
       type: 'string',
-      default: ''
+      default: '<p>content</p>'
     },
     lButtonContent: {
       type: 'string',
@@ -2906,8 +2906,8 @@ __webpack_require__.r(__webpack_exports__);
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)("h4", {
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Content"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.TextControl, {
-      label: "Event Content (HTML)",
+    }, "Content"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.PlainText, {
+      placeholder: "Enter Event Content (HTML)",
       value: eventContent,
       onChange: newContent => setAttributes({
         eventContent: newContent

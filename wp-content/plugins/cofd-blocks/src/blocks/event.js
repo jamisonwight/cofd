@@ -12,7 +12,7 @@ import {
     useBlockProps,
     MediaUpload,
     MediaUploadCheck,
-    InnerBlocks
+    PlainText
 } from '@wordpress/block-editor'
 import {
     __experimentalLinkControl as LinkControl,
@@ -50,7 +50,7 @@ registerBlockType('cofd-blocks/event', {
         },
         eventContent: {
             type: 'string',
-            default: ''
+            default: '<p>content</p>'
         },
         lButtonContent: {
             type: 'string',
@@ -236,8 +236,8 @@ registerBlockType('cofd-blocks/event', {
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Content</h4>
 
-                        <TextControl
-                            label="Event Content (HTML)"
+                        <PlainText
+                            placeholder="Enter Event Content (HTML)"
                             value={eventContent}
                             onChange={(newContent) => setAttributes({ eventContent: newContent })}
                         />
