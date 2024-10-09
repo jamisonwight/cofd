@@ -460,7 +460,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            {htmlToElem(eventContent)}
+                            <RawHTML>{eventContent}</RawHTML>
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
