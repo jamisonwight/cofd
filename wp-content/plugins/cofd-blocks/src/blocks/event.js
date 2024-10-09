@@ -1,6 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks'
 import { select, subscribe } from '@wordpress/data'
-import { useEffect } from '@wordpress/element';
+import { useEffect, RawHTML } from '@wordpress/element';
 import { savePostAttributesToJSON, useAfterSave } from '../lib/utils'
 import styles from '../styles/event'
 import eStyles from '../styles/edit'
@@ -235,7 +235,8 @@ registerBlockType('cofd-blocks/event', {
 
                         <RichText
                             { ...blockProps }
-                            tagName="rawHTML"
+                            tagName='div'
+                            multiline='p'
                             identifier='content' 
                             value={ eventContent } 
                             onChange={ ( eventContent ) => setAttributes({ eventContent })} 
@@ -463,7 +464,7 @@ registerBlockType('cofd-blocks/event', {
                         </div>
 
                         <div className={`content ${styles.content}`}>
-                            <RichText.Content tagName="rawHTML" value={eventContent} />
+                            <RawHTML>{eventContent}</RawHTML>
                         </div>
 
                         <div className={`callouts ${styles.callouts}`}>
