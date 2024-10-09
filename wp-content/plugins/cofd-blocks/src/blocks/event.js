@@ -423,6 +423,8 @@ registerBlockType('cofd-blocks/event', {
             return eventEndDate ? `-${formatTime(eventEndDate)}` : ''
         }
 
+        const htmlToElem = ( html ) => wp.element.RawHTML( { children: html } );
+
         return (
             <div className={`event ${styles.main}`}>
                 <div className={`gradients`}>
@@ -456,7 +458,9 @@ registerBlockType('cofd-blocks/event', {
                             <span className={`end-time ${styles.time_item}`}>{getEndTime()}</span>
                         </div>
 
-                        <div className={`content ${styles.content}`} dangerouslySetInnerHTML={{ __html: eventContent }}></div>
+                        <div className={`content ${styles.content}`}>
+                            {htmlToElem(eventContent)}
+                        </div>
 
                         <div className={`callouts ${styles.callouts}`}>
                             {lButtonURL.url && 
