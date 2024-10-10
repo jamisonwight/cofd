@@ -44,8 +44,28 @@ h4 {
 	padding: 100px 0;
 }
 
+.custom-content {
+    margin-bottom: 40px;
+  }
+
 .cm-editor {
+	width: 100%;
 	height: 100%;
+
+	.cm-line {
+		font-size: 12px !important;
+	}
+
+	.ͼ3k .cm-activeLine {
+		background-color: rgba(255, 255, 255, 0.3) !important;
+	}
+
+	.ͼ3 .cm-selectionBackground {
+		background: rgba(255, 184, 108, 0.3) !important;
+	}
+	.ͼ3l {
+		color: rgba(255, 255, 25, 0.5) !important;
+	}
 }
 
 .block-editor-link-control__search-results-wrapper {
