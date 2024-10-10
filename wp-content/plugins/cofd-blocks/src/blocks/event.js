@@ -163,6 +163,9 @@ registerBlockType('cofd-blocks/event', {
             const view = new EditorView({
                 state: startState,
                 parent: codeMirrorRef.current,
+                style: {
+                    height: "100%", // Set to 100% of the parent container
+                },
             });
             // Clean up the editor on unmount
             return () => {
