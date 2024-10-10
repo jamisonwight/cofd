@@ -21,6 +21,7 @@
 	},
 	"dependencies": {
 		"@codemirror/lang-html": "^6.4.9",
+		"@codemirror/state": "^6.4.1",
 		"codemirror": "^6.0.1",
 		"gsap": "^3.12.2",
 		"moment": "^2.29.4",
@@ -28,6 +29,7 @@
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"scrolltrigger": "^1.0.1",
-		"swiper": "^10.3.0"
+		"swiper": "^10.3.0",
+		"thememirror": "^2.0.1"
 	}
 }
