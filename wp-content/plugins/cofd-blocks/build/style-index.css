@@ -1164,12 +1164,12 @@ h4 {
   height: 100%;
 }
 .cm-editor .cm-line {
-  font-size: 12px !important;
+  font-size: 14px !important;
 }
-.cm-editor .ͼ3k .cm-activeLine {
+.cm-editor .cm-activeLine {
   background-color: rgba(255, 255, 255, 0.3) !important;
 }
-.cm-editor .ͼ3 .cm-selectionBackground {
+.cm-editor .cm-selectionBackground {
   background: rgba(255, 184, 108, 0.3) !important;
 }
 .cm-editor .ͼ3l {
