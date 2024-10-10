@@ -1159,6 +1159,9 @@ h4 {
 .custom-content {
   margin-bottom: 40px;
 }
+.custom-content ul {
+  margin-left: 20px;
+}
 .cm-editor {
   width: 100%;
   height: 100%;
