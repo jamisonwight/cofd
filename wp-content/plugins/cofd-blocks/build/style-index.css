@@ -1169,11 +1169,11 @@ h4 {
   text-decoration: underline;
   color: #505774;
 }
-.events .event-content h1, .events .event-content h2, .events .event-content h3, .events .event-content h4, .events .event-content img, .featured-events .event-content h1, .featured-events .event-content h2, .featured-events .event-content h3, .featured-events .event-content h4, .featured-events .event-content img {
+.events .event-content .custom-content h1, .events .event-content .custom-content h2, .events .event-content .custom-content h3, .events .event-content .custom-content h4, .events .event-content .custom-content img, .featured-events .event-content .custom-content h1, .featured-events .event-content .custom-content h2, .featured-events .event-content .custom-content h3, .featured-events .event-content .custom-content h4, .featured-events .event-content .custom-content img {
   display: none !important;
 }
-.events .event-content ul, .featured-events .event-content ul {
-  list-style: none !important;
+.events .event-content .custom-content ul, .featured-events .event-content .custom-content ul {
+  list-style-type: none !important;
 }
 .cm-editor {
   width: 100%;

@@ -63,12 +63,12 @@ h4 {
 
 // Hide specific HTML elements for the short description
 .events, .featured-events {
-	.event-content {
+	.event-content .custom-content {
 		h1, h2, h3, h4, img {
 			display: none !important;
 		}
 		ul {
-			list-style: none !important;
+			list-style-type: none !important;
 		}
 	}
 }
