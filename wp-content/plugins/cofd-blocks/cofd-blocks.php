@@ -217,10 +217,53 @@ add_action('rest_api_init', function () {
 });
 
 function truncateText($text, $wordCount) {
-    $words = explode(' ', $text);
-    $truncated = implode(' ', array_slice($words, 0, $wordCount));
+    $dom = new DOMDocument();
     
-    return $truncated .= '...' ;
+    // Load the HTML into the DOMDocument object while suppressing errors due to invalid HTML
+    libxml_use_internal_errors(true);
+    $dom->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
+    libxml_clear_errors();
+    
+    // Extract the body content from the DOMDocument
+    $body = $dom->getElementsByTagName('body')->item(0);
+    
+    // Recursively truncate the content
+    truncateNode($body, $wordCount);
+    
+    // Save the updated HTML and return it (remove doctype and body tags)
+    $truncatedHTML = $dom->saveHTML($body);
+    $truncatedHTML = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $truncatedHTML);
+    
+    return $truncatedHTML . '...';
+}
+
+function truncateNode(DOMNode $node, &$remainingWords) {
+    // Traverse the children nodes
+    foreach (iterator_to_array($node->childNodes) as $child) {
+        if ($child->nodeType === XML_TEXT_NODE) {
+            // Split the text content into words
+            $words = explode(' ', $child->textContent);
+            if (count($words) > $remainingWords) {
+                // Truncate the text node
+                $child->textContent = implode(' ', array_slice($words, 0, $remainingWords));
+                $remainingWords = 0;
+            } else {
+                // Reduce the remaining word count
+                $remainingWords -= count($words);
+            }
+        } elseif ($child->nodeType === XML_ELEMENT_NODE) {
+            // Recursively process child elements
+            truncateNode($child, $remainingWords);
+            
+            // If no more words remain, remove any following elements
+            if ($remainingWords <= 0) {
+                while ($child->nextSibling) {
+                    $child->parentNode->removeChild($child->nextSibling);
+                }
+                break;
+            }
+        }
+    }
 }
 
 function getFormattedDate($start, $end = null) {
