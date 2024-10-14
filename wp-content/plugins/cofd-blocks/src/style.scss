@@ -59,7 +59,19 @@ h4 {
 		color: $blue-dark;
 	}
 
-  }
+}
+
+// Hide specific HTML elements for the short description
+.events, .featured-events {
+	.event-content {
+		h1, h2, h3, h4, img {
+			display: none !important;
+		}
+		ul {
+			list-style: none !important;
+		}
+	}
+}
 
 .cm-editor {
 	width: 100%;

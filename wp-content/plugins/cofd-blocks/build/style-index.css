@@ -1169,6 +1169,12 @@ h4 {
   text-decoration: underline;
   color: #505774;
 }
+.events .event-content h1, .events .event-content h2, .events .event-content h3, .events .event-content h4, .events .event-content img, .featured-events .event-content h1, .featured-events .event-content h2, .featured-events .event-content h3, .featured-events .event-content h4, .featured-events .event-content img {
+  display: none !important;
+}
+.events .event-content ul, .featured-events .event-content ul {
+  list-style: none !important;
+}
 .cm-editor {
   width: 100%;
   height: 100%;
