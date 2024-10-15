@@ -1864,7 +1864,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('cofd-blocks/code-block', {
-  title: 'Content',
+  title: 'Code Block',
   icon: 'layout',
   // Replace with a suitable icon
   category: 'common',
@@ -1916,9 +1916,11 @@ __webpack_require__.r(__webpack_exports__);
       className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Code Block"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, "Code Block"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
+    }, "HTML"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       ref: codeMirrorCodeRef,
       style: {
         border: '1px solid #ccc',
