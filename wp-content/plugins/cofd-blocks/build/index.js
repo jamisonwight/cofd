@@ -1916,6 +1916,7 @@ const CodeMirrorEditor = ({
         css: newCSS
       });
     };
+    console.log(html);
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `code-block ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`,
       ...blockProps

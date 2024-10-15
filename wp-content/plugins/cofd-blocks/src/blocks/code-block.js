@@ -47,6 +47,8 @@ registerBlockType('cofd-blocks/code-block', {
             setAttributes({ css: newCSS });
         };
 
+        console.log(html)
+
         return (
             <div className={`code-block ${eStyles.main} ${eStyles.flex}`} {...blockProps}>
                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
@@ -55,7 +57,7 @@ registerBlockType('cofd-blocks/code-block', {
                     </div>
 
                     <CodeMirrorEditor title="HTML" content={html} onChange={handleHTMLChange} />
-                    
+
                     <CodeMirrorEditor title="CSS" content={css} onChange={handleCSSChange} />
                 </div>
             </div>
