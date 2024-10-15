@@ -16,7 +16,7 @@ registerBlockType('cofd-blocks/code-block', {
             type: 'string',
             default: '',
         },
-        code: {
+        html: {
             type: 'string',
             default: '',
         },
@@ -29,7 +29,7 @@ registerBlockType('cofd-blocks/code-block', {
         const { attributes, setAttributes } = props
         const {
             title,
-            code,
+            html,
             css,
         } = attributes
 
@@ -44,13 +44,17 @@ registerBlockType('cofd-blocks/code-block', {
             })
         }, [])
 
-        const handleDocChange = (newContent) => {
-            setAttributes({ code: newContent });
+        const handleHTMLChange = (newHTML) => {
+            setAttributes({ html: newHTML });
+        };
+
+        const handleCSSChange = (newCSS) => {
+            setAttributes({ css: newCSS });
         };
 
         // Use the custom hook to initialize CodeMirrors for html and CSS
-        const codeMirrorCodeRef = useCodeMirror(code, handleDocChange);
-        const codeMirrorCSSRef = useCodeMirror(css, handleDocChange);
+        const codeMirrorHTMLRef = useCodeMirror(html, handleHTMLChange);
+        const codeMirrorCSSRef = useCodeMirror(css, handleCSSChange);
 
         return (
             <div className={`event ${eStyles.main} ${eStyles.flex}`}>
@@ -58,7 +62,7 @@ registerBlockType('cofd-blocks/code-block', {
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h1 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Code Block</h1>
                         <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>HTML</h4>
-                        <div ref={codeMirrorCodeRef} style={{ border: '1px solid #ccc', height: '600px' }} />
+                        <div ref={codeMirrorHTMLRef} style={{ border: '1px solid #ccc', height: '600px' }} />
                     </div>
 
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>

@@ -21,7 +21,7 @@ function dynamic_code_block_HTML($data) {
         <div class="content-container w-full flex flex-wrap grid-large">
             <div class="code-container">
                 <!-- HTML -->
-                <?php echo $data['code']; ?>
+                <?php echo $data['html']; ?>
 
                 <!-- CSS -->
                  <style><?php echo $data['css']; ?></style>

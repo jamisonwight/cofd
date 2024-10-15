@@ -1873,7 +1873,7 @@ __webpack_require__.r(__webpack_exports__);
       type: 'string',
       default: ''
     },
-    code: {
+    html: {
       type: 'string',
       default: ''
     },
@@ -1889,7 +1889,7 @@ __webpack_require__.r(__webpack_exports__);
     } = props;
     const {
       title,
-      code,
+      html,
       css
     } = attributes;
     const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.useBlockProps)();
@@ -1901,15 +1901,20 @@ __webpack_require__.r(__webpack_exports__);
         title: postTitle
       });
     }, []);
-    const handleDocChange = newContent => {
+    const handleHTMLChange = newHTML => {
       setAttributes({
-        code: newContent
+        html: newHTML
+      });
+    };
+    const handleCSSChange = newCSS => {
+      setAttributes({
+        css: newCSS
       });
     };
 
     // Use the custom hook to initialize CodeMirrors for html and CSS
-    const codeMirrorCodeRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(code, handleDocChange);
-    const codeMirrorCSSRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(css, handleDocChange);
+    const codeMirrorHTMLRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(html, handleHTMLChange);
+    const codeMirrorCSSRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(css, handleCSSChange);
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -1921,7 +1926,7 @@ __webpack_require__.r(__webpack_exports__);
     }, "Code Block"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
     }, "HTML"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      ref: codeMirrorCodeRef,
+      ref: codeMirrorHTMLRef,
       style: {
         border: '1px solid #ccc',
         height: '600px'
