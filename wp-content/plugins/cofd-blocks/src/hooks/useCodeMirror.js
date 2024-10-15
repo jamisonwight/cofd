@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
@@ -7,9 +7,7 @@ import { dracula } from 'thememirror';
 const useCodeMirror = (initialDoc, onDocChange) => {
     const codeMirrorRef = useRef(null);
 
-    useEffect(() => {
-        if (!codeMirrorRef.current) return;
-
+    const createEditor = useCallback((parent) => {
         const state = EditorState.create({
             doc: initialDoc,
             extensions: [
@@ -25,16 +23,21 @@ const useCodeMirror = (initialDoc, onDocChange) => {
             ]
         });
 
-        const view = new EditorView({
+        return new EditorView({
             state,
-            parent: codeMirrorRef.current,
+            parent: parent,
         });
+    }, [initialDoc, onDocChange]);
+
+    useEffect(() => {
+        if (!codeMirrorRef.current) return;
+        const editorView = createEditor(codeMirrorRef.current);
 
         // Cleanup CodeMirror on unmount
         return () => {
-            view.destroy();
+            editorView.destroy();
         };
-    }, [initialDoc, onDocChange]);
+    }, [createEditor]);
 
     return codeMirrorRef;
 };

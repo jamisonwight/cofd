@@ -4850,8 +4850,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const useCodeMirror = (initialDoc, onDocChange) => {
   const codeMirrorRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (!codeMirrorRef.current) return;
+  const createEditor = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(parent => {
     const state = _codemirror_state__WEBPACK_IMPORTED_MODULE_2__.EditorState.create({
       doc: initialDoc,
       extensions: [codemirror__WEBPACK_IMPORTED_MODULE_3__.basicSetup, thememirror__WEBPACK_IMPORTED_MODULE_1__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(), codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
@@ -4861,16 +4860,20 @@ const useCodeMirror = (initialDoc, onDocChange) => {
         }
       })]
     });
-    const view = new codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView({
+    return new codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView({
       state,
-      parent: codeMirrorRef.current
+      parent: parent
     });
+  }, [initialDoc, onDocChange]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!codeMirrorRef.current) return;
+    const editorView = createEditor(codeMirrorRef.current);
 
     // Cleanup CodeMirror on unmount
     return () => {
-      view.destroy();
+      editorView.destroy();
     };
-  }, [initialDoc, onDocChange]);
+  }, [createEditor]);
   return codeMirrorRef;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useCodeMirror);
