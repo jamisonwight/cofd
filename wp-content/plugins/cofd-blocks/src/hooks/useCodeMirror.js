@@ -5,20 +5,20 @@ import { html } from '@codemirror/lang-html';
 import { dracula } from 'thememirror';
 
 const useCodeMirror = (initialDoc, onDocChange) => {
-    const codeMirrorRef = useRef(null);
-    const editorViewRef = useRef(null); // Keep a reference to the EditorView instance
+    const codeMirrorRef = useRef(null); // Ref to hold the editor container
 
-    const createEditor = useCallback((parent) => {
+    // Memoized function to create the CodeMirror editor instance
+    const createEditor = useCallback((parentElement) => {
         const state = EditorState.create({
             doc: initialDoc,
             extensions: [
-                basicSetup,
-                dracula,
-                html(),
+                basicSetup,      // Basic setup like line numbers, indentations, etc.
+                dracula,         // Dracula theme for CodeMirror
+                html(),          // HTML language support
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
-                        const newDoc = update.state.doc.toString();
-                        onDocChange(newDoc);
+                        const updatedDoc = update.state.doc.toString(); // Get the updated document content
+                        onDocChange(updatedDoc);  // Notify parent about document changes
                     }
                 })
             ]
@@ -26,39 +26,22 @@ const useCodeMirror = (initialDoc, onDocChange) => {
 
         return new EditorView({
             state,
-            parent: parent,
+            parent: parentElement,
         });
-    }, [initialDoc, onDocChange]);
+    }, [initialDoc, onDocChange]); // Dependencies are the initial document and change handler
 
     useEffect(() => {
-        if (!codeMirrorRef.current) return;
+        if (!codeMirrorRef.current) return; // Ensure there's a valid DOM element
 
-        // Check if the editor already exists; if not, create it
-        if (!editorViewRef.current) {
-            editorViewRef.current = createEditor(codeMirrorRef.current);
-        }
+        const editorView = createEditor(codeMirrorRef.current); // Create the editor instance
 
+        // Cleanup function to destroy the editor on component unmount
         return () => {
-            if (editorViewRef.current) {
-                editorViewRef.current.destroy(); // Clean up editor on unmount
-            }
+            editorView.destroy();
         };
-    }, [createEditor]);
+    }, [createEditor]); // The effect runs whenever the `createEditor` function changes
 
-    // Update the editor's content when initialDoc changes without reinitializing the editor
-    useEffect(() => {
-        const editorView = editorViewRef.current;
-        if (editorView) {
-            const currentDoc = editorView.state.doc.toString();
-            if (currentDoc !== initialDoc) {
-                editorView.dispatch({
-                    changes: { from: 0, to: currentDoc.length, insert: initialDoc }
-                });
-            }
-        }
-    }, [initialDoc]);
-
-    return codeMirrorRef;
+    return codeMirrorRef; // Return the ref to be attached to the editor container element
 };
 
 export default useCodeMirror;

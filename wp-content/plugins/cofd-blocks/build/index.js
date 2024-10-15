@@ -1925,17 +1925,15 @@ const CodeMirrorEditor = ({
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Code Block"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
+    }, "Code Block")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
       title: "HTML",
       content: html,
       onChange: handleHTMLChange
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
       title: "CSS",
       content: css,
       onChange: handleCSSChange
-    }))));
+    })));
   },
   save: function () {
     // Template is in '/dynamic-blocks/code-block.php
@@ -4843,55 +4841,43 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useCodeMirror = (initialDoc, onDocChange) => {
-  const codeMirrorRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  const editorViewRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null); // Keep a reference to the EditorView instance
+  const codeMirrorRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null); // Ref to hold the editor container
 
-  const createEditor = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(parent => {
+  // Memoized function to create the CodeMirror editor instance
+  const createEditor = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(parentElement => {
     const state = _codemirror_state__WEBPACK_IMPORTED_MODULE_2__.EditorState.create({
       doc: initialDoc,
-      extensions: [codemirror__WEBPACK_IMPORTED_MODULE_3__.basicSetup, thememirror__WEBPACK_IMPORTED_MODULE_1__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(), codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
+      extensions: [codemirror__WEBPACK_IMPORTED_MODULE_3__.basicSetup,
+      // Basic setup like line numbers, indentations, etc.
+      thememirror__WEBPACK_IMPORTED_MODULE_1__.dracula,
+      // Dracula theme for CodeMirror
+      (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(),
+      // HTML language support
+      codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
         if (update.docChanged) {
-          const newDoc = update.state.doc.toString();
-          onDocChange(newDoc);
+          const updatedDoc = update.state.doc.toString(); // Get the updated document content
+          onDocChange(updatedDoc); // Notify parent about document changes
         }
       })]
     });
     return new codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView({
       state,
-      parent: parent
+      parent: parentElement
     });
-  }, [initialDoc, onDocChange]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (!codeMirrorRef.current) return;
+  }, [initialDoc, onDocChange]); // Dependencies are the initial document and change handler
 
-    // Check if the editor already exists; if not, create it
-    if (!editorViewRef.current) {
-      editorViewRef.current = createEditor(codeMirrorRef.current);
-    }
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!codeMirrorRef.current) return; // Ensure there's a valid DOM element
+
+    const editorView = createEditor(codeMirrorRef.current); // Create the editor instance
+
+    // Cleanup function to destroy the editor on component unmount
     return () => {
-      if (editorViewRef.current) {
-        editorViewRef.current.destroy(); // Clean up editor on unmount
-      }
+      editorView.destroy();
     };
-  }, [createEditor]);
+  }, [createEditor]); // The effect runs whenever the `createEditor` function changes
 
-  // Update the editor's content when initialDoc changes without reinitializing the editor
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const editorView = editorViewRef.current;
-    if (editorView) {
-      const currentDoc = editorView.state.doc.toString();
-      if (currentDoc !== initialDoc) {
-        editorView.dispatch({
-          changes: {
-            from: 0,
-            to: currentDoc.length,
-            insert: initialDoc
-          }
-        });
-      }
-    }
-  }, [initialDoc]);
-  return codeMirrorRef;
+  return codeMirrorRef; // Return the ref to be attached to the editor container element
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useCodeMirror);
 
