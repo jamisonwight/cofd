@@ -48,16 +48,16 @@ registerBlockType('cofd-blocks/code-block', {
         };
 
         return (
-            <div className={`event ${eStyles.main} ${eStyles.flex}`} {...blockProps}>
+            <div className={`code-block ${eStyles.main} ${eStyles.flex}`} {...blockProps}>
                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h1 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Code Block</h1>
                         <CodeMirrorEditor title="HTML" content={html} onChange={handleHTMLChange} />
                     </div>
 
-                    {/* <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
+                    <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <CodeMirrorEditor title="CSS" content={css} onChange={handleCSSChange} />
-                    </div> */}
+                    </div>
                 </div>
             </div>
         );

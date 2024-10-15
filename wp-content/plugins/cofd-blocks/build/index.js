@@ -1917,7 +1917,7 @@ const CodeMirrorEditor = ({
       });
     };
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`,
+      className: `code-block ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`,
       ...blockProps
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
@@ -1929,6 +1929,12 @@ const CodeMirrorEditor = ({
       title: "HTML",
       content: html,
       onChange: handleHTMLChange
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
+      title: "CSS",
+      content: css,
+      onChange: handleCSSChange
     }))));
   },
   save: function () {
