@@ -21,10 +21,10 @@ function dynamic_code_block_HTML($data) {
         <div class="content-container w-full flex flex-wrap grid-large">
             <div class="code-container">
                 <!-- HTML -->
-                <?php echo esc_url($data['code']); ?>
+                <?php echo $data['code']; ?>
 
                 <!-- CSS -->
-                <?php echo esc_url($data['css']); ?>
+                 <style><?php echo $data['css']; ?></style>
             </div>
         </div>
     </div>

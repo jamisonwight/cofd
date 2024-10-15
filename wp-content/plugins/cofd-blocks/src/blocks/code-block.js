@@ -8,7 +8,7 @@ import { useBlockProps } from '@wordpress/block-editor'
 
 
 registerBlockType('cofd-blocks/code-block', {
-    title: 'Content',
+    title: 'Code Block',
     icon: 'layout', // Replace with a suitable icon
     category: 'common',
     attributes: {
@@ -56,7 +56,8 @@ registerBlockType('cofd-blocks/code-block', {
             <div className={`event ${eStyles.main} ${eStyles.flex}`}>
                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
-                        <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Code Block</h4>
+                        <h1 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Code Block</h1>
+                        <h4 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>HTML</h4>
                         <div ref={codeMirrorCodeRef} style={{ border: '1px solid #ccc', height: '600px' }} />
                     </div>
 
