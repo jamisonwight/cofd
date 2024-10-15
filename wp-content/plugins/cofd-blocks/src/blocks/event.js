@@ -152,6 +152,8 @@ registerBlockType('cofd-blocks/event', {
                     basicSetup,
                     dracula,
                     html(),
+                    keymap.of([indentWithTab]),
+                    indentUnit.of("    "),
                     EditorView.updateListener.of((update) => {
                         if (update.docChanged) {
                             const doc = update.state.doc.toString();

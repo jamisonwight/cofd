@@ -3,6 +3,9 @@ import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
 import { dracula } from 'thememirror';
+import { keymap } from '@codemirror/view';
+import { indentWithTab } from '@codemirror/commands';
+import { indentUnit } from '@codemirror/language';
 
 const useCodeMirror = (initialDoc, onDocChange) => {
     const codeMirrorRef = useRef(null); // Ref to hold the editor container
@@ -14,7 +17,9 @@ const useCodeMirror = (initialDoc, onDocChange) => {
             extensions: [
                 basicSetup,      // Basic setup like line numbers, indentations, etc.
                 dracula,         // Dracula theme for CodeMirror
-                html(),          // HTML language support
+                html(),
+                keymap.of([indentWithTab]),
+                indentUnit.of("    "),
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
                         const updatedDoc = update.state.doc.toString(); // Get the updated document content
@@ -28,7 +33,7 @@ const useCodeMirror = (initialDoc, onDocChange) => {
             state,
             parent: parentElement,
         });
-        
+
         // Clean up the editor on unmount
         return () => {
             view.destroy(); // Properly destroy the editor instance to avoid memory leaks
