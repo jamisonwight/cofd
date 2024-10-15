@@ -1925,20 +1925,10 @@ const CodeMirrorEditor = ({
       className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
       className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "Code Block"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "HTML"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
+    }, "Code Block"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
       title: "HTML",
       content: html,
       onChange: handleHTMLChange
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
-      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
-    }, "CSS"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CodeMirrorEditor, {
-      title: "CSS",
-      content: css,
-      onChange: handleCSSChange
     }))));
   },
   save: function () {
