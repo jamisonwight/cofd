@@ -1837,6 +1837,113 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/blocks/code-block.js":
+/*!**********************************!*\
+  !*** ./src/blocks/code-block.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../hooks/useCodeMirror */ "./src/hooks/useCodeMirror.js");
+/* harmony import */ var _styles_edit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/edit */ "./src/styles/edit.js");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
+
+
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('cofd-blocks/code-block', {
+  title: 'Content',
+  icon: 'layout',
+  // Replace with a suitable icon
+  category: 'common',
+  attributes: {
+    title: {
+      type: 'string',
+      default: ''
+    },
+    code: {
+      type: 'string',
+      default: ''
+    },
+    css: {
+      type: 'string',
+      default: ''
+    }
+  },
+  edit: function (props) {
+    const {
+      attributes,
+      setAttributes
+    } = props;
+    const {
+      title,
+      code,
+      css
+    } = attributes;
+    const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.useBlockProps)();
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
+      const postTitle = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)("core/editor").getEditedPostAttribute("title");
+
+      // Update the attributes with post title and ID
+      setAttributes({
+        title: postTitle
+      });
+    }, []);
+    const handleDocChange = newContent => {
+      setAttributes({
+        code: newContent
+      });
+    };
+
+    // Use the custom hook to initialize CodeMirrors for html and CSS
+    const codeMirrorCodeRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(code, handleDocChange);
+    const codeMirrorCSSRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(css, handleDocChange);
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
+    }, "Code Block"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      ref: codeMirrorCodeRef,
+      style: {
+        border: '1px solid #ccc',
+        height: '600px'
+      }
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `sub-item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].sub_item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: `${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].my_sm} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].pt_sm}`
+    }, "CSS"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      ref: codeMirrorCSSRef,
+      style: {
+        border: '1px solid #ccc',
+        height: '600px'
+      }
+    }))));
+  },
+  save: function () {
+    // Template is in '/dynamic-blocks/code-block.php
+    return null;
+  }
+});
+
+/***/ }),
+
 /***/ "./src/blocks/contact.js":
 /*!*******************************!*\
   !*** ./src/blocks/contact.js ***!
@@ -4712,6 +4819,57 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/hooks/useCodeMirror.js":
+/*!************************************!*\
+  !*** ./src/hooks/useCodeMirror.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var codemirror__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codemirror */ "./node_modules/codemirror/dist/index.js");
+/* harmony import */ var codemirror__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! codemirror */ "./node_modules/@codemirror/view/dist/index.js");
+/* harmony import */ var _codemirror_state__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @codemirror/state */ "./node_modules/@codemirror/state/dist/index.js");
+/* harmony import */ var _codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @codemirror/lang-html */ "./node_modules/@codemirror/lang-html/dist/index.js");
+/* harmony import */ var thememirror__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! thememirror */ "./node_modules/thememirror/dist/index.js");
+
+
+
+
+
+const useCodeMirror = (initialDoc, onDocChange) => {
+  const codeMirrorRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!codeMirrorRef.current) return;
+    const state = _codemirror_state__WEBPACK_IMPORTED_MODULE_2__.EditorState.create({
+      doc: initialDoc,
+      extensions: [codemirror__WEBPACK_IMPORTED_MODULE_3__.basicSetup, thememirror__WEBPACK_IMPORTED_MODULE_1__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(), codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
+        if (update.docChanged) {
+          const newDoc = update.state.doc.toString();
+          onDocChange(newDoc);
+        }
+      })]
+    });
+    const view = new codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView({
+      state,
+      parent: codeMirrorRef.current
+    });
+
+    // Cleanup CodeMirror on unmount
+    return () => {
+      view.destroy();
+    };
+  }, [initialDoc, onDocChange]);
+  return codeMirrorRef;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useCodeMirror);
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -4736,10 +4894,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _blocks_events__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./blocks/events */ "./src/blocks/events.js");
 /* harmony import */ var _blocks_contact__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./blocks/contact */ "./src/blocks/contact.js");
 /* harmony import */ var _blocks_content__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./blocks/content */ "./src/blocks/content.js");
-/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./store/index */ "./src/store/index.js");
+/* harmony import */ var _blocks_code_block__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./blocks/code-block */ "./src/blocks/code-block.js");
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./store/index */ "./src/store/index.js");
 
 
 // Block Components
+
 
 
 

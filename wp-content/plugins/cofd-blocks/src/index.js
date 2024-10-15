@@ -17,6 +17,7 @@ import './blocks/featured-bios'
 import './blocks/events'
 import './blocks/contact'
 import './blocks/content'
+import './blocks/code-block'
 
 // store
 import './store/index'
