@@ -11,10 +11,10 @@ add_action( 'init', 'dynamic_code_block' );
 
 function dynamic_code_block_render_callback($attributes) {
     $data = $attributes;
-    return dynamic_featured_events_archive_HTML($data);
+    return dynamic_code_block_HTML($data);
 }
 
-function dynamic_featured_events_archive_HTML($data) {
+function dynamic_code_block_HTML($data) {
     ob_start(); ?>
     
     <div class="code-block relative block py-[60px] mb-[40px] -xl:px-[30px] overflow-x-clip">
