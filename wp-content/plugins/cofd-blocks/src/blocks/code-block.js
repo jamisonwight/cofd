@@ -12,10 +12,6 @@ registerBlockType('cofd-blocks/code-block', {
     icon: 'layout', // Replace with a suitable icon
     category: 'common',
     attributes: {
-        title: {
-            type: 'string',
-            default: '',
-        },
         html: {
             type: 'string',
             default: '',
@@ -28,21 +24,11 @@ registerBlockType('cofd-blocks/code-block', {
     edit: function (props) {
         const { attributes, setAttributes } = props
         const {
-            title,
             html,
             css,
         } = attributes
 
         const blockProps = useBlockProps()
-
-        useEffect(() => {
-            const postTitle = select("core/editor").getEditedPostAttribute("title")
-
-            // Update the attributes with post title and ID
-            setAttributes({
-                title: postTitle,
-            })
-        }, [])
 
         const handleHTMLChange = (newHTML) => {
             setAttributes({ html: newHTML });
@@ -57,7 +43,7 @@ registerBlockType('cofd-blocks/code-block', {
         const codeMirrorCSSRef = useCodeMirror(css, handleCSSChange);
 
         return (
-            <div className={`event ${eStyles.main} ${eStyles.flex}`}>
+            <div className={`event ${eStyles.main} ${eStyles.flex}`} {...blockProps}>
                 <div className={`item ${eStyles.item} ${eStyles.flex_full}`}>
                     <div className={`sub-item ${eStyles.sub_item} ${eStyles.flex_full}`}>
                         <h1 className={`${eStyles.my_sm} ${eStyles.pt_sm}`}>Code Block</h1>

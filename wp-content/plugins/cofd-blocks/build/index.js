@@ -1869,10 +1869,6 @@ __webpack_require__.r(__webpack_exports__);
   // Replace with a suitable icon
   category: 'common',
   attributes: {
-    title: {
-      type: 'string',
-      default: ''
-    },
     html: {
       type: 'string',
       default: ''
@@ -1888,19 +1884,10 @@ __webpack_require__.r(__webpack_exports__);
       setAttributes
     } = props;
     const {
-      title,
       html,
       css
     } = attributes;
     const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.useBlockProps)();
-    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
-      const postTitle = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)("core/editor").getEditedPostAttribute("title");
-
-      // Update the attributes with post title and ID
-      setAttributes({
-        title: postTitle
-      });
-    }, []);
     const handleHTMLChange = newHTML => {
       setAttributes({
         html: newHTML
@@ -1916,7 +1903,8 @@ __webpack_require__.r(__webpack_exports__);
     const codeMirrorHTMLRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(html, handleHTMLChange);
     const codeMirrorCSSRef = (0,_hooks_useCodeMirror__WEBPACK_IMPORTED_MODULE_4__["default"])(css, handleCSSChange);
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`
+      className: `event ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].main} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex}`,
+      ...blockProps
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `item ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].item} ${_styles_edit__WEBPACK_IMPORTED_MODULE_5__["default"].flex_full}`
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
