@@ -4861,11 +4861,16 @@ const useCodeMirror = (initialDoc, onDocChange) => {
         }
       })]
     });
-    return new codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView({
+    const view = new codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView({
       state,
       parent: parentElement
     });
-  }, [initialDoc, onDocChange]); // Dependencies are the initial document and change handler
+
+    // Clean up the editor on unmount
+    return () => {
+      view.destroy(); // Properly destroy the editor instance to avoid memory leaks
+    };
+  }, []); // Dependencies are the initial document and change handler
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (!codeMirrorRef.current) return; // Ensure there's a valid DOM element
@@ -4876,7 +4881,7 @@ const useCodeMirror = (initialDoc, onDocChange) => {
     return () => {
       editorView.destroy();
     };
-  }, [createEditor]); // The effect runs whenever the `createEditor` function changes
+  }, []); // The effect runs whenever the `createEditor` function changes
 
   return codeMirrorRef; // Return the ref to be attached to the editor container element
 };

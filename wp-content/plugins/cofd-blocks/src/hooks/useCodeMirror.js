@@ -24,11 +24,16 @@ const useCodeMirror = (initialDoc, onDocChange) => {
             ]
         });
 
-        return new EditorView({
+        const view = new EditorView({
             state,
             parent: parentElement,
         });
-    }, [initialDoc, onDocChange]); // Dependencies are the initial document and change handler
+        
+        // Clean up the editor on unmount
+        return () => {
+            view.destroy(); // Properly destroy the editor instance to avoid memory leaks
+        };
+    }, []); // Dependencies are the initial document and change handler
 
     useEffect(() => {
         if (!codeMirrorRef.current) return; // Ensure there's a valid DOM element
@@ -39,7 +44,7 @@ const useCodeMirror = (initialDoc, onDocChange) => {
         return () => {
             editorView.destroy();
         };
-    }, [createEditor]); // The effect runs whenever the `createEditor` function changes
+    }, []); // The effect runs whenever the `createEditor` function changes
 
     return codeMirrorRef; // Return the ref to be attached to the editor container element
 };
