@@ -2,7 +2,6 @@ import { useRef, useCallback, useEffect } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
-import { css } from '@codemirror/lang-css';
 import { dracula } from 'thememirror';
 import { keymap } from '@codemirror/view';
 import { indentWithTab } from '@codemirror/commands';
@@ -19,7 +18,6 @@ const useCodeMirror = (initialDoc, onDocChange) => {
                 basicSetup,      // Basic setup like line numbers, indentations, etc.
                 dracula,         // Dracula theme for CodeMirror
                 html(),
-                css(),
                 keymap.of([indentWithTab]),
                 indentUnit.of("    "),
                 EditorView.updateListener.of((update) => {
