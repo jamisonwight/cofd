@@ -18,8 +18,6 @@ const useCodeMirror = (initialDoc, onDocChange) => {
                 basicSetup,      // Basic setup like line numbers, indentations, etc.
                 dracula,         // Dracula theme for CodeMirror
                 html(),
-                keymap.of(indentWithTab),
-                indentUnit.of("    "),
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
                         const updatedDoc = update.state.doc.toString(); // Get the updated document content
