@@ -4857,7 +4857,7 @@ const useCodeMirror = (initialDoc, onDocChange) => {
       // Basic setup like line numbers, indentations, etc.
       thememirror__WEBPACK_IMPORTED_MODULE_1__.dracula,
       // Dracula theme for CodeMirror
-      (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(), _codemirror_view__WEBPACK_IMPORTED_MODULE_5__.keymap.of([_codemirror_commands__WEBPACK_IMPORTED_MODULE_6__.indentWithTab]), _codemirror_language__WEBPACK_IMPORTED_MODULE_7__.indentUnit.of("    "), _codemirror_view__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
+      (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(), _codemirror_view__WEBPACK_IMPORTED_MODULE_5__.keymap.of(_codemirror_commands__WEBPACK_IMPORTED_MODULE_6__.indentWithTab), _codemirror_language__WEBPACK_IMPORTED_MODULE_7__.indentUnit.of("    "), _codemirror_view__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
         if (update.docChanged) {
           const updatedDoc = update.state.doc.toString(); // Get the updated document content
           onDocChange(updatedDoc); // Notify parent about document changes
