@@ -30,7 +30,7 @@ function dynamic_featured_bios_HTML($attributes, $biosData) {
                 foreach ($featuredBios as $bioId) {
                     $bio = array_values(array_filter($biosData, function ($bio) use ($bioId) {
                         return $bio['bioID'] === $bioId;
-                    }))[0];
+                    }))[0] ?? null;
 
                     if ($bio) {
                 ?>
