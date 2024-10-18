@@ -10,6 +10,9 @@ import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { html } from '@codemirror/lang-html';
 import {dracula} from 'thememirror';
+import { keymap } from '@codemirror/view';
+import { indentWithTab } from '@codemirror/commands';
+import { indentUnit } from '@codemirror/language';
 
 import { TextControl, DateTimePicker, ToggleControl } from '@wordpress/components'
 import {

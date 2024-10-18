@@ -2809,14 +2809,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _assets_images_squiggly_blue_svg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../assets/images/squiggly-blue.svg */ "./src/assets/images/squiggly-blue.svg");
 /* harmony import */ var codemirror__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! codemirror */ "./node_modules/codemirror/dist/index.js");
-/* harmony import */ var codemirror__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! codemirror */ "./node_modules/@codemirror/view/dist/index.js");
+/* harmony import */ var _codemirror_view__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @codemirror/view */ "./node_modules/@codemirror/view/dist/index.js");
 /* harmony import */ var _codemirror_state__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @codemirror/state */ "./node_modules/@codemirror/state/dist/index.js");
 /* harmony import */ var _codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @codemirror/lang-html */ "./node_modules/@codemirror/lang-html/dist/index.js");
 /* harmony import */ var thememirror__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! thememirror */ "./node_modules/thememirror/dist/index.js");
+/* harmony import */ var _codemirror_commands__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @codemirror/commands */ "./node_modules/@codemirror/commands/dist/index.js");
+/* harmony import */ var _codemirror_language__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @codemirror/language */ "./node_modules/@codemirror/language/dist/index.js");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_11__);
+
+
+
 
 
 
@@ -2959,7 +2964,7 @@ __webpack_require__.r(__webpack_exports__);
       // Initialize CodeMirror 6 editor
       const startState = _codemirror_state__WEBPACK_IMPORTED_MODULE_12__.EditorState.create({
         doc: attributes.eventContent,
-        extensions: [codemirror__WEBPACK_IMPORTED_MODULE_13__.basicSetup, thememirror__WEBPACK_IMPORTED_MODULE_9__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__.html)(), keymap.of([indentWithTab]), indentUnit.of("    "), codemirror__WEBPACK_IMPORTED_MODULE_15__.EditorView.updateListener.of(update => {
+        extensions: [codemirror__WEBPACK_IMPORTED_MODULE_13__.basicSetup, thememirror__WEBPACK_IMPORTED_MODULE_9__.dracula, (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_14__.html)(), _codemirror_view__WEBPACK_IMPORTED_MODULE_15__.keymap.of([_codemirror_commands__WEBPACK_IMPORTED_MODULE_16__.indentWithTab]), _codemirror_language__WEBPACK_IMPORTED_MODULE_17__.indentUnit.of("    "), _codemirror_view__WEBPACK_IMPORTED_MODULE_15__.EditorView.updateListener.of(update => {
           if (update.docChanged) {
             const doc = update.state.doc.toString();
             setAttributes({
@@ -2968,7 +2973,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         })]
       });
-      const view = new codemirror__WEBPACK_IMPORTED_MODULE_15__.EditorView({
+      const view = new _codemirror_view__WEBPACK_IMPORTED_MODULE_15__.EditorView({
         state: startState,
         parent: codeMirrorRef.current,
         style: {
@@ -4832,10 +4837,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var codemirror__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codemirror */ "./node_modules/codemirror/dist/index.js");
-/* harmony import */ var codemirror__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! codemirror */ "./node_modules/@codemirror/view/dist/index.js");
+/* harmony import */ var _codemirror_view__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @codemirror/view */ "./node_modules/@codemirror/view/dist/index.js");
 /* harmony import */ var _codemirror_state__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @codemirror/state */ "./node_modules/@codemirror/state/dist/index.js");
 /* harmony import */ var _codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @codemirror/lang-html */ "./node_modules/@codemirror/lang-html/dist/index.js");
 /* harmony import */ var thememirror__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! thememirror */ "./node_modules/thememirror/dist/index.js");
+/* harmony import */ var _codemirror_commands__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @codemirror/commands */ "./node_modules/@codemirror/commands/dist/index.js");
+/* harmony import */ var _codemirror_language__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @codemirror/language */ "./node_modules/@codemirror/language/dist/index.js");
 
 
 
@@ -4855,14 +4862,14 @@ const useCodeMirror = (initialDoc, onDocChange) => {
       // Basic setup like line numbers, indentations, etc.
       thememirror__WEBPACK_IMPORTED_MODULE_1__.dracula,
       // Dracula theme for CodeMirror
-      (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(), codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
+      (0,_codemirror_lang_html__WEBPACK_IMPORTED_MODULE_4__.html)(), _codemirror_view__WEBPACK_IMPORTED_MODULE_5__.keymap.of(_codemirror_commands__WEBPACK_IMPORTED_MODULE_6__.indentWithTab), _codemirror_language__WEBPACK_IMPORTED_MODULE_7__.indentUnit.of("    "), _codemirror_view__WEBPACK_IMPORTED_MODULE_5__.EditorView.updateListener.of(update => {
         if (update.docChanged) {
           const updatedDoc = update.state.doc.toString(); // Get the updated document content
           onDocChange(updatedDoc); // Notify parent about document changes
         }
       })]
     });
-    const view = new codemirror__WEBPACK_IMPORTED_MODULE_5__.EditorView({
+    const view = new _codemirror_view__WEBPACK_IMPORTED_MODULE_5__.EditorView({
       state,
       parent: parentElement
     });
