@@ -15,10 +15,10 @@ registerBlockType('cofd-blocks/featured-bios', {
     edit: function (props) {
         const { attributes, setAttributes } = props
         const [biosData, setBiosData] = wp.element.useState([])
-        const bioJSONUrl = cofdData.jsonUrl + 'bios.json'
+        const baseUrl = cofdData.siteUrl
 
         wp.element.useEffect(() => {
-            fetch(bioJSONUrl)
+            fetch(`${baseUrl}/wp-content/plugins/cofd-blocks/src/json/bios.json`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);

@@ -3388,9 +3388,9 @@ __webpack_require__.r(__webpack_exports__);
       setAttributes
     } = props;
     const [biosData, setBiosData] = wp.element.useState([]);
-    const bioJSONUrl = cofdData.jsonUrl + 'bios.json';
+    const baseUrl = cofdData.siteUrl;
     wp.element.useEffect(() => {
-      fetch(bioJSONUrl).then(response => {
+      fetch(`${baseUrl}/wp-content/plugins/cofd-blocks/src/json/bios.json`).then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
